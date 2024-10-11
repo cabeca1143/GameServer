@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LeagueSandbox.GameServer.Content.Navigation;
@@ -10,6 +11,7 @@ using static LeagueSandbox.GameServer.Content.TalentContentCollection;
 
 namespace LeagueSandbox.GameServer.Content
 {
+    [Obsolete("This entire class will get nuked")]
     public class ContentManager
     {
         private static ILog _logger = LoggerProvider.GetLogger();
