@@ -21,6 +21,7 @@ using LeagueSandbox.GameServer.Handlers;
 using GameServerCore.Packets.PacketDefinitions;
 using GameServerCore.Packets.PacketDefinitions.Requests;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
+using GameServerLib.Handlers;
 
 namespace LeagueSandbox.GameServer
 {
@@ -160,6 +161,7 @@ namespace LeagueSandbox.GameServer
             ApiMapFunctionManager.SetGame(this, Map as MapScriptHandler);
             ApiFunctionManager.SetGame(this);
             ApiEventManager.SetGame(this);
+            ChampionDeathHandler.Init(this);
             IsRunning = false;
 
             Map.Init();
@@ -295,7 +297,7 @@ namespace LeagueSandbox.GameServer
             // The number of those who are disconnected and not even loads.
             var count = players.Count(p => !p.IsStartedClient && p.IsDisconnected);
             Console.WriteLine($"The number of disconnected players {count}/{players.Count}");
-            if(count == players.Count)
+            if (count == players.Count)
             {
                 _logger.Info("All players have left the server. It's lonely here :(");
                 SetToExit = true;
@@ -313,19 +315,19 @@ namespace LeagueSandbox.GameServer
             double timeout = 0;
 
             Stopwatch lastMapDurationWatch = new Stopwatch();
-            
+
             bool wasNotPaused = true;
             bool firstCycle = true;
-            
+
             float timeToForcedStart = Config.ForcedStart;
 
             while (!SetToExit)
             {
                 double lastSleepDuration = lastMapDurationWatch.Elapsed.TotalMilliseconds;
                 lastMapDurationWatch.Restart();
-                
+
                 float deltaTime = (float)lastSleepDuration;
-                if(firstCycle)
+                if (firstCycle)
                 {
                     firstCycle = false;
                     // To avoid Update(0)
@@ -364,9 +366,9 @@ namespace LeagueSandbox.GameServer
                     refreshRate = REFRESH_RATE;
                     wasNotPaused = true;
 
-                    if(!IsRunning && timeToForcedStart > 0)
+                    if (!IsRunning && timeToForcedStart > 0)
                     {
-                        if(timeToForcedStart <= deltaTime && !CheckIfAllPlayersLeft())
+                        if (timeToForcedStart <= deltaTime && !CheckIfAllPlayersLeft())
                         {
                             _logger.Info($"Patience is over. The game will start earlier.");
                             _gameStartHandler.ForceStart();
@@ -383,7 +385,7 @@ namespace LeagueSandbox.GameServer
                 double lastUpdateDuration = lastMapDurationWatch.Elapsed.TotalMilliseconds;
                 double oversleep = lastSleepDuration - timeout;
                 timeout = Math.Max(0, refreshRate - lastUpdateDuration - oversleep);
-                
+
                 _packetServer.NetLoop((uint)timeout);
             }
         }
@@ -443,7 +445,7 @@ namespace LeagueSandbox.GameServer
             {
                 Map.MapScript.OnMatchStart();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.Error(null, e);
             }

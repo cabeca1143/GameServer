@@ -550,6 +550,11 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
             var source = damageData.DamageSource;
             var postMitigationDamage = damageData.PostMitigationDamage;
 
+            if (!CanTakeDamage(type))
+            {
+                return;
+            }
+
             ApiEventManager.OnPreTakeDamage.Publish(damageData.Target, damageData);
 
             if (GlobalData.SpellVampVariables.SpellVampRatios.TryGetValue(source, out float ratio) || source == DamageSource.DAMAGE_SOURCE_ATTACK)
@@ -572,9 +577,9 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
                 }
             }
 
-            if (!CanTakeDamage(type))
+            if (this is Champion c && damageData.Attacker is Champion cAttacker)
             {
-                return;
+                c.AddAssistMarker(cAttacker, 10.0f, damageData);
             }
 
             Stats.CurrentHealth = Math.Max(0.0f, Stats.CurrentHealth - postMitigationDamage);
