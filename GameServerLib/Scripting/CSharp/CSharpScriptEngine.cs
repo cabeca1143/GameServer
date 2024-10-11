@@ -1,229 +1,105 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using log4net;
 using LeagueSandbox.GameServer.Logging;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Emit;
-using System.Numerics;
-using GameServerCore.Enums;
+using GameServerLib.Scripting;
 
-namespace LeagueSandbox.GameServer.Scripting.CSharp
+namespace LeagueSandbox.GameServer.Scripting.CSharp;
+
+public class CSharpScriptEngine
 {
-    public enum CompilationStatus
+    private static ILog _logger = LoggerProvider.GetLogger();
+    private readonly Dictionary<string, Type> _types = [];
+
+    /// <summary>
+    /// Loads scripts from a list of assemblies, to avoid project circular dependeces
+    /// </summary>
+    /// <param name="assemblies"></param>
+    public CSharpScriptEngine()
     {
-        Default = 0,
-        Compiled = 1,
-        SomeCompiled = 2,
-        NoneCompiled = 3,
-        NoScripts = 4
+        foreach (Assembly assembly in AssemblyService.GetAssemblies())
+        {
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.FullName != null)
+                {
+                    _types[type.FullName] = type;
+                }
+            }
+        }
     }
-    public class CSharpScriptEngine
+
+    /// <summary>
+    /// Creates a script object given a script namespace and class name.
+    /// </summary>
+    public T? CreateObject<T>(string scriptNamespace, string scriptClass, bool suppressWarning = false, T sourceObject = default)
     {
-        private static ILog _logger = LoggerProvider.GetLogger();
-        private static readonly string _assemblyName = "CSharpScriptEngine_Compiler";
-        private readonly List<Assembly> _scriptAssembly = new List<Assembly>();
-        private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
-
-        public CompilationStatus LoadSubDirectoryScripts(string folder)
+        if (sourceObject != null)
         {
-            string basePath = Path.GetFullPath(folder);
-            var allFiles = Directory.GetFiles(folder, "*.cs", SearchOption.AllDirectories).Where(pathString =>
-            {
-                string fileBasePath = Path.GetFullPath(pathString);
-                string trimmedPath = fileBasePath.Remove(0, basePath.Length);
-                var directories = trimmedPath.ToLower().Split(Path.DirectorySeparatorChar);
-                return !directories.Contains("bin") && !directories.Contains("obj") && !pathString.Contains("AssemblyInfo.cs");
-            }).ToList();
-
-            return allFiles.Any() ? Load(allFiles) : CompilationStatus.NoScripts;
+            return CopyObject(sourceObject, suppressWarning);
         }
 
-        /// <summary>
-        /// Loads scripts from a list of files and compiles them.
-        /// Takes about 300 milliseconds for a single script. Faster for a bunch of scripts.
-        /// Returns an enum that defines the compilation state.
-        /// </summary>
-        /// <param name="scriptLocations"></param>
-        /// <returns>Returns an enum that defines the compilation state.</returns>
-        public CompilationStatus Load(List<string> scriptLocations)
+        if (AssemblyService.GetAssemblies().Length <= 0 || string.IsNullOrEmpty(scriptClass) || string.IsNullOrEmpty(scriptNamespace))
         {
-            var treeList = new SyntaxTree[scriptLocations.Count];
-            Parallel.For(0, scriptLocations.Count, i =>
-            {
-                using (var sr = new StreamReader(scriptLocations[i]))
-                {
-                    // Read the stream to a string, and write the string to the console.
-                    var syntaxTree = CSharpSyntaxTree.ParseText(sr.ReadToEnd(), null, scriptLocations[i]);
-                    treeList[i] = syntaxTree;
-                }
-            });
-
-            var references = new List<MetadataReference>();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (!assembly.IsDynamic && !assembly.Location.Equals(""))
-                {
-                    references.Add(MetadataReference.CreateFromFile(assembly.Location));
-                }
-            }
-            //Add vector2 reference because vector2 isn't in System.Numerics in dot net core
-            references.Add(MetadataReference.CreateFromFile(typeof(Vector2).Assembly.Location));
-            //Now add game reference
-            references.Add(MetadataReference.CreateFromFile(typeof(Game).Assembly.Location));
-            //Add MathExtensions reference to enable usage of extension methods in scripts
-            references.Add(MetadataReference.CreateFromFile(typeof(GameMaths.MathExtension).Assembly.Location));
-            var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
-                .WithOptimizationLevel(OptimizationLevel.Release).WithConcurrentBuild(true);
-
-            var compilation = CSharpCompilation.Create(
-                _assemblyName,
-                treeList,
-                references,
-                compilationOptions
-            );
-
-            var state = CompilationStatus.Compiled;
-            while (true)
-            {
-                using (var compiledAssemblies = new MemoryStream())
-                {
-                    var result = compilation.Emit(compiledAssemblies);
-
-                    if (result.Success)
-                    {
-                        compiledAssemblies.Seek(0, SeekOrigin.Begin);
-                        var assembly = Assembly.Load(compiledAssemblies.ToArray());
-                        _scriptAssembly.Add(assembly);
-                        foreach (var type in assembly.GetTypes())
-                        {
-                            if (type.FullName != null) _types[type.FullName] = type;
-                        }
-                        return state;
-                    }
-
-                    state = CompilationStatus.SomeCompiled;
-                    var invalidSourceTrees = GetInvalidSourceTrees(result);
-                    compilation = compilation.RemoveSyntaxTrees(invalidSourceTrees);
-                    if (invalidSourceTrees.Count == 0 || compilation.SyntaxTrees.Length == 0)
-                    {
-                        _logger.Error("Script compilation failed");
-                        return CompilationStatus.NoneCompiled;
-                    }
-                }
-            }
-        }
-
-        private List<SyntaxTree> GetInvalidSourceTrees(EmitResult result)
-        {
-            var failures = result.Diagnostics.Where(diagnostic =>
-                diagnostic.IsWarningAsError ||
-                diagnostic.Severity == DiagnosticSeverity.Error);
-
-            return failures.Select(diagnostic =>
-            {
-                var loc = diagnostic.Location.SourceTree.GetLineSpan(diagnostic.Location.SourceSpan).Span;
-                _logger.Error(
-                    $"Script compilation error in script {diagnostic.Location.SourceTree.FilePath}: {diagnostic.Id}\n{diagnostic.GetMessage()} on " +
-                    $"Line {loc.Start.Line} pos {loc.Start.Character} to Line {loc.End.Line} pos {loc.End.Character}");
-                return diagnostic.Location.SourceTree;
-            }).ToList();
-        }
-
-        public T GetStaticMethod<T>(string scriptNamespace, string scriptClass, string scriptFunction)
-        {
-            if (_scriptAssembly == null || _scriptAssembly.Count <= 0)
-            {
-                return default;
-            }
-
-            var fullClassName = scriptNamespace + "." + scriptClass;
-            if (_types.ContainsKey(fullClassName))
-            {
-                Type classType = _types[fullClassName];
-                var desiredFunction = classType.GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Static);
-
-                if (desiredFunction != null)
-                {
-                    return (T)(object)Delegate.CreateDelegate(typeof(T), desiredFunction, false);
-                }
-            }
-
             return default;
         }
 
-        /// <summary>
-        /// Grabs the current compiler assembly and creates a script object given a script namespace and class name.
-        /// </summary>
-        public static T CreateObjectStatic<T>(string scriptNamespace, string scriptClass)
+        scriptNamespace = scriptNamespace.Replace(" ", "_");
+        scriptClass = scriptClass.Replace(" ", "_");
+        string fullClassName = scriptNamespace + "." + scriptClass;
+
+        Type? classType = _types.GetValueOrDefault(fullClassName);
+        if (classType != null)
         {
-            var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == _assemblyName);
-            if (assembly == null)
-            {
-                return default;
-            }
+            return (T)Activator.CreateInstance(classType)!;
+        }
+        if (!suppressWarning)
+        {
+            _logger.Warn($"Could not find script: {fullClassName}");
+        }
 
-            scriptNamespace = scriptNamespace.Replace(" ", "_");
-            scriptClass = scriptClass.Replace(" ", "_");
-            string fullClassName = scriptNamespace + "." + scriptClass;
+        return default;
+    }
 
-            var type = assembly.GetType(fullClassName, throwOnError: false);
-            if (type != null)
-            {
-                return (T)Activator.CreateInstance(type);
-            }
-
-            LoggerProvider.GetLogger().Warn($"Could not find script: {scriptNamespace}.{scriptClass}");
+    public T? CopyObject<T>(T sourceObject, bool suppressWarning = false)
+    {
+        if (AssemblyService.GetAssemblies().Length <= 0 || sourceObject == null)
+        {
             return default;
         }
 
-
-        /// <summary>
-        /// Creates a script object given a script namespace and class name.
-        /// </summary>
-        public T CreateObject<T>(string scriptNamespace, string scriptClass)
+        Type sourceType = sourceObject.GetType();
+        Type? classType = _types.GetValueOrDefault(sourceObject.GetType().FullName!);
+        if (classType != null)
         {
-            if (_scriptAssembly == null || _scriptAssembly.Count <= 0)
+            ConstructorInfo? constructor = classType.GetConstructors().FirstOrDefault();
+            object[]? defaultParameterValues = [.. constructor?.GetParameters()
+                .Select(p => p.ParameterType.IsValueType ? Activator.CreateInstance(p.ParameterType) : null)];
+
+            T instance = (T)Activator.CreateInstance(classType, defaultParameterValues)!;
+
+            FieldInfo[] fields = sourceType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            foreach (var field in fields)
             {
-                return default;
+                FieldInfo? correspondingField = classType.GetField(field.Name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+                if (correspondingField != null && field.FieldType == correspondingField.FieldType && field.FieldType.IsValueType)
+                {
+                    correspondingField.SetValue(instance, field.GetValue(sourceObject));
+                }
             }
 
-            scriptNamespace = scriptNamespace.Replace(" ", "_");
-            scriptClass = scriptClass.Replace(" ", "_");
-            string fullClassName = scriptNamespace + "." + scriptClass;
+            return instance;
 
-            if (_types.ContainsKey(fullClassName))
-            {
-                Type classType = _types[fullClassName];
-                return (T)Activator.CreateInstance(classType);
-            }
-
-            _logger.Warn($"Could not find script: {scriptNamespace}.{scriptClass}");
-            return default;
         }
-
-        public static object RunFunctionOnObject(object obj, string method, params object[] args)
+        if (!suppressWarning)
         {
-            return obj.GetType().InvokeMember(
-                method,
-                BindingFlags.Default | BindingFlags.InvokeMethod,
-                null,
-                obj,
-                args
-            );
+            _logger.Warn($"Could not find script: {sourceObject.GetType().FullName}");
         }
 
-        public static T GetObjectMethod<T>(object obj, string scriptFunction)
-        {
-            var classType = obj.GetType();
-            var desiredFunction = classType.GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Instance);
-
-            var typeParameterType = typeof(T);
-            return (T)(object)Delegate.CreateDelegate(typeParameterType, obj, desiredFunction);
-        }
+        return default;
     }
 }

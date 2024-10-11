@@ -3,6 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+Content/LeagueSandbox-Default
 LeaguePackets
 
 # Game settings files

@@ -39,9 +39,11 @@ namespace LeagueSandbox.GameServer
         {
             ConfigJson = configJson;
             ServerPort = serverPort;
-            game = new Game();
+            
+            Config cfg = Config.LoadFromJson(configJson);
+            game = new Game(cfg);
 
-            _server = new Server(game, serverPort, configJson);
+            _server = new Server(game, serverPort, cfg);
 
 #if !DEBUG
             try

@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Content\LeagueSandbox-Scripts\LeagueSandbox-Scripts.csproj" />
     <ProjectReference Include="..\GameServerLib\GameServerLib.csproj" />
   </ItemGroup>
 

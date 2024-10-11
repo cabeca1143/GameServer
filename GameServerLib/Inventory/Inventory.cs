@@ -80,7 +80,7 @@ namespace LeagueSandbox.GameServer.Inventory
             if (!ItemScripts.ContainsKey(item.ItemId))
             {
                 //Loads the Script
-                ItemScripts.Add(item.ItemId, CSharpScriptEngine.CreateObjectStatic<IItemScript>("ItemPassives", $"ItemID_{item.ItemId}") ?? new ItemScriptEmpty());
+                ItemScripts.Add(item.ItemId, Game.ScriptEngine.CreateObject<IItemScript>("ItemPassives", $"ItemID_{item.ItemId}") ?? new ItemScriptEmpty());
                 try
                 {
                     ItemScripts[item.ItemId].OnActivate(owner);
@@ -244,7 +244,7 @@ namespace LeagueSandbox.GameServer.Inventory
                 if (!ItemScripts.ContainsKey(item.ItemId))
                 {
                     //Loads the Script
-                    ItemScripts.Add(item.ItemId, CSharpScriptEngine.CreateObjectStatic<IItemScript>("ItemPassives", $"ItemID_{item.ItemId}") ?? new ItemScriptEmpty());
+                    ItemScripts.Add(item.ItemId, Game.ScriptEngine.CreateObject<IItemScript>("ItemPassives", $"ItemID_{item.ItemId}") ?? new ItemScriptEmpty());
                     try
                     {
                         ItemScripts[item.ItemId].OnActivate(owner);

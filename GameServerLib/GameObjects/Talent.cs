@@ -18,7 +18,7 @@ namespace LeagueSandbox.GameServer.GameObjects
         {
             Name = name;
             Rank = Math.Min(level, GetTalentMaxRank(name));
-            Script = CSharpScriptEngine.CreateObjectStatic<ITalentScript>("Talents", $"Talent_{name}") ?? new EmptyTalentScript();
+            Script = Game.ScriptEngine.CreateObject<ITalentScript>("Talents", $"Talent_{name}") ?? new EmptyTalentScript();
             ScriptNameHash = HashString(name);
         }
     }

@@ -40,7 +40,6 @@ namespace LeagueSandbox.GameServer.Content
             PackageName = packageName;
 
             LoadPackage();
-            LoadScripts();
         }
 
         private ContentFile GetContentFileFromJson(string filePath)
@@ -312,43 +311,7 @@ namespace LeagueSandbox.GameServer.Content
         {
             return _hasScripts;
         }
-
-        public bool LoadScripts()
-        {
-            var scriptLoadResult = _game.ScriptEngine.LoadSubDirectoryScripts(PackagePath);
-            switch (scriptLoadResult)
-            {
-                case CompilationStatus.Compiled:
-                    {
-                        _logger.Debug($"Loaded all C# scripts from package: {PackageName}");
-                        _hasScripts = true;
-                        return true;
-                    }
-                case CompilationStatus.SomeCompiled:
-                    {
-                        _logger.Debug($"Loaded some C# scripts from package: {PackageName}");
-                        _hasScripts = true;
-                        return true;
-                    }
-                case CompilationStatus.NoneCompiled:
-                    {
-                        _logger.Debug($"{PackageName} failed to compile all C# scripts...");
-                        _hasScripts = true;
-                        return false;
-                    }
-                case CompilationStatus.NoScripts:
-                    {
-                        _logger.Debug($"{PackageName} does not have C# scripts, skipping...");
-                        _hasScripts = false;
-                        return true;
-                    }
-                default:
-                    {
-                        return false;
-                    }
-            }
-        }
-
+        
         private void LoadPackage()
         {
             //Items should be loaded based on the Map being played, refer to "Levels/MapX/Items.inibin"

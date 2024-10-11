@@ -146,7 +146,7 @@ namespace LeagueSandbox.GameServer.GameObjects.SpellNS
             {
                 nameSpace = "ItemSpells";
             }
-            Script = CSharpScriptEngine.CreateObjectStatic<ISpellScript>(nameSpace, SpellName) ?? new SpellScriptEmpty();
+            Script = Game.ScriptEngine.CreateObject<ISpellScript>(nameSpace, SpellName) ?? new SpellScriptEmpty();
 
             if (Script.ScriptMetadata.TriggersSpellCasts)
             {

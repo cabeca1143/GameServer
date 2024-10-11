@@ -63,7 +63,7 @@ namespace LeagueSandbox.GameServer.Handlers
             Id = _game.Config.GameConfig.Map;
 
             string scriptName = game.Config.GameConfig.GameMode;
-            MapScript = CSharpScriptEngine.CreateObjectStatic<IMapScript>($"MapScripts.Map{Id}", scriptName) ?? new EmptyMapScript();
+            MapScript = Game.ScriptEngine.CreateObject<IMapScript>($"MapScripts.Map{Id}", scriptName) ?? new EmptyMapScript();
             ScriptNameHash = HashString(scriptName);
 
             if (MapScript.PlayerSpawnPoints != null && MapScript.MapScriptMetadata.OverrideSpawnPoints)

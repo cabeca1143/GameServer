@@ -104,7 +104,7 @@ namespace LeagueSandbox.GameServer.GameObjects
         public void LoadScript()
         {
             ApiEventManager.RemoveAllListenersForOwner(BuffScript);
-            BuffScript = CSharpScriptEngine.CreateObjectStatic<IBuffGameScript>("Buffs", Name) ?? new BuffScriptEmpty();
+            BuffScript = Game.ScriptEngine.CreateObject<IBuffGameScript>("Buffs", Name) ?? new BuffScriptEmpty();
         }
 
         public void ActivateBuff()

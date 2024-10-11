@@ -6,6 +6,7 @@ using PacketDefinitions420;
 using System;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
+using GameServerLib.Scripting;
 
 namespace LeagueSandbox.GameServer
 {
@@ -24,12 +25,11 @@ namespace LeagueSandbox.GameServer
         /// <summary>
         /// Initialize base variables for future usage.
         /// </summary>
-        public Server(Game game, ushort port, string configJson)
+        public Server(Game game, ushort port, Config cfg)
         {
+            _config = cfg;
             _game = game;
             _serverPort = port;
-            _config = Config.LoadFromJson(game, configJson);
-
             _blowfishKeys = new string[_config.Players.Count];
             for(int i = 0; i < _config.Players.Count; i++)
             {

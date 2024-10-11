@@ -112,18 +112,6 @@ namespace LeagueSandbox.GameServer.Content
             return false;
         }
 
-        public bool LoadScripts()
-        {
-            bool packageLoadingResults = true;
-
-            foreach (var dataPackage in _loadedPackages)
-            {
-                packageLoadingResults = packageLoadingResults && dataPackage.LoadScripts();
-            }
-
-            return packageLoadingResults;
-        }
-
         public MapData GetMapData(int mapId)
         {
             foreach (var dataPackage in _loadedPackages)

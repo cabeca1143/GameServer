@@ -22,6 +22,7 @@ using GameServerCore.Packets.PacketDefinitions;
 using GameServerCore.Packets.PacketDefinitions.Requests;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using GameServerLib.Handlers;
+using GameServerLib.Scripting;
 
 namespace LeagueSandbox.GameServer
 {
@@ -116,15 +117,16 @@ namespace LeagueSandbox.GameServer
         /// <summary>
         /// Class that compiles and loads all scripts which will be used for the game (ex: spells, items, AI, maps, etc).
         /// </summary>
-        internal CSharpScriptEngine ScriptEngine { get; private set; }
+        internal static CSharpScriptEngine ScriptEngine { get; private set; }
 
         internal FileSystemWatcher ScriptsHotReloadWatcher { get; private set; }
 
         /// <summary>
         /// Instantiates all game managers and handlers.
         /// </summary>
-        public Game()
+        public Game(Config cfg)
         {
+            AssemblyService.TryLoadAssemblies(cfg.AssemblyNames);
             ItemManager = new ItemManager();
             ChatCommandManager = new ChatCommandManager(this);
             NetworkIdManager = new NetworkIdManager();
@@ -237,7 +239,6 @@ namespace LeagueSandbox.GameServer
             {
                 // Disable raising events to avoid triggering LoadScripts() many times in a row after the first event
                 ScriptsHotReloadWatcher.EnableRaisingEvents = false;
-                ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.INFO, LoadScripts() ? "Scripts reloaded." : "Scripts failed to reload.");
                 ScriptsHotReloadWatcher.EnableRaisingEvents = true;
             }
 
@@ -258,37 +259,6 @@ namespace LeagueSandbox.GameServer
                 ScriptsHotReloadWatcher.Changed -= ScriptsChanged;
                 ScriptsHotReloadWatcher = null;
             }
-        }
-
-        /// <summary>
-        /// Loads the scripts contained in every content package.
-        /// </summary>
-        /// <returns>Whether all scripts were loaded successfully or not.</returns>
-        public bool LoadScripts()
-        {
-            bool scriptLoadingResults = Config.ContentManager.LoadScripts();
-
-            if (scriptLoadingResults)
-            {
-                foreach (var unit in ObjectManager.GetObjects().Values)
-                {
-                    if (unit is ObjAIBase obj)
-                    {
-                        if (obj.Spells.ContainsKey((int)SpellSlotType.PassiveSpellSlot))
-                        {
-                            obj.LoadCharScript(obj.Spells[(int)SpellSlotType.PassiveSpellSlot]);
-                        }
-                        else
-                        {
-                            obj.LoadCharScript();
-                        }
-                        obj.GetBuffs().ForEach(buff => buff.LoadScript());
-                        obj.Spells.Values.ToList().ForEach(spell => spell.LoadScript());
-                    }
-                }
-            }
-
-            return scriptLoadingResults;
         }
 
         public bool CheckIfAllPlayersLeft()

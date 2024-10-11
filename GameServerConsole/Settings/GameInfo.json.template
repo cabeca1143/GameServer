@@ -1,5 +1,23 @@
 {
-    "players": [
+    "game": {
+        "map": 1,
+        "gameMode": "CLASSIC",
+        "dataPackage": "LeagueSandbox-Scripts"
+    },
+    "gameInfo": {
+        "MANACOSTS_ENABLED": false,
+        "COOLDOWNS_ENABLED": false,
+        "CHEATS_ENABLED": true,
+        "MINION_SPAWNS_ENABLED": false,
+        "CONTENT_PATH": "../../../../../Content",
+        "IS_DAMAGE_TEXT_GLOBAL": false,
+		//Conflicting objects that come first will be overriden by those who come after it
+        "scriptAssemblies": [
+            "LeagueSandbox-Scripts"
+        ]
+    },
+    "forcedStart": 60,
+	"players": [
         {
             "playerId": 1,
             "blowfishKey": "17BLOhi6KZsTtldTsizvHg==",
@@ -8,8 +26,8 @@
             "champion": "Ezreal",
             "team": "BLUE",
             "skin": 0,
-            "summoner1": "SummonerHeal",
-            "summoner2": "SummonerFlash",
+            "summoner1": "SummonerFlash",
+            "summoner2": "SummonerHeal",
             "ribbon": 2,
             "icon": 0,
             "runes": {
@@ -65,19 +83,5 @@
                 "4232": 1
             }        
         }
-    ],
-    "game": {
-        "map": 1,
-        "gameMode": "CLASSIC",
-        "dataPackage": "LeagueSandbox-Scripts"
-    },
-    "gameInfo": {
-        "MANACOSTS_ENABLED": false,
-        "COOLDOWNS_ENABLED": false,
-        "CHEATS_ENABLED": true,
-        "MINION_SPAWNS_ENABLED": false,
-        "CONTENT_PATH": "../../../../../Content",
-        "IS_DAMAGE_TEXT_GLOBAL": false
-    },
-    "forcedStart": 60
+    ]
 }

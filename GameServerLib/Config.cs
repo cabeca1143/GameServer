@@ -22,13 +22,14 @@ namespace LeagueSandbox.GameServer
     /// </summary>
     public class Config
     {
+        public const string VERSION_STRING = "Version 4.20.0.315 [PUBLIC]";
+
         public List<PlayerConfig> Players { get; private set; }
         public GameConfig GameConfig { get; private set; }
         public ContentManager ContentManager { get; private set; }
         public FeatureFlags GameFeatures { get; private set; }
-        public const string VERSION_STRING = "Version 4.20.0.315 [PUBLIC]";
         public static readonly Version VERSION = new Version(4, 20, 0, 315);
-
+        internal string[] AssemblyNames { get; private set; } = [];
         public bool ChatCheatsEnabled { get; private set; }
         public string ContentPath { get; private set; }
         public bool IsDamageTextGlobal { get; private set; }
@@ -39,21 +40,21 @@ namespace LeagueSandbox.GameServer
         {
         }
 
-        public static Config LoadFromJson(Game game, string json)
+        public static Config LoadFromJson(string json)
         {
             var result = new Config();
-            result.LoadConfig(game, json);
+            result.LoadConfig(json);
             return result;
         }
 
-        public static Config LoadFromFile(Game game, string path)
+        public static Config LoadFromFile(string path)
         {
             var result = new Config();
-            result.LoadConfig(game, File.ReadAllText(path));
+            result.LoadConfig(File.ReadAllText(path));
             return result;
         }
 
-        private void LoadConfig(Game game, string json)
+        private void LoadConfig(string json)
         {
             var data = JObject.Parse(json);
 
@@ -92,6 +93,7 @@ namespace LeagueSandbox.GameServer
             }
 
             ForcedStart = (float)(data.SelectToken("forcedStart") ?? 0) * 1000;
+            AssemblyNames = gameInfo?.SelectToken("scriptAssemblies")?.Values<string>().ToArray() as string[] ?? [];
         }
 
         public void LoadContent(Game game)
