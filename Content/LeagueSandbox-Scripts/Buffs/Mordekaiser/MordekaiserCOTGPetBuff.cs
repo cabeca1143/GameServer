@@ -32,7 +32,7 @@ namespace Buffs
                 {
                     pet.LevelUp();
                 }
-                pet.Stats.AttackDamage.BaseValue = pet.ClonedUnit.CharData.BaseDamage;
+                pet.Stats.AttackDamage.BaseValue = pet.ClonedUnit.CharacterRecord.BaseDamage;
                 
                 pet.AddStatModifier(StatsModifier);
                 pet.Stats.CurrentHealth = pet.Stats.HealthPoints.Total;

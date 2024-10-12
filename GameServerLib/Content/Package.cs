@@ -11,7 +11,6 @@ using LeagueSandbox.GameServer.Scripting.CSharp;
 using LeagueSandbox.GameServer.Handlers;
 using GameServerCore.Domain;
 using System.Linq;
-using static LeagueSandbox.GameServer.Content.TalentContentCollection;
 
 namespace LeagueSandbox.GameServer.Content
 {
@@ -20,7 +19,7 @@ namespace LeagueSandbox.GameServer.Content
         public string PackagePath { get; private set; }
         public string PackageName { get; private set; }
 
-        private readonly Dictionary<string, CharData> _charData = new Dictionary<string, CharData>();
+        private readonly Dictionary<string, CharacterRecord> _charData = new Dictionary<string, CharacterRecord>();
         private readonly Dictionary<string, SpellData> _spellData = new Dictionary<string, SpellData>();
         private readonly Dictionary<string, NavigationGrid> _navGrids = new Dictionary<string, NavigationGrid>();
         private readonly Dictionary<string, string> _mapData = new Dictionary<string, string>();
@@ -120,6 +119,7 @@ namespace LeagueSandbox.GameServer.Content
             ContentFile deathTimefile = JsonConvert.DeserializeObject<ContentFile>(_mapData["DeathTimes"]);
             ContentFile statProgressionFile = JsonConvert.DeserializeObject<ContentFile>(_mapData["StatsProgression"]);
 
+            /* TODO
             if (expFile.Values.ContainsKey("EXP"))
             {
                 // We skip the first level, meaning there are 29 level instances, but we only assign 2->29 (that's 29).
@@ -190,7 +190,7 @@ namespace LeagueSandbox.GameServer.Content
                 var barrack = new MapObject(name, barrackCoords, mapId);
                 toReturnMapData.SpawnBarracks.Add(name, barrack);
             }
-
+            */
             return toReturnMapData;
         }
 
@@ -276,7 +276,7 @@ namespace LeagueSandbox.GameServer.Content
             }
         }
 
-        public CharData GetCharData(string characterName)
+        public CharacterRecord GetCharData(string characterName)
         {
             if (_charData.TryGetValue(characterName, out var charData))
             {
@@ -288,23 +288,13 @@ namespace LeagueSandbox.GameServer.Content
                 ContentFile contentFile = GetContentFileFromJson(path);
                 if (contentFile != null)
                 {
-                    CharData toReturn = new CharData().Load(contentFile);
+                    CharacterRecord toReturn = new CharacterRecord().Load(contentFile);
 
                     _charData.Add(characterName, toReturn);
                     return toReturn;
                 }
                 return null;
             }
-        }
-
-        public TalentCollectionEntry GetTalentEntry(string name)
-        {
-            string path = $"{GetContentTypePath("Talents")}/{name}/{name}.json";
-            if (File.Exists(path))
-            {
-                return JsonConvert.DeserializeObject<TalentCollectionEntry>(File.ReadAllText(path));
-            }
-            return null;
         }
 
         public bool HasScripts()

@@ -119,32 +119,32 @@ namespace LeagueSandbox.GameServer.GameObjects.StatsNS
             AcquisitionRange = new Stat();
         }
 
-        public void LoadStats(CharData charData)
+        public void LoadStats(CharacterRecord characterRecord)
         {
-            AcquisitionRange.BaseValue = charData.AcquisitionRange;
-            AttackDamagePerLevel.BaseValue = charData.DamagePerLevel;
-            Armor.BaseValue = charData.Armor;
-            ArmorPerLevel = charData.ArmorPerLevel;
-            AttackDamage.BaseValue = charData.BaseDamage;
+            AcquisitionRange.BaseValue = characterRecord.AcquisitionRange;
+            AttackDamagePerLevel.BaseValue = characterRecord.DamagePerLevel;
+            Armor.BaseValue = characterRecord.Armor;
+            ArmorPerLevel = characterRecord.ArmorPerLevel;
+            AttackDamage.BaseValue = characterRecord.BaseDamage;
             // AttackSpeedFlat = GlobalAttackSpeed / CharAttackDelay
-            AttackSpeedFlat = 1.0f / GlobalData.GlobalCharacterDataConstants.AttackDelay / (1.0f + charData.AttackDelayOffsetPercent);
-            CriticalDamage.BaseValue = charData.CritDamageBonus;
-            ExpGivenOnDeath.BaseValue = charData.ExpGivenOnDeath;
-            GoldGivenOnDeath.BaseValue = charData.GoldGivenOnDeath;
-            GrowthAttackSpeed = charData.AttackSpeedPerLevel;
-            HealthPerLevel = charData.HpPerLevel;
-            HealthPoints.BaseValue = charData.BaseHp;
-            HealthRegeneration.BaseValue = charData.BaseStaticHpRegen;
-            HealthRegenerationPerLevel = charData.HpRegenPerLevel;
-            MagicResist.BaseValue = charData.SpellBlock;
-            MagicResistPerLevel = charData.SpellBlockPerLevel;
-            ManaPerLevel = charData.MpPerLevel;
-            ManaPoints.BaseValue = charData.BaseMp;
-            ManaRegeneration.BaseValue = charData.BaseStaticMpRegen;
-            ManaRegenerationPerLevel = charData.MpRegenPerLevel;
-            MoveSpeed.BaseValue = charData.MoveSpeed;
-            ParType = charData.ParType;
-            Range.BaseValue = charData.AttackRange;
+            AttackSpeedFlat = 1.0f / GlobalData.GlobalCharacterDataConstants.AttackDelay / (1.0f + characterRecord.AttackDelayOffsetPercent);
+            CriticalDamage.BaseValue = characterRecord.CritDamageBonus;
+            ExpGivenOnDeath.BaseValue = characterRecord.ExpGivenOnDeath;
+            GoldGivenOnDeath.BaseValue = characterRecord.GoldGivenOnDeath;
+            GrowthAttackSpeed = characterRecord.AttackSpeedPerLevel;
+            HealthPerLevel = characterRecord.HpPerLevel;
+            HealthPoints.BaseValue = characterRecord.BaseHp;
+            HealthRegeneration.BaseValue = characterRecord.BaseStaticHpRegen;
+            HealthRegenerationPerLevel = characterRecord.HpRegenPerLevel;
+            MagicResist.BaseValue = characterRecord.SpellBlock;
+            MagicResistPerLevel = characterRecord.SpellBlockPerLevel;
+            ManaPerLevel = characterRecord.MpPerLevel;
+            ManaPoints.BaseValue = characterRecord.BaseMp;
+            ManaRegeneration.BaseValue = characterRecord.BaseStaticMpRegen;
+            ManaRegenerationPerLevel = characterRecord.MpRegenPerLevel;
+            MoveSpeed.BaseValue = characterRecord.MoveSpeed;
+            ParType = characterRecord.ParType;
+            Range.BaseValue = characterRecord.AttackRange;
             CalculateTrueMoveSpeed();
         }
 

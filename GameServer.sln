@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29201.188
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packets", "Packets", "{2576843A-B620-4B3A-8272-E3DCBBB17AD5}"
 EndProject
@@ -26,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameServerConsole", "GameSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaguePackets", "LeaguePackets\LeaguePackets\LeaguePackets.csproj", "{6B86971B-1812-406E-ABD1-3B4B78565642}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuadTree", "QuadTree\QuadTree.csproj", "{72202436-F1B5-4326-8AB0-2DF9E70D481C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuadTree", "QuadTree\QuadTree.csproj", "{72202436-F1B5-4326-8AB0-2DF9E70D481C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -192,7 +192,7 @@ namespace LeagueSandbox.GameServer.Content
         {
 
             bool overrideTargetable = false;
-            if (target.CharData.IsUseable && Flags.HasFlag(SpellDataFlags.AffectUseable))
+            if (target.CharacterRecord.IsUseable && Flags.HasFlag(SpellDataFlags.AffectUseable))
             {
                 //TODO: Verify if we need a check for CharData.UsableByEnemy here too.
                 overrideTargetable = true;

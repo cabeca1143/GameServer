@@ -51,7 +51,7 @@ namespace LeagueSandbox.GameServer.Inventory
         {
             Name = file.Name;
 
-            ItemId = Convert.ToInt32(file.MetaData["Id"]);
+            //ItemId = Convert.ToInt32(file.MetaData["Id"]);
             MaxStacks = file.GetInt("Data", "MaxStack");
             Price = file.GetInt("Data", "Price");
             ItemGroup = file.GetString("Data", "ItemGroup");

@@ -107,18 +107,18 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             {
                 CollisionRadius = collisionRadius;
             }
-            else if (CharData.GameplayCollisionRadius > 0)
+            else if (CharacterRecord.GameplayCollisionRadius > 0)
             {
-                CollisionRadius = CharData.GameplayCollisionRadius;
+                CollisionRadius = CharacterRecord.GameplayCollisionRadius;
             }
             else
             {
                 CollisionRadius = 40;
             }
 
-            if (CharData.PathfindingCollisionRadius > 0)
+            if (CharacterRecord.PathfindingCollisionRadius > 0)
             {
-                PathfindingRadius = CharData.PathfindingCollisionRadius;
+                PathfindingRadius = CharacterRecord.PathfindingCollisionRadius;
             }
             else
             {
@@ -130,9 +130,9 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             {
                 VisionRadius = visionRadius;
             }
-            else if (CharData.PerceptionBubbleRadius > 0)
+            else if (CharacterRecord.PerceptionBubbleRadius > 0)
             {
-                VisionRadius = CharData.PerceptionBubbleRadius;
+                VisionRadius = CharacterRecord.PerceptionBubbleRadius;
             }
             else
             {
@@ -148,22 +148,22 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
             if (!string.IsNullOrEmpty(model))
             {
-                IsMelee = CharData.IsMelee;
+                IsMelee = CharacterRecord.IsMelee;
 
                 // SpellSlots
                 // 0 - 3
-                for (short i = 0; i < CharData.SpellNames.Length; i++)
+                for (short i = 0; i < CharacterRecord.SpellNames.Length; i++)
                 {
-                    if (!string.IsNullOrEmpty(CharData.SpellNames[i]))
+                    if (!string.IsNullOrEmpty(CharacterRecord.SpellNames[i]))
                     {
-                        Spells[i] = new Spell(game, this, CharData.SpellNames[i], (byte)i);
+                        Spells[i] = new Spell(game, this, CharacterRecord.SpellNames[i], (byte)i);
                     }
                 }
 
                 //If character has a passive spell, it'll initialize the CharScript with it
-                if (!string.IsNullOrEmpty(CharData.PassiveData.PassiveLuaName))
+                if (!string.IsNullOrEmpty(CharacterRecord.PassiveData.PassiveLuaName))
                 {
-                    Spells[(int)SpellSlotType.PassiveSpellSlot] = new Spell(game, this, CharData.PassiveData.PassiveLuaName, (int)SpellSlotType.PassiveSpellSlot);
+                    Spells[(int)SpellSlotType.PassiveSpellSlot] = new Spell(game, this, CharacterRecord.PassiveData.PassiveLuaName, (int)SpellSlotType.PassiveSpellSlot);
                 }
                 //If there's no passive spell, it'll just initialize the CharScript with Spell = null
                 else
@@ -193,12 +193,12 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
                 // ExtraSpells
                 // 45 - 60
-                for (short i = 0; i < CharData.ExtraSpells.Length; i++)
+                for (short i = 0; i < CharacterRecord.ExtraSpells.Length; i++)
                 {
                     var extraSpellName = "BaseSpell";
-                    if (!string.IsNullOrEmpty(CharData.ExtraSpells[i]))
+                    if (!string.IsNullOrEmpty(CharacterRecord.ExtraSpells[i]))
                     {
-                        extraSpellName = CharData.ExtraSpells[i];
+                        extraSpellName = CharacterRecord.ExtraSpells[i];
                     }
 
                     var slot = i + (int)SpellSlotType.ExtraSlots;
@@ -211,12 +211,12 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
                 // BasicAttackNormalSlots & BasicAttackCriticalSlots
                 // 64 - 72 & 73 - 81
-                for (short i = 0; i < CharData.BasicAttacks.Count; i++)
+                for (short i = 0; i < CharacterRecord.BasicAttacks.Count; i++)
                 {
-                    if (!string.IsNullOrEmpty(CharData.BasicAttacks[i].Name))
+                    if (!string.IsNullOrEmpty(CharacterRecord.BasicAttacks[i].Name))
                     {
                         int slot = i + (int)SpellSlotType.BasicAttackNormalSlots;
-                        Spells[(byte)slot] = new Spell(game, this, CharData.BasicAttacks[i].Name, (byte)slot);
+                        Spells[(byte)slot] = new Spell(game, this, CharacterRecord.BasicAttacks[i].Name, (byte)slot);
                     }
                 }
 
@@ -367,7 +367,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
         public bool CanLevelUpSpell(Spell s)
         {
-            return CharData.SpellsUpLevels[s.CastInfo.SpellSlot][s.CastInfo.SpellLevel] <= Stats.Level;
+            return CharacterRecord.SpellsUpLevels[s.CastInfo.SpellSlot][s.CastInfo.SpellLevel] <= Stats.Level;
         }
 
         public virtual bool LevelUp(bool force = true)
@@ -684,7 +684,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             {
                 for (short i = (short)BasicAttackTypes.BASICATTACK_CRITICAL_SLOT1; i <= (short)BasicAttackTypes.BASICATTACK_CRITICAL_LAST_SLOT; i++)
                 {
-                    if (CharData.BasicAttacks[i - 64].Probability > 0.0f && Spells.TryGetValue(i, out toCast))
+                    if (CharacterRecord.BasicAttacks[i - 64].Probability > 0.0f && Spells.TryGetValue(i, out toCast))
                     {
                         autoAttackSpells.Add(toCast);
                     }
@@ -694,7 +694,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             {
                 for (short i = (short)BasicAttackTypes.BASIC_ATTACK_TYPES_FIRST_SLOT; i <= (short)BasicAttackTypes.BASICATTACK_NORMAL_LAST_SLOT; i++)
                 {
-                    if (CharData.BasicAttacks[i - 64].Probability > 0.0f && Spells.TryGetValue(i, out toCast))
+                    if (CharacterRecord.BasicAttacks[i - 64].Probability > 0.0f && Spells.TryGetValue(i, out toCast))
                     {
                         autoAttackSpells.Add(toCast);
                     }
@@ -1117,7 +1117,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             // Stop targeting an untargetable unit.
             if (TargetUnit != null && !TargetUnit.Status.HasFlag(StatusFlags.Targetable))
             {
-                if (TargetUnit.CharData.IsUseable)
+                if (TargetUnit.CharacterRecord.IsUseable)
                 {
                     return;
                 }
@@ -1181,7 +1181,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
                     CancelAutoAttack(!HasAutoAttacked, true);
                 }
             }
-            else if (TargetUnit.IsDead || (!TargetUnit.Status.HasFlag(StatusFlags.Targetable) && TargetUnit.CharData.IsUseable) || !TargetUnit.IsVisibleByTeam(Team))
+            else if (TargetUnit.IsDead || (!TargetUnit.Status.HasFlag(StatusFlags.Targetable) && TargetUnit.CharacterRecord.IsUseable) || !TargetUnit.IsVisibleByTeam(Team))
             {
                 if (IsAttacking)
                 {

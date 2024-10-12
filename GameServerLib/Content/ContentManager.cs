@@ -7,7 +7,6 @@ using LeagueSandbox.GameServer.Handlers;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
 using Newtonsoft.Json.Linq;
-using static LeagueSandbox.GameServer.Content.TalentContentCollection;
 
 namespace LeagueSandbox.GameServer.Content
 {
@@ -176,35 +175,20 @@ namespace LeagueSandbox.GameServer.Content
             throw new ContentNotFoundException($"No Spell Data found with name: {spellName}");
         }
 
-        public CharData GetCharData(string characterName)
+        public CharacterRecord GetCharData(string characterName)
         {
             foreach (var dataPackage in _loadedPackages)
             {
-                CharData toReturnCharData = dataPackage.GetCharData(characterName);
+                CharacterRecord toReturnCharacterRecord = dataPackage.GetCharData(characterName);
 
-                if (toReturnCharData != null)
+                if (toReturnCharacterRecord != null)
                 {
-                    return toReturnCharData;
+                    return toReturnCharacterRecord;
                 }
             }
 
             throw new ContentNotFoundException($"No Character found with name: {characterName}");
         }
-
-        public TalentCollectionEntry GetTalentEntry(string talentName)
-        {
-            foreach (var dataPackage in _loadedPackages)
-            {
-                TalentCollectionEntry toReturn = dataPackage.GetTalentEntry(talentName);
-                if (toReturn != null)
-                {
-                    return toReturn;
-                }
-            }
-
-            return null;
-        }
-
         private void GetDependenciesRecursively(List<string> resultList, string packageName, string contentPath)
         {
             foreach (var dependency in GetDependenciesFromPackage(packageName, contentPath))

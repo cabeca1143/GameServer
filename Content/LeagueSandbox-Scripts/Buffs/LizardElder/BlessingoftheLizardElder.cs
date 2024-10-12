@@ -91,7 +91,7 @@ namespace Buffs
                     var slowBuffScript = AddBuff("Slow", 3.0f, 1, null, data.Target, ai).BuffScript as Slow;
                     
                     float slow = 0.08f;
-                    if (!ai.CharData.IsMelee || HasBuff(ai, "JudicatorRighteousFury"))
+                    if (!ai.CharacterRecord.IsMelee || HasBuff(ai, "JudicatorRighteousFury"))
                     {
                         slow = 0.05f;
                     }

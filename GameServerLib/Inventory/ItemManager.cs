@@ -33,14 +33,14 @@ namespace LeagueSandbox.GameServer.Inventory
             itemType.CreateRecipe(this);
         }
 
-        public void AddItems(ItemContentCollection contentCollection)
+        public void AddItems()
         {
-            foreach (var entry in contentCollection)
-            {
-                var itemType = (new ItemData()).Load(entry.Value);
-                _itemTypes.Add(entry.Key, itemType);
-                itemType.CreateRecipe(this);
-            }
+            // foreach (var entry in contentCollection)
+            // {
+            //     var itemType = (new ItemData()).Load(entry.Value);
+            //     _itemTypes.Add(entry.Key, itemType);
+            //     itemType.CreateRecipe(this);
+            // }
         }
     }
 }

@@ -38,7 +38,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
         /// <summary>
         /// Variable containing all data about the this unit's current character such as base health, base mana, whether or not they are melee, base movespeed, per level stats, etc.
         /// </summary>
-        public CharData CharData { get; }
+        public CharacterRecord CharacterRecord { get; }
         /// <summary>
         /// Whether or not this Unit is dead. Refer to TakeDamage() and Die().
         /// </summary>
@@ -132,11 +132,11 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
 
         {
             Model = model;
-            CharData = _game.Config.ContentManager.GetCharData(Model);
+            CharacterRecord = _game.Config.ContentManager.GetCharData(Model);
             if (stats == null)
             {
                 var charStats = new Stats();
-                charStats.LoadStats(CharData);
+                charStats.LoadStats(CharacterRecord);
                 Stats = charStats;
             }
             else
@@ -767,7 +767,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
             bool targetable = Status.HasFlag(StatusFlags.Targetable);
             Stats.IsTargetable = targetable;
             // TODO: Refactor this.
-            if (!CharData.IsUseable)
+            if (!CharacterRecord.IsUseable)
             {
                 Stats.SetActionState(ActionState.TARGETABLE, targetable);
             }
