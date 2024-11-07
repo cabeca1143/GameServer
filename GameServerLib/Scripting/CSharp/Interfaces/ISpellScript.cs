@@ -1,50 +1,117 @@
-﻿using GameServerCore.Enums;
-using System.Numerics;
-using LeagueSandbox.GameServer.Scripting.CSharp;
-using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
-using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
-using LeagueSandbox.GameServer.GameObjects.SpellNS;
+﻿namespace GameServerCore.Scripting.CSharp;
 
-namespace GameServerCore.Scripting.CSharp
+public class ChainMissileParameters
 {
-    public interface ISpellScript
-    {
-        SpellScriptMetadata ScriptMetadata { get; }
+    public int[] MaximumHits { get; init; } = []; 
+    public bool CanHitCaster { get; init; }
+    public bool CanHitSameTarget { get; init; }
+    public bool CanHitSameTargetConsecutively { get; init; }
+    public bool CanHitEnemies { get; init; }
+    public bool CanHitFriends { get; init; }
+}
 
-        void OnActivate(ObjAIBase owner, Spell spell)
-        {
-        }
+public interface ISpellScript
+{
+    ChainMissileParameters ChainMissileParameters { get; }
+    //SpellScriptMetadata ScriptMetadata { get; }
 
-        void OnDeactivate(ObjAIBase owner, Spell spell)
-        {
-        }
+    int[] AutoCooldownByLevel { get; }
+    int[] AutoTargetDamageByLevel { get; }
+    string[] SpellFXOverrideSkins { get; }
+    string[] SpellVOOverrideSkins { get; }
 
-        void OnSpellPreCast(ObjAIBase owner, Spell spell, AttackableUnit target, Vector2 start, Vector2 end)
-        {
-        }
+    string BuffName { get; }
+    string BuffTextureName { get; }
+    string AutoAuraBuffName { get; }
+    string AutoBuffActivateEvent { get; }
+    string AutoBuffActivateEffect { get; }
+    string AutoBuffActivateAttachBoneName { get; }
+    string AutoBuffActivateAttachBoneName2 { get; }
+    string AutoBuffActivateAttachBoneName3 { get; }
+    string AutoBuffActivateAttachBoneName4 { get; }
 
-        void OnSpellCast(Spell spell)
-        {
-        }
+    float CastTime { get; }
+    float ChannelDuration { get; }
+    float SetSpellDamageRatio { get; }
 
-        void OnSpellPostCast(Spell spell)
-        {
-        }
+    int SpellDamageRatio { get; }
+    int SpellToggleSlot { get; }
+    int OnPreDamagePriority { get; }
 
-        void OnSpellChannel(Spell spell)
-        {
-        }
+    bool NotSingleTargetSpell { get; }
+    bool DoesntBreakShields { get; }
+    bool DoesntTriggerSpellCasts { get; }
+    bool CastingBreaksStealth { get; }
+    bool IsDamagingSpell { get; }
+    bool NonDispellable { get; }
+    bool TriggersSpellCasts { get; }
+    bool PersistsThroughDeath { get; }
+    bool DoOnPreDamageInExpirationOrder { get; }
+    bool IsPetDurationBuff { get; }
+    bool PermeatesThroughDeath { get; }
+    bool IsDebugMode { get; }
 
-        void OnSpellChannelCancel(Spell spell, ChannelingStopSource reason)
-        {
-        }
+    void TargetExecuteBuildingBlocks() { }
+    void PreLoadBuildingBlocks() { }
+    void CanCastBuildingBlocks() { }
+    void AdjustCooldownBuildingBlocks() { }
+    void AdjustCastInfoBuildingBlocks() { }
+    void SelfExecuteBuildingBlocks() { }
+    void CharOnLaunchAttackBuildingBlocks() { }
+    void SpellOnMissileUpdateBuildingBlocks() { }
+    void SpellOnMissileEndBuildingBlocks() { }
 
-        void OnSpellPostChannel(Spell spell)
-        {
-        }
+    void OnBuffActivateBuildingBlocks() { }
+    void OnBuffDeactivateBuildingBlocks() { }
+    void UpdateBuffsBuildingBlocks() { }
 
-        void OnUpdate(float diff)
-        {            
-        }
-    }
+    void BuffOnAllowAddBuildingBlocks() { }
+
+    void BuffOnLaunchMissileBuildingBlocks() { }
+    void BuffOnMissileEndBuildingBlocks() { }
+
+    void BuffOnDisconnectBuildingBlocks() { }
+    void BuffOnReconnectBuildingBlocks() { }
+
+    void BuffOnHitUnitBuildingBlocks() { }
+    void BuffOnBeingHitBuildingBlocks() { }
+    void BuffOnMissBuildingBlocks() { }
+    void BuffBeingDodgedBuildingBlocks() { }
+    void BuffOnLaunchAttackBuildingBlocks() { }
+
+    void BuffOnSpellHitBuildingBlocks() { }
+    void BuffOnBeingSpellHitBuildingBlocks() { }
+    void BuffOnSpellCastBuildingBlocks() { }
+    void BuffOnPreAttackBuildingBlocks() { }
+
+    void BuffOnMoveEndBuildingBlocks() { }
+    void BuffOnMoveSuccessBuildingBlocks() { }
+    void BuffOnMoveFailureBuildingBlocks() { }
+    void BuffOnCollisionBuildingBlocks() { }
+    void BuffOnCollisionTerrainBuildingBlocks() { }
+
+    void BuffOnDeathBuildingBlocks() { }
+    void BuffOnZombieBuildingBlocks() { }
+    void BuffOnKillBuildingBlocks() { }
+    void BuffOnAssistBuildingBlocks() { }
+
+    void BuffOnPreDamageBuildingBlocks() { }
+    void BuffOnPreMitigationDamageBuildingBlocks() { }
+    void BuffOnDealDamageBuildingBlocks() { }
+    void BuffOnPreDealDamageBuildingBlocks() { }
+    void BuffOnHealBuildingBlocks() { }
+
+    void BuffOnLevelUpSpellBuildingBlocks() { }
+    void BuffOnLevelUpBuildingBlocks() { }
+
+    void BuffOnUpdateActionsBuildingBlocks() { }
+    void BuffOnUpdateStatsBuildingBlocks() { }
+    void BuffOnUpdateAmmoBuildingBlocks() { }
+
+    void ChannelingStartBuildingBlocks() { }
+    void ChannelingStopBuildingBlocks() { }
+    void ChannelingSuccessStopBuildingBlocks() { }
+    void ChannelingCancelStopBuildingBlocks() { }
+    void ChannelingUpdateActionsBuildingBlocks() { }
+    void ChannelingUpdateStatsBuildingBlocks() { }
 }
