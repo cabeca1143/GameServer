@@ -62,6 +62,9 @@
 	  <_CopyCommand Condition="'$(_IsMac)' == 'false'">cp -r -u</_CopyCommand>
 	  <_CopyCommand Condition="'$(_IsMac)' == 'true'">cp -Rf</_CopyCommand>
 	</PropertyGroup>
+	  <PropertyGroup>   
+		<SatelliteResourceLanguages>en-US;en</SatelliteResourceLanguages>
+	</PropertyGroup>
     <Exec Command="$(_CopyCommand) &quot;$(_LibSourceDirectory)&quot; &quot;$(_LibTargetDirectory)&quot;" />
     <Exec Command="$(_CopyCommand) &quot;$(_LENetSourceDirectory)&quot; &quot;$(_LENetTargetDirectory)&quot;" />
   </Target>

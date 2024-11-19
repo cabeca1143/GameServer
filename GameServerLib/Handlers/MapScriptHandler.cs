@@ -72,12 +72,12 @@ namespace LeagueSandbox.GameServer.Handlers
             }
             else
             {
-                PlayerSpawnPoints = _game.Config.GetMapSpawns();
+                //PlayerSpawnPoints = _game.Config.GetMapSpawns();
             }
 
             try
             {
-                NavigationGrid = _game.Config.ContentManager.GetNavigationGrid(this);
+                //NavigationGrid = _game.Config.ContentManager.GetNavigationGrid(this);
             }
             catch (ContentNotFoundException exception)
             {
@@ -103,7 +103,6 @@ namespace LeagueSandbox.GameServer.Handlers
             {
                 surrender.Update(diff);
             }
-
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace LeagueSandbox.GameServer.Handlers
         /// </summary>
         public void Init()
         {
-            MapData = _game.Config.ContentManager.GetMapData(Id);
+            MapData = new(Id) ;// _game.Config.ContentManager.GetMapData(Id);
             GlobalData.Init(MapData.MapConstants);
             // Load data package
             try

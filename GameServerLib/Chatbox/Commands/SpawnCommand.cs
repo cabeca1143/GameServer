@@ -6,6 +6,7 @@ using LeagueSandbox.GameServer.Inventory;
 using LeagueSandbox.GameServer.Players;
 using System;
 using System.Numerics;
+using GameServerLib.Content;
 
 namespace LeagueSandbox.GameServer.Chatbox.Commands
 {
@@ -15,7 +16,9 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
 
         Game _game;
         public override string Command => "spawn";
-        public override string Syntax => $"{Command} champblue [champion], champpurple [champion], minionsblue, minionspurple, regionblue [size, time], regionpurple [size, time]";
+
+        public override string Syntax =>
+            $"{Command} champblue [champion], champpurple [champion], minionsblue, minionspurple, regionblue [size, time], regionpurple [size, time]";
 
         public SpawnCommand(ChatCommandManager chatCommandManager, Game game)
             : base(chatCommandManager, game)
@@ -60,12 +63,8 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
                 if (split.Length > 2)
                 {
                     championModel = arguments.Split(' ')[2];
-
-                    try
-                    {
-                        Game.Config.ContentManager.GetCharData(championModel);
-                    }
-                    catch (ContentNotFoundException)
+                    
+                    if (Cache.Instance.GetFile($"DATA/Characters/{championModel}") is null)
                     {
                         ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.SYNTAXERROR, "Character Name: " + championModel + " invalid.");
                         ShowSyntax();
@@ -73,7 +72,6 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
                     }
 
                     SpawnChampForTeam(team, userId, championModel);
-
                     return;
                 }
 
@@ -147,7 +145,8 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
 
             var runesTemp = new RuneCollection();
             var talents = new TalentInventory();
-            var clientInfoTemp = new ClientInfo("", team, 0, 0, 0, $"{model} Bot", new string[] { "SummonerHeal", "SummonerFlash" }, -1);
+            var clientInfoTemp = new ClientInfo("", team, 0, 0, 0, $"{model} Bot",
+                new string[] { "SummonerHeal", "SummonerFlash" }, -1);
 
             _playerManager.AddPlayer(clientInfoTemp);
 
@@ -169,7 +168,8 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
 
             Game.ObjectManager.AddObject(c);
 
-            ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.INFO, $"Spawned Bot {c.Name} as {c.Model} with NetID: {c.NetId}.");
+            ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.INFO,
+                $"Spawned Bot {c.Name} as {c.Model} with NetID: {c.NetId}.");
         }
 
         public void SpawnRegionForTeam(TeamId team, int userId, float radius = 250.0f, float lifetime = -1.0f)

@@ -1,24 +1,13 @@
-﻿using System;
-using GameServerCore.Scripting.CSharp;
-using LeagueSandbox.GameServer.Scripting.CSharp;
-using static GameServerCore.Content.HashFunctions;
+﻿using GameServerCore.Scripting.CSharp;
 
-namespace LeagueSandbox.GameServer.GameObjects
+namespace LeagueSandbox.GameServer.GameObjects;
+
+public class Talent
 {
-    public class Talent
-    {
-        public string Name { get; }
-        public byte Rank { get; }
-        public ITalentScript Script { get; }
-        public uint ScriptNameHash { get; private set; }
-        public IEventSource ParentScript => null;
-
-        public Talent(string name, byte level)
-        {
-            Name = name;
-            Rank = level;//Math.Min(level, GetTalentMaxRank(name));
-            Script = Game.ScriptEngine.CreateObject<ITalentScript>("Talents", $"Talent_{name}") ?? new EmptyTalentScript();
-            ScriptNameHash = HashString(name);
-        }
-    }
+    public string Name { get; }
+    public byte Rank { get; }
+    public ITalentScript Script { get; }
+    public uint ScriptNameHash { get; private set; }
+    public IEventSource ParentScript => null;
 }
+

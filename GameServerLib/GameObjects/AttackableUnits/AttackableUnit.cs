@@ -119,6 +119,9 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
 
         private bool _teleportedDuringThisFrame = false;
 
+        internal UseableComponent UseableComponent;
+        internal WeakReference<ObjAIBase> GoldRedirectTarget;
+
         public AttackableUnit(
             Game game,
             string model,
@@ -132,7 +135,9 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
 
         {
             Model = model;
-            CharacterRecord = _game.Config.ContentManager.GetCharData(Model);
+            //CharacterRecord = _game.Config.ContentManager.GetCharData(Model);
+            CharacterRecord = new();
+            
             if (stats == null)
             {
                 var charStats = new Stats();
@@ -767,7 +772,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
             bool targetable = Status.HasFlag(StatusFlags.Targetable);
             Stats.IsTargetable = targetable;
             // TODO: Refactor this.
-            if (!CharacterRecord.IsUseable)
+            if (!UseableComponent.IsUseable)
             {
                 Stats.SetActionState(ActionState.TARGETABLE, targetable);
             }

@@ -227,40 +227,7 @@ namespace LeagueSandbox.GameServer
             RequestHandler.Register<UseObjectRequest>(new HandleUseObject(this).HandlePacket);
             RequestHandler.Register<ViewRequest>(new HandleView(this).HandlePacket);
         }
-
-        /// <summary>
-        /// Enables or disables the hot reloading of scripts. Used only for development.
-        /// </summary>
-        public void EnableHotReload(bool status)
-        {
-            string scriptsPath = Config.ContentManager.ContentPath;
-
-            void ScriptsChanged(object _, FileSystemEventArgs ea)
-            {
-                // Disable raising events to avoid triggering LoadScripts() many times in a row after the first event
-                ScriptsHotReloadWatcher.EnableRaisingEvents = false;
-                ScriptsHotReloadWatcher.EnableRaisingEvents = true;
-            }
-
-            if (status && ScriptsHotReloadWatcher == null)
-            {
-                ScriptsHotReloadWatcher = new FileSystemWatcher
-                {
-                    Path = scriptsPath,
-                    IncludeSubdirectories = true,
-                    EnableRaisingEvents = true,
-                    NotifyFilter = NotifyFilters.LastWrite,
-                    Filter = "*.*",
-                };
-                ScriptsHotReloadWatcher.Changed += ScriptsChanged;
-            }
-            else
-            {
-                ScriptsHotReloadWatcher.Changed -= ScriptsChanged;
-                ScriptsHotReloadWatcher = null;
-            }
-        }
-
+        
         public bool CheckIfAllPlayersLeft()
         {
             var players = PlayerManager.GetPlayers(false);

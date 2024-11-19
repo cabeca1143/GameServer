@@ -288,7 +288,7 @@ namespace LeagueSandbox.GameServer.Content
                 ContentFile contentFile = GetContentFileFromJson(path);
                 if (contentFile != null)
                 {
-                    CharacterRecord toReturn = new CharacterRecord().Load(contentFile);
+                    CharacterRecord toReturn = new CharacterRecord();
 
                     _charData.Add(characterName, toReturn);
                     return toReturn;

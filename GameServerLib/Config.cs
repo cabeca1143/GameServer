@@ -26,7 +26,6 @@ namespace LeagueSandbox.GameServer
 
         public List<PlayerConfig> Players { get; private set; }
         public GameConfig GameConfig { get; private set; }
-        public ContentManager ContentManager { get; private set; }
         public FeatureFlags GameFeatures { get; private set; }
         public static readonly Version VERSION = new Version(4, 20, 0, 315);
         internal string[] AssemblyNames { get; private set; } = [];
@@ -99,7 +98,6 @@ namespace LeagueSandbox.GameServer
         public void LoadContent(Game game)
         {
             // Load data package
-            ContentManager = ContentManager.LoadDataPackage(game, GameConfig.DataPackage, ContentPath);
             //TalentContentCollection.Init(ContentManager);
             foreach (var player in Players)
             {
@@ -148,44 +146,6 @@ namespace LeagueSandbox.GameServer
             {
                 GameFeatures &= ~flag;
             }
-        }
-
-        public Dictionary<TeamId, Dictionary<int, Dictionary<int, Vector2>>> GetMapSpawns()
-        {
-            Dictionary<TeamId, Dictionary<int, Dictionary<int, Vector2>>> toReturn = new Dictionary<TeamId, Dictionary<int, Dictionary<int, Vector2>>>();
-            foreach (var rawInfo in ContentManager.GetMapSpawns(GameConfig.Map))
-            {
-                var team = TeamId.TEAM_BLUE;
-                if (rawInfo.Key.ToLower().Equals("purple"))
-                {
-                    team = TeamId.TEAM_PURPLE;
-                }
-
-                for (int i = 0; i < rawInfo.Value.Count; i++)
-                {
-                    for (int j = 0; j < rawInfo.Value[i].Count(); j++)
-                    {
-                        if (toReturn.ContainsKey(team))
-                        {
-                            if (toReturn[team].ContainsKey(i + 1))
-                            {
-                                toReturn[team][i + 1].Add(j + 1, new Vector2((int)((JArray)rawInfo.Value[i][j])[0], (int)((JArray)rawInfo.Value[i][j])[1]));
-                            }
-                            else
-                            {
-                                toReturn[team].Add(rawInfo.Value[i].Count(), new Dictionary<int, Vector2>{
-                                    { j + 1, new Vector2((int)((JArray)rawInfo.Value[i][j])[0], (int)((JArray)rawInfo.Value[i][j])[1]) } });
-                            }
-                        }
-                        else
-                        {
-                            toReturn.Add(team, new Dictionary<int, Dictionary<int, Vector2>> { { rawInfo.Value[i].Count(), new Dictionary<int, Vector2> {
-                                { j + 1, new Vector2((int)((JArray)rawInfo.Value[i][j])[0], (int)((JArray)rawInfo.Value[i][j])[1]) } } } });
-                        }
-                    }
-                }
-            }
-            return toReturn;
         }
     }
 }

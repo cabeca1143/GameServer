@@ -9,6 +9,7 @@ using LeagueSandbox.GameServer.API;
 using LeagueSandbox.GameServer.Inventory;
 using LeagueSandbox.GameServer.Scripting.CSharp;
 using System.Activities.Presentation.View;
+using LeagueSandbox.GameServer.Content;
 using LeagueSandbox.GameServer.Logging;
 using LeagueSandbox.GameServer.GameObjects.SpellNS;
 using log4net;
@@ -148,7 +149,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
             if (!string.IsNullOrEmpty(model))
             {
-                IsMelee = CharacterRecord.IsMelee;
+                IsMelee = CharacterRecord.Flags.HasFlag(RecordFlagValues.IsMelee);
 
                 // SpellSlots
                 // 0 - 3
@@ -161,9 +162,9 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
                 }
 
                 //If character has a passive spell, it'll initialize the CharScript with it
-                if (!string.IsNullOrEmpty(CharacterRecord.PassiveData.PassiveLuaName))
+                if (!string.IsNullOrEmpty(CharacterRecord.PassiveName))
                 {
-                    Spells[(int)SpellSlotType.PassiveSpellSlot] = new Spell(game, this, CharacterRecord.PassiveData.PassiveLuaName, (int)SpellSlotType.PassiveSpellSlot);
+                    Spells[(int)SpellSlotType.PassiveSpellSlot] = new Spell(game, this, CharacterRecord.PassiveName, (int)SpellSlotType.PassiveSpellSlot);
                 }
                 //If there's no passive spell, it'll just initialize the CharScript with Spell = null
                 else
@@ -211,12 +212,12 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
                 // BasicAttackNormalSlots & BasicAttackCriticalSlots
                 // 64 - 72 & 73 - 81
-                for (short i = 0; i < CharacterRecord.BasicAttacks.Count; i++)
+                for (short i = 0; i < CharacterRecord.AttackNames.Length; i++)
                 {
-                    if (!string.IsNullOrEmpty(CharacterRecord.BasicAttacks[i].Name))
+                    if (!string.IsNullOrEmpty(CharacterRecord.AttackNames[i]))
                     {
                         int slot = i + (int)SpellSlotType.BasicAttackNormalSlots;
-                        Spells[(byte)slot] = new Spell(game, this, CharacterRecord.BasicAttacks[i].Name, (byte)slot);
+                        Spells[(byte)slot] = new Spell(game, this, CharacterRecord.AttackNames[i], (byte)slot);
                     }
                 }
 
@@ -367,7 +368,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
         public bool CanLevelUpSpell(Spell s)
         {
-            return CharacterRecord.SpellsUpLevels[s.CastInfo.SpellSlot][s.CastInfo.SpellLevel] <= Stats.Level;
+            return CharacterRecord.SpellsUpLevelsOverride[s.CastInfo.SpellSlot, s.CastInfo.SpellLevel] <= Stats.Level;
         }
 
         public virtual bool LevelUp(bool force = true)
@@ -684,7 +685,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             {
                 for (short i = (short)BasicAttackTypes.BASICATTACK_CRITICAL_SLOT1; i <= (short)BasicAttackTypes.BASICATTACK_CRITICAL_LAST_SLOT; i++)
                 {
-                    if (CharacterRecord.BasicAttacks[i - 64].Probability > 0.0f && Spells.TryGetValue(i, out toCast))
+                    if (CharacterRecord.AttackProbability[i - 64] > 0.0f && Spells.TryGetValue(i, out toCast))
                     {
                         autoAttackSpells.Add(toCast);
                     }
@@ -694,7 +695,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             {
                 for (short i = (short)BasicAttackTypes.BASIC_ATTACK_TYPES_FIRST_SLOT; i <= (short)BasicAttackTypes.BASICATTACK_NORMAL_LAST_SLOT; i++)
                 {
-                    if (CharacterRecord.BasicAttacks[i - 64].Probability > 0.0f && Spells.TryGetValue(i, out toCast))
+                    if (CharacterRecord.AttackProbability[i - 64] > 0.0f && Spells.TryGetValue(i, out toCast))
                     {
                         autoAttackSpells.Add(toCast);
                     }
@@ -1117,7 +1118,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             // Stop targeting an untargetable unit.
             if (TargetUnit != null && !TargetUnit.Status.HasFlag(StatusFlags.Targetable))
             {
-                if (TargetUnit.CharacterRecord.IsUseable)
+                if (TargetUnit.UseableComponent.IsUseable)
                 {
                     return;
                 }
@@ -1181,7 +1182,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
                     CancelAutoAttack(!HasAutoAttacked, true);
                 }
             }
-            else if (TargetUnit.IsDead || (!TargetUnit.Status.HasFlag(StatusFlags.Targetable) && TargetUnit.CharacterRecord.IsUseable) || !TargetUnit.IsVisibleByTeam(Team))
+            else if (TargetUnit.IsDead || (!TargetUnit.Status.HasFlag(StatusFlags.Targetable) && TargetUnit.UseableComponent.IsUseable) || !TargetUnit.IsVisibleByTeam(Team))
             {
                 if (IsAttacking)
                 {

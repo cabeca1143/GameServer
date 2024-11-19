@@ -52,5 +52,5 @@ internal static class CharacterDataManager
         internal string Name;
         internal int SkinId;
         internal CharacterData DataPtr;
-    };
+    }
 }
