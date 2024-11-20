@@ -17,4 +17,16 @@ internal static class LS
         Cache.Instance.GetFile(fileName, skipCache)?.GetValue(group, name, out val, defaultValue);
         return val;
     }
+    internal static bool ReadCFG_B(string fileName, string group, string name, bool defaultValue = false, bool skipCache = false)
+    {
+        bool val = defaultValue;
+        Cache.Instance.GetFile(fileName, skipCache)?.GetValue(group, name, out val, defaultValue);
+        return val;
+    }
+    internal static string ReadCFG_S(string fileName, string group, string name, string defaultValue = "", bool skipCache = false)
+    {
+        string val = defaultValue;
+        Cache.Instance.GetFile(fileName, skipCache)?.GetValue(group, name, out val, defaultValue);
+        return val;
+    }
 }

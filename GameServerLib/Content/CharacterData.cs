@@ -1,13 +1,11 @@
 ﻿using GameServerCore.Content;
+using GameServerCore.Enums;
 using GameServerLib.Content.GameVariables;
 using LeagueSandbox.GameServer.Content;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+using LeagueSandbox.GameServer.Logging;
+using log4net;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace GameServerLib.Content;
 
@@ -20,14 +18,16 @@ struct CVarFloat
 
 internal class CharacterData
 {
-    internal string CharacterName;
+    private ILog _logger = LoggerProvider.GetLogger();
+
+    internal string CharacterName = string.Empty;
     internal uint CharacterNameHash;
     internal int SkinID;
     //const Riot::PackageInterface* mPackage;
     internal CharacterRecord CharRecord;
-    internal string CharacterINIPath;
-    internal string SkinINIPath;
-    internal string SkinName;
+    internal string CharacterINIPath = string.Empty;
+    internal string SkinINIPath = string.Empty;
+    internal string SkinName = string.Empty;
     internal bool HasRestructuredData;
     internal int[] RecommendedItems = new int[7];
     internal readonly GlobalCharacterData.DataStruct GlobalData;
@@ -35,9 +35,9 @@ internal class CharacterData
     internal float DeathTime;
     internal float OccludedUnitSelectableDistance;
     internal uint JointNameHashForAnimAdjustedSelection;
-    internal string ContextualActionRuleConfig;
+    internal string ContextualActionRuleConfig = string.Empty;
 
-    void Init(GlobalCharacterData.DataStruct data)
+    internal static void Init(GlobalCharacterData.DataStruct data)
     {
         data.AttackDelay = GCD.AttackDelay.Value;
         data.AttackDelayCastPercent = GCD.AttackDelayCastPercent.Value;
@@ -153,8 +153,154 @@ internal class CharacterData
         CharRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[0] = LS.ReadCFG_F(characterINIPath, "Data", "AttackDelayCastOffsetPercentAttackSpeedRatio", 1.0f);
         CharRecord.AttackDelayCastOffsetPercent[0] = LS.ReadCFG_F(characterINIPath, "Data", "AttackDelayCastOffsetPercent", 0f);
         CharRecord.TowerTargetingPriority = LS.ReadCFG_F(characterINIPath, "Data", "TowerTargetingPriorityBoost", 0f);
-        DeathTime = LS.ReadCFG_F(characterINIPath, "Data", "DeathTime", 0f); 
+        DeathTime = LS.ReadCFG_F(characterINIPath, "Data", "DeathTime", 0f);
         //v47 = Riot::ReadCFG_S((const char*)characterINIPath, v43, "Metadata", defaultvalue, 0);
         CharRecord.AttackDelayOffsetPercent[0] = LS.ReadCFG_F(characterINIPath, "Data", "AttackDelayOffsetPercent", 0.0f);
+
+        float atkTotalTime = LS.ReadCFG_F(characterINIPath, "Data", "AttackTotalTime", 0.0f);
+        float attackCastTime = LS.ReadCFG_F(characterINIPath, "Data", "AttackCastTime", 0.0f);
+
+        if (atkTotalTime > 0)
+        {
+            float attackTotalTime = float.Min(atkTotalTime, attackCastTime);
+            if (attackTotalTime > 0)
+            {
+                if (CharacterDataManager.GlobalCharacterData.Loaded)
+                {
+                    CharRecord.AttackDelayOffsetPercent[0] = atkTotalTime / CharacterDataManager.GlobalCharacterData.Data.AttackDelay + -1;
+                }
+                else
+                {
+                    CharRecord.AttackDelayCastOffsetPercent[0] = attackTotalTime / atkTotalTime - CharacterDataManager.GlobalCharacterData.Data.AttackDelayCastPercent;
+                    CharRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[0] = 1.0f;
+                }
+            }
+        }
+
+        string defaultAttackName = CharacterName + "BasicAttack";
+        CharRecord.AttackNames[0] = defaultAttackName;
+        CharRecord.AttackProbability[0] = LS.ReadCFG_F(characterINIPath, "Data", "BaseAttack_Probability", 1.0f);
+
+        for (BasicAttackTypes slot = BasicAttackTypes.NORMAL_SLOT2; (int)slot - 63 < 18; slot++)
+        {
+            Helper_PopulateDefaultBasicAttackSpellName(ref defaultAttackName, slot);
+
+        }
     }
+
+    private void LoadBasicAttackNames(string characterINIPath)
+    {
+        string attackName = string.Empty;
+        string str;
+        for (BasicAttackTypes slot = BasicAttackTypes.FIRST_SLOT; (int)slot - 63 < 18; slot++)
+        {
+            Helper_PopulateDefaultBasicAttackSpellName(ref attackName, slot);
+            str = "BaseAttack";
+            switch (slot)
+            {
+                case BasicAttackTypes.NORMAL_SLOT1:
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT2:
+                    str = "ExtraAttack1";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT3:
+                    str = "ExtraAttack2";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT4:
+                    str = "ExtraAttack3";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT5:
+                    str = "ExtraAttack4";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT6:
+                    str = "ExtraAttack5";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT7:
+                    str = "ExtraAttack6";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT8:
+                    str = "ExtraAttack7";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT9:
+                    str = "ExtraAttack8";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT1:
+                    str = "CritAttack";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT2:
+                    str = "ExtraCritAttack1";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT3:
+                    str = "ExtraCritAttack2";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT4:
+                    str = "ExtraCritAttack3";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT5:
+                    str = "ExtraCritAttack4";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT6:
+                    str = "ExtraCritAttack5";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT7:
+                    str = "ExtraCritAttack6";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT8:
+                    str = "ExtraCritAttack7";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT9:
+                    str = "ExtraCritAttack8";
+                    break;
+                default:
+                    _logger.Warn("There is an autoattack slot without a load string associated with it in BasicAttackSlotToIniString!");
+                    str = "";
+                    break;
+            }
+            string cfg = LS.ReadCFG_S(characterINIPath, "Data", str, attackName);
+            CharRecord.AttackNames[(int)slot] = cfg;
+        }
+    }
+
+    static void Helper_PopulateDefaultBasicAttackSpellName(ref string str, BasicAttackTypes slot)
+    {
+        //slot == 64 => %sBasicAttack
+        //slot > 64 <= 72 => %BasicAttack%d
+        if (slot >= BasicAttackTypes.FIRST_SLOT && slot <= BasicAttackTypes.LAST_SLOT)
+        {
+            str = "BasicAttack";
+        }
+        //slot == 73 => %sCritAttack
+        //slot > 73 <= 81 => %sCritAttack%d
+        if (slot >= BasicAttackTypes.CRITICAL_SLOT1 && slot <= BasicAttackTypes.CRITICAL_LAST_SLOT)
+        {
+            str = "CritAttack";
+        }
+    }
+
+    enum BasicAttackTypes
+    {
+        NORMAL_SLOT1 = 0x40,
+        NORMAL_SLOT2 = 0x41,
+        NORMAL_SLOT3 = 0x42,
+        NORMAL_SLOT4 = 0x43,
+        NORMAL_SLOT5 = 0x44,
+        NORMAL_SLOT6 = 0x45,
+        NORMAL_SLOT7 = 0x46,
+        NORMAL_SLOT8 = 0x47,
+        NORMAL_SLOT9 = 0x48,
+        CRITICAL_SLOT1 = 0x49,
+        CRITICAL_SLOT2 = 0x4A,
+        CRITICAL_SLOT3 = 0x4B,
+        CRITICAL_SLOT4 = 0x4C,
+        CRITICAL_SLOT5 = 0x4D,
+        CRITICAL_SLOT6 = 0x4E,
+        CRITICAL_SLOT7 = 0x4F,
+        CRITICAL_SLOT8 = 0x50,
+        CRITICAL_SLOT9 = 0x51,
+        MAX_SLOT = 0x52,
+        FIRST_SLOT = 0x40,
+        LAST_SLOT = 0x48,
+        CRITICAL_LAST_SLOT = 0x51,
+    };
+
 }

@@ -153,6 +153,13 @@ internal class Cache
         }
         eax.GetValue(out returnValue, pFileName, pName, HashFunctions.HashStringSdbm(pSection, pName), pDefault);
     }
+    
+    //Custom
+    internal ContentFile? GetDataCharacterINI(string characterName)
+    {
+        string path = Path.Join("DATA/Characters", characterName, characterName + ".ini");
+        return GetFile(path);
+    }
 }
 
 internal static class FileSysHelper
@@ -186,46 +193,3 @@ internal static class FileSysHelper
         Directory.CreateDirectory(path);
     }
 }
-
-
-//internal class Cache
-//{
-//    Dictionary<string, LocalizedFilePair> FileNameToFilePairs;
-//    LocalizedFilePair LastAccessedFilePair;
-//    string LastAccessedFileName;
-//    string PathBuf;
-//    string NameBuf;
-//    string ExtBuf;
-//    string FullPathBuf;
-//    string LocalizedFileNameBuf;
-//    string FullFileNameBuf;
-//    string LocalizedFullFileNameBuf;
-//    string CurrentDirectory;
-//    //Thread::Id m_owningThreadId;
-
-//    class LocalizedFilePair
-//    {
-//        internal ContentFile m_defaultFile;
-//        internal ContentFile m_localizedFile;
-//    };
-
-//    bool PreloadFile(string fileName)
-//    {
-//        ContentFile defaultFile = null;
-//        LocalizedFilePair filePair = GetLocalizedFilePair(fileName, false);
-//        if(filePair.m_localizedFile is not null)
-//        {
-//            defaultFile = filePair.m_defaultFile;
-//            if (!defaultFile.m_TextFileExists)
-//            {
-//                return defaultFile.binaryCached;
-//            }
-//        }
-//        return true;
-//    }
-
-//    LocalizedFilePair GetLocalizedFilePair(string fileName, bool unk)
-//    {
-
-//    }
-//}

@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using GameServerLib;
+using GameServerLib.Content;
+using LeagueSandbox.GameServer.Logging;
+using log4net;
 using System.Numerics;
-using GameServerCore.Enums;
 
 namespace LeagueSandbox.GameServer.Content;
 
 public class CharacterRecord
 {
+    private static ILog _logger = LoggerProvider.GetLogger();
+    private static float[] PerLevelStatsFactor = new float[18];
+    private static float[] AccumulatedPerLevelStatsFactor = new float[18];
+
     internal RecordFlagValues Flags;
     internal uint ParType;
-    internal string AssetCategory;
+    //internal string AssetCategory;
     internal int MonsterDataTableID;
     internal float BaseHP;
     internal float BasePAR;
@@ -50,12 +53,12 @@ public class CharacterRecord
     internal float AbilityPower;
     internal string[] SpellNames = new string[4];
     internal string[] ExtraSpells = new string[16];
-    internal string CriticalAttackStr;
-    internal string PassiveName;
-    internal string PassiveDescription;
-    internal string PassiveLuaName;
-    internal string PassiveToolTip;
-    internal string PassiveSpell;
+    internal string CriticalAttackStr = "";
+    internal string PassiveName = "";
+    internal string PassiveDescription = "";
+    internal string PassiveLuaName = "";
+    internal string PassiveToolTip = "";
+    internal string PassiveSpell = "";
     internal float PassiveRange;
     internal float HitFxScale;
     internal string[] AttackNames = new string[18];
@@ -65,26 +68,63 @@ public class CharacterRecord
     internal float GameplayCollisionRadius;
     internal uint[] SpellMaxLevelsOverride = new uint[4];
     internal uint[,] SpellsUpLevelsOverride = new uint[4, 6];
-    internal string FriendlyTooltip;
-    internal string EnemyTooltip;
-    internal string DisplayName;
-    internal string PARName;
+    //internal string FriendlyTooltip;
+    //internal string EnemyTooltip;
+    internal string DisplayName = "";
+    internal string PARName = "";
     internal float PARIncrements;
     //EvolutionDescription* evolutionData;
-    internal string ArmorMaterial;
-    internal List<string> WeaponMaterials;
-    internal string CharAudioNameOverride;
-    internal string MinimapOverride;
-    internal string HoverIndicatorTextureName;
-    internal string HoverLineIndicatorBaseTextureName;
-    internal string HoverLineIndicatorTargetTextureName;
+    //internal string ArmorMaterial;
+    //internal List<string> WeaponMaterials;
+    //internal string CharAudioNameOverride;
+    internal string MinimapOverride = "";
+    //internal string HoverIndicatorTextureName;
+    //internal string HoverLineIndicatorBaseTextureName;
+    //internal string HoverLineIndicatorTargetTextureName;
     internal bool RecordAsWard;
     internal bool UseOverrideBoundingBox;
     internal Vector3 OverrideBoundingBox;
     internal float BoundingCylinderRadius;
     internal float BoundingCylinderHeight;
     internal float BoundingSphereRadius;
-    internal Dictionary<PerLevelStatType, float> StatsPerLevel;
+    internal Dictionary<PerLevelStatType, float> StatsPerLevel = [];
+
+    internal double GetPerLevelStat(PerLevelStatType stat)
+    {
+        return StatsPerLevel[stat];
+    }
+
+    internal double GetStatForLevel(PerLevelStatType stat, int level)
+    {
+        if (level == 0)
+        {
+            return 0;
+        }
+
+        float factor = level < 18 ? PerLevelStatsFactor[level] : PerLevelStatsFactor.Last();
+        return StatsPerLevel[stat] * factor;
+    }
+
+    internal static void StaticInitialize()
+    {
+        string statsProgressionPath = Path.Join(GameStartData.sGameStartData.GetMissionDir(), "StatsProgession.ini");
+
+        if (Cache.Instance.GetFile(statsProgressionPath) is null)
+        {
+            _logger.Error($"No StatProgression file found at `{statsProgressionPath}`!");
+            return;
+        }
+
+        float accumulatedStatsFactor = 0.0f;
+        for (int i = 0; i + 1 < 18; i++)
+        {
+            string name = "Level" + (i + 1);
+            float value = LS.ReadCFG_F(statsProgressionPath, "PerLevelStatsFactor", name, 0);
+            PerLevelStatsFactor[i] = value;
+            accumulatedStatsFactor += value;
+            AccumulatedPerLevelStatsFactor[i] = accumulatedStatsFactor;
+        }
+    }
 }
 
 enum PerLevelStatType
