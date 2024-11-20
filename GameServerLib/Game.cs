@@ -1,5 +1,4 @@
-﻿using GameServerCore.Enums;
-using GameServerCore.Packets.Handlers;
+﻿using GameServerCore.Packets.Handlers;
 using LeagueSandbox.GameServer.API;
 using LeagueSandbox.GameServer.Chatbox;
 using LeagueSandbox.GameServer.Logging;
@@ -9,18 +8,13 @@ using LeagueSandbox.GameServer.Scripting.CSharp;
 using log4net;
 using LeagueSandbox.GameServer.Inventory;
 using PacketDefinitions420;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using Timer = System.Timers.Timer;
 using LeagueSandbox.GameServer.Packets.PacketHandlers;
 using LeagueSandbox.GameServer.Handlers;
 using GameServerCore.Packets.PacketDefinitions;
 using GameServerCore.Packets.PacketDefinitions.Requests;
-using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using GameServerLib.Handlers;
 using GameServerLib.Scripting;
 
@@ -227,7 +221,7 @@ namespace LeagueSandbox.GameServer
             RequestHandler.Register<UseObjectRequest>(new HandleUseObject(this).HandlePacket);
             RequestHandler.Register<ViewRequest>(new HandleView(this).HandlePacket);
         }
-        
+
         public bool CheckIfAllPlayersLeft()
         {
             var players = PlayerManager.GetPlayers(false);

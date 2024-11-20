@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Reflection;
+﻿using System.Reflection;
 using GameServerCore.Domain;
 using GameServerCore.Enums;
-using LeagueSandbox.GameServer;
-using LeagueSandbox.GameServer.Content;
 using LeagueSandbox.GameServer.Inventory;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
@@ -238,7 +231,7 @@ public class PlayerConfig
         {
             Team = TeamId.TEAM_BLUE;
         }
-        
+
         Skin = (short)playerData.SelectToken("skin");
         Summoner1 = (string)playerData.SelectToken("summoner1");
         Summoner2 = (string)playerData.SelectToken("summoner2");

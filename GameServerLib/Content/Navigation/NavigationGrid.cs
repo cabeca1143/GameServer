@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using GameServerCore;
 using Vector2 = System.Numerics.Vector2;
 using System.Numerics;
 using GameServerLib.Extensions;
 using GameServerCore.Enums;
 using LeagueSandbox.GameServer.GameObjects;
-using System.Linq;
 using GameMaths;
 
 namespace LeagueSandbox.GameServer.Content.Navigation
@@ -148,7 +144,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                     }
                 }
 
-                if(major >= 5)
+                if (major >= 5)
                 {
                     uint groupCount = major == 5 ? 4u : 8u;
                     RegionTagTable = new NavigationRegionTagTable(br, groupCount);
@@ -180,30 +176,30 @@ namespace LeagueSandbox.GameServer.Content.Navigation
         /// <returns>List of points forming a path in order: from -> to</returns>
         public List<Vector2> GetPath(Vector2 from, Vector2 to, float distanceThreshold = 0)
         {
-            if(from == to)
+            if (from == to)
             {
                 return null;
             }
-            
+
             var fromNav = TranslateToNavGrid(from);
             var cellFrom = GetCell(fromNav, false);
             //var goal = GetClosestWalkableCell(to, distanceThreshold, true);
             to = GetClosestTerrainExit(to, distanceThreshold);
             var toNav = TranslateToNavGrid(to);
             var cellTo = GetCell(toNav, false);
-            
+
             if (cellFrom == null || cellTo == null)
             {
                 return null;
             }
-            if(cellFrom.ID == cellTo.ID)
+            if (cellFrom.ID == cellTo.ID)
             {
-                return new List<Vector2>(2){ from, to };
+                return new List<Vector2>(2) { from, to };
             }
 
             // A size large enough not to relocate the array while playing Summoner's Rift
             var priorityQueue = new PriorityQueue<(List<NavigationGridCell>, float), float>(1024);
-            
+
             var start = new List<NavigationGridCell>(1);
             start.Add(cellFrom);
             priorityQueue.Enqueue((start, 0), Vector2.Distance(fromNav, toNav));
@@ -244,12 +240,12 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                     Vector2 neighborCellCoord = toNav;
                     // The target point is always walkable,
                     // we made sure of this at the beginning of the function
-                    if(neighborCell.ID != cellTo.ID)
+                    if (neighborCell.ID != cellTo.ID)
                     {
                         neighborCellCoord = neighborCell.GetCenter();
-                        
+
                         Vector2 cellCoord = fromNav;
-                        if(cell.ID != cellFrom.ID)
+                        if (cell.ID != cellFrom.ID)
                         {
                             cellCoord = cell.GetCenter();
                         }
@@ -267,7 +263,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
 
                     // calculate the new path and cost +heuristic and add to the priority queue
                     var npath = new List<NavigationGridCell>(path.Count + 1);
-                    foreach(var pathCell in path)
+                    foreach (var pathCell in path)
                     {
                         npath.Add(pathCell);
                     }
@@ -277,7 +273,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                     float cost = currentCost + 1
                         + neighborCell.ArrivalCost
                         + neighborCell.AdditionalCost;
-                    
+
                     priorityQueue.Enqueue(
                         (npath, cost), cost
                         + neighborCell.Heuristic
@@ -297,7 +293,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
             SmoothPath(path, distanceThreshold);
 
             var returnList = new List<Vector2>(path.Count);
-            
+
             returnList.Add(from);
             for (int i = 1; i < path.Count - 1; i++)
             {
@@ -315,16 +311,16 @@ namespace LeagueSandbox.GameServer.Content.Navigation
         /// <param name="path"></param>
         private void SmoothPath(List<NavigationGridCell> path, float checkDistance = 0f)
         {
-            if(path.Count < 3)
+            if (path.Count < 3)
             {
                 return;
             }
             int j = 0;
             // The first point remains untouched.
-            for(int i = 2; i < path.Count; i++)
+            for (int i = 2; i < path.Count; i++)
             {
                 // If there is something between the last added point and the current one
-                if(CastCircle(path[j].GetCenter(), path[i].GetCenter(), checkDistance, false))
+                if (CastCircle(path[j].GetCenter(), path[i].GetCenter(), checkDistance, false))
                 {
                     // add previous.
                     path[++j] = path[i - 1];
@@ -378,7 +374,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
 
         public NavigationGridCell GetCell(Vector2 coords, bool translate = true)
         {
-            if(translate)
+            if (translate)
             {
                 coords = TranslateToNavGrid(coords);
             }
@@ -463,7 +459,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
         private IEnumerable<NavigationGridCell> GetAllCellsInRange(Vector2 origin, float radius, bool translate = true)
         {
             radius /= CellSize;
-            if(translate)
+            if (translate)
             {
                 origin = TranslateToNavGrid(origin);
             }
@@ -473,17 +469,17 @@ namespace LeagueSandbox.GameServer.Content.Navigation
             short fy = (short)(origin.Y - radius);
             short ly = (short)(origin.Y + radius);
 
-            for(short x = fx; x <= lx; x++)
+            for (short x = fx; x <= lx; x++)
             {
-                for(short y = fy; y <= ly; y++)
+                for (short y = fy; y <= ly; y++)
                 {
                     float distSquared = Extensions.DistanceSquaredToRectangle(
                         new Vector2(x + 0.5f, y + 0.5f), 1f, 1f, origin
                     );
-                    if(distSquared <= radius*radius)
+                    if (distSquared <= radius * radius)
                     {
                         var cell = GetCell(x, y);
-                        if(cell != null)
+                        if (cell != null)
                         {
                             yield return cell;
                         }
@@ -520,7 +516,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                 return IsWalkable(cell);
             }
 
-            var cells = GetAllCellsInRange(coords, checkRadius, translate);            
+            var cells = GetAllCellsInRange(coords, checkRadius, translate);
             foreach (NavigationGridCell c in cells)
             {
                 if (!IsWalkable(c))
@@ -657,7 +653,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                 return true;
             }
 
-            if(translate)
+            if (translate)
             {
                 origin = TranslateToNavGrid(origin);
                 destination = TranslateToNavGrid(destination);
@@ -676,7 +672,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                 //TODO: Implement methods for maps whose NavGrids don't use SEE_THROUGH flags for buildings
                 if (checkWalkable)
                 {
-                    if(!IsWalkable(cell))
+                    if (!IsWalkable(cell))
                     {
                         break;
                     }
@@ -704,7 +700,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                     }
                 }
             }
-            
+
             return hasNext;
         }
 
@@ -766,7 +762,7 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                     y += y_inc;
                     error -= dx;
                 }
-                else if(error < 0)
+                else if (error < 0)
                 {
                     x += x_inc;
                     error += dy;
@@ -786,12 +782,12 @@ namespace LeagueSandbox.GameServer.Content.Navigation
 
         public bool CastCircle(Vector2 orig, Vector2 dest, float radius, bool translate = true)
         {
-            if(translate)
+            if (translate)
             {
                 orig = TranslateToNavGrid(orig);
                 dest = TranslateToNavGrid(dest);
             }
-            
+
             float tradius = radius / CellSize;
             Vector2 p = (dest - orig).Normalized().Perpendicular() * tradius;
 
@@ -805,14 +801,14 @@ namespace LeagueSandbox.GameServer.Content.Navigation
 
             int countY = maxY - minY + 1;
             var xRanges = new short[countY, 3];
-            foreach(var cell in cells)
+            foreach (var cell in cells)
             {
-                if(!IsWalkable(cell))
+                if (!IsWalkable(cell))
                 {
                     return true;
                 }
                 int y = cell.Locator.Y - minY;
-                if(xRanges[y, 2] == 0)
+                if (xRanges[y, 2] == 0)
                 {
                     xRanges[y, 0] = cell.Locator.X;
                     xRanges[y, 1] = cell.Locator.X;
@@ -825,17 +821,17 @@ namespace LeagueSandbox.GameServer.Content.Navigation
                 }
             }
 
-            for(int y = 0; y < countY; y++)
+            for (int y = 0; y < countY; y++)
             {
-                for(int x = xRanges[y, 0] + 1; x < xRanges[y, 1]; x++)
+                for (int x = xRanges[y, 0] + 1; x < xRanges[y, 1]; x++)
                 {
-                    if(!IsWalkable(GetCell((short)x, (short)(minY + y))))
+                    if (!IsWalkable(GetCell((short)x, (short)(minY + y))))
                     {
                         return true;
                     }
                 }
             }
-            
+
             return false;
         }
 
@@ -896,18 +892,18 @@ namespace LeagueSandbox.GameServer.Content.Navigation
 
         public NavigationGridCell GetClosestWalkableCell(Vector2 coords, float distanceThreshold = 0, bool translate = true)
         {
-            if(translate)
+            if (translate)
             {
                 coords = TranslateToNavGrid(coords);
             }
             float closestDist = 0;
             NavigationGridCell closestCell = null;
-            foreach(var cell in Cells)
+            foreach (var cell in Cells)
             {
-                if(IsWalkable(cell, distanceThreshold))
+                if (IsWalkable(cell, distanceThreshold))
                 {
                     float dist = Vector2.DistanceSquared(cell.GetCenter(), coords);
-                    if(closestCell == null || dist < closestDist)
+                    if (closestCell == null || dist < closestDist)
                     {
                         closestCell = cell;
                         closestDist = dist;

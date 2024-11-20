@@ -2,7 +2,6 @@
 using GameServerCore.Packets.Enums;
 using LeagueSandbox.GameServer.GameObjects;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
-using System.Linq;
 using LeagueSandbox.GameServer.Players;
 
 namespace LeagueSandbox.GameServer.Chatbox.Commands
@@ -44,7 +43,7 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
             var client = _playerManager.GetPeerInfo(userId);
             foreach (var unit in units)
             {
-                 _game.PacketNotifier.NotifyS2C_MapPing(unit.Value.Position, Pings.PING_DANGER, client: client);
+                _game.PacketNotifier.NotifyS2C_MapPing(unit.Value.Position, Pings.PING_DANGER, client: client);
             }
         }
     }

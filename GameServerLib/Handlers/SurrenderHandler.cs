@@ -4,9 +4,6 @@ using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.Buildings.AnimatedBuildings;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace LeagueSandbox.GameServer.Handlers
 {
@@ -50,7 +47,7 @@ namespace LeagueSandbox.GameServer.Handlers
                 _game.PacketNotifier.NotifyTeamSurrenderStatus(userId, who.Team, SurrenderReason.NotAllowedYet, 0, 0);
                 return;
             }
-            
+
             bool open = !IsSurrenderActive;
             if (!IsSurrenderActive && _game.GameTime < LastSurrenderTime + SurrenderRestTime)
             {
@@ -96,7 +93,7 @@ namespace LeagueSandbox.GameServer.Handlers
                 var players = _game.PlayerManager.GetPlayers(false);
                 foreach (var p in players)
                 {
-                    if(p.Team == Team)
+                    if (p.Team == Team)
                     {
                         _game.PacketNotifier.NotifyTeamSurrenderStatus(p.ClientId, Team, SurrenderReason.VoteWasNoSurrender, (byte)count.Item1, (byte)count.Item2);
                     }
@@ -106,7 +103,7 @@ namespace LeagueSandbox.GameServer.Handlers
             if (toEnd)
             {
                 toEndTimer -= diff;
-                if(toEndTimer <= 0)
+                if (toEndTimer <= 0)
                 {
                     //This will have to be changed in the future in order to properly support Map8 surrender.
                     Nexus ourNexus = (Nexus)_game.ObjectManager.GetObjects().First(o => o.Value is Nexus && o.Value.Team == Team).Value;

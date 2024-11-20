@@ -44,10 +44,10 @@ internal class GameStartData
             "ASCENSION" => EGameMode.ASCENSION,
             _ => EGameMode.UNKNOWN
         };
-        
-        if(mutators?.Count > 0)
+
+        if (mutators?.Count > 0)
         {
-            if(UnprocessedMutators != mutators)
+            if (UnprocessedMutators != mutators)
             {
                 UnprocessedMutators.AddRange(mutators);
                 GameModeComponents.Initialize(missionMode, UnprocessedMutators, ProcessedMutators);

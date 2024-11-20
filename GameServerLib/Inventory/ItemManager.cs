@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using LeagueSandbox.GameServer.Content;
-
-namespace LeagueSandbox.GameServer.Inventory
+﻿namespace LeagueSandbox.GameServer.Inventory
 {
     public class ItemManager
     {

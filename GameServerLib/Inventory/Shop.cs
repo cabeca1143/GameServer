@@ -1,4 +1,3 @@
-using System.Linq;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 
 namespace LeagueSandbox.GameServer.Inventory

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using GameServerCore.Enums;
 using LeagueSandbox.GameServer.Content;
 using LeagueSandbox.GameServer.Logging;
-using LeagueSandbox.GameServer.Scripting.CSharp;
 using log4net;
 using MapScripts;
 using static GameServerCore.Content.HashFunctions;
@@ -110,7 +107,7 @@ namespace LeagueSandbox.GameServer.Handlers
         /// </summary>
         public void Init()
         {
-            MapData = new(Id) ;// _game.Config.ContentManager.GetMapData(Id);
+            MapData = new(Id);// _game.Config.ContentManager.GetMapData(Id);
             GlobalData.Init(MapData.MapConstants);
             // Load data package
             try

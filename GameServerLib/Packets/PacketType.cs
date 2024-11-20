@@ -1,6 +1,5 @@
 ﻿using GameServerCore.Packets.Enums;
 using LeaguePackets;
-using System;
 
 namespace PacketDefinitions420
 {
@@ -22,6 +21,6 @@ namespace PacketDefinitions420
             LoadScreenPacketId = packetId;
             ChannelId = channel;
         }
-        public PacketType(LoadScreenPacketID packetId) : this (packetId, Channel.CHL_LOADING_SCREEN) { }
+        public PacketType(LoadScreenPacketID packetId) : this(packetId, Channel.CHL_LOADING_SCREEN) { }
     }
 }

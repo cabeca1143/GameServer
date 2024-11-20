@@ -1,13 +1,6 @@
 ﻿using GameServerCore.Content;
-using LeaguePackets.Game;
 using LeagueSandbox.GameServer.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameServerLib.Content;
 
@@ -153,7 +146,7 @@ internal class Cache
         }
         eax.GetValue(out returnValue, pFileName, pName, HashFunctions.HashStringSdbm(pSection, pName), pDefault);
     }
-    
+
     //Custom
     internal ContentFile? GetDataCharacterINI(string characterName)
     {

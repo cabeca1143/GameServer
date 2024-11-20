@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-namespace LeagueSandbox.GameServer.Content.Navigation
+﻿namespace LeagueSandbox.GameServer.Content.Navigation
 {
     public class NavigationHintGrid
     {

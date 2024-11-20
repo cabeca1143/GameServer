@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using GameServerCore.Enums;
 using GameServerCore.Scripting.CSharp;
 using GameServerLib.GameObjects.AttackableUnits;

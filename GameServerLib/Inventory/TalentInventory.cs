@@ -2,7 +2,6 @@
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
-using System.Collections.Generic;
 
 namespace LeagueSandbox.GameServer.Inventory
 {
@@ -27,7 +26,7 @@ namespace LeagueSandbox.GameServer.Inventory
         {
             foreach (var talent in Talents.Values)
             {
-                if(talent.Rank > 0)
+                if (talent.Rank > 0)
                 {
                     talent.Script.OnActivate(owner, talent.Rank);
                 }

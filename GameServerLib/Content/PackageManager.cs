@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GameServerLib.Content
+﻿namespace GameServerLib.Content
 {
 
     struct BaseCharacterPackageData

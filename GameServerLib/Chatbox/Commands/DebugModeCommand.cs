@@ -3,8 +3,6 @@ using LeagueSandbox.GameServer.Players;
 using LeagueSandbox.GameServer.GameObjects;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
-using System;
-using System.Collections.Generic;
 using System.Numerics;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
@@ -23,7 +21,7 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
         private Champion _userChampion;
         private static readonly Dictionary<uint, Particle> _circleParticles = new Dictionary<uint, Particle>();
         private static readonly Dictionary<uint, List<Particle>> _arrowParticlesList = new Dictionary<uint, List<Particle>>();
-        private enum DebugMode: int
+        private enum DebugMode : int
         {
             None, Self, Champions, Minions, Projectiles, Sectors, All
         }
@@ -41,9 +39,9 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
             _playerManager = game.PlayerManager;
             _game = game;
             lastDrawTime = _game.GameTime;
-            
+
             _modes = Enum.GetNames(typeof(DebugMode));
-            for(int i = 0; i < _modes.Length; i++)
+            for (int i = 0; i < _modes.Length; i++)
             {
                 _modes[i] = _modes[i].ToLowerInvariant();
             }
@@ -53,22 +51,22 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
         {
             _userId = userId;
             _userChampion = _playerManager.GetPeerInfo(userId).Champion;
-            
+
             var split = arguments.ToLower().Split(' ');
             int idx = 0;
 
-            if(split.Length < 2 || split.Length > 3 || (idx = Array.IndexOf(_modes, split[1])) == -1)
+            if (split.Length < 2 || split.Length > 3 || (idx = Array.IndexOf(_modes, split[1])) == -1)
             {
                 ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.SYNTAXERROR);
                 ShowSyntax();
             }
             else
             {
-                if(idx == (int)_debugMode)
+                if (idx == (int)_debugMode)
                 {
                     ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.NORMAL, $"Already debugging {_modes[idx]}.");
                 }
-                else if(idx == 0)
+                else if (idx == 0)
                 {
                     var stopdebugmsg = $"Stopped debugging {_modes[(int)_debugMode]}.";
                     _logger.Debug(stopdebugmsg);
@@ -90,7 +88,7 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
                     {
                         foreach (var particleList in _arrowParticlesList)
                         {
-                            foreach(var arrowparticle in particleList.Value)
+                            foreach (var arrowparticle in particleList.Value)
                             {
                                 arrowparticle.SetToRemove();
                             }
@@ -108,7 +106,7 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
                     _logger.Debug(startdebugmsg);
                     ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.NORMAL, startdebugmsg);
 
-                    if(_debugMode == DebugMode.None)
+                    if (_debugMode == DebugMode.None)
                     {
                         // Creates a blue flashing highlight around your unit
                         _game.PacketNotifier.NotifyCreateUnitHighlight(userId, _userChampion);

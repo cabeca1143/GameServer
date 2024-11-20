@@ -1,10 +1,8 @@
 ﻿using GameServerCore.Enums;
 using GameServerCore.NetInfo;
-using LeagueSandbox.GameServer.Content;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.Inventory;
 using LeagueSandbox.GameServer.Players;
-using System;
 using System.Numerics;
 using GameServerLib.Content;
 
@@ -63,7 +61,7 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
                 if (split.Length > 2)
                 {
                     championModel = arguments.Split(' ')[2];
-                    
+
                     if (Cache.Instance.GetFile($"DATA/Characters/{championModel}") is null)
                     {
                         ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.SYNTAXERROR, "Character Name: " + championModel + " invalid.");

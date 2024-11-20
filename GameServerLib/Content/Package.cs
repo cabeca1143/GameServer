@@ -1,16 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using log4net;
+﻿using log4net;
 using LeagueSandbox.GameServer.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using LeagueSandbox.GameServer.Content.Navigation;
 using System.Numerics;
 using LeagueSandbox.GameServer.Inventory;
-using LeagueSandbox.GameServer.Scripting.CSharp;
 using LeagueSandbox.GameServer.Handlers;
 using GameServerCore.Domain;
-using System.Linq;
 
 namespace LeagueSandbox.GameServer.Content
 {
@@ -301,7 +297,7 @@ namespace LeagueSandbox.GameServer.Content
         {
             return _hasScripts;
         }
-        
+
         private void LoadPackage()
         {
             //Items should be loaded based on the Map being played, refer to "Levels/MapX/Items.inibin"

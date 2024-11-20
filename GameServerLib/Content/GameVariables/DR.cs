@@ -1,7 +1,7 @@
 ﻿namespace GameServerLib.Content.GameVariables;
 
 //"Damage Ratios"
-internal static class DR 
+internal static class DR
 {
     internal static CVarFloat HeroToHero = new()
     {

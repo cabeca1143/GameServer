@@ -1,7 +1,5 @@
 using LeagueSandbox.GameServer.Logging;
 using log4net;
-using LeagueSandbox.GameServer.Inventory;
-using System;
 
 namespace LeagueSandbox.GameServer
 {
@@ -39,7 +37,7 @@ namespace LeagueSandbox.GameServer
         {
             ConfigJson = configJson;
             ServerPort = serverPort;
-            
+
             Config cfg = Config.LoadFromJson(configJson);
             game = new Game(cfg);
 
@@ -49,9 +47,9 @@ namespace LeagueSandbox.GameServer
             try
             {
 #endif
-                // Where the server first initializes.
-                ExecutingDirectory = ServerContext.ExecutingDirectory;
-                _server.Start();
+            // Where the server first initializes.
+            ExecutingDirectory = ServerContext.ExecutingDirectory;
+            _server.Start();
 #if !DEBUG
             }
             catch (Exception e)
@@ -70,7 +68,7 @@ namespace LeagueSandbox.GameServer
             try
             {
 #endif
-                _server.StartNetworkLoop();
+            _server.StartNetworkLoop();
 #if !DEBUG
             }
             catch (Exception e)

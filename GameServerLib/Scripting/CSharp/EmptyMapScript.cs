@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Numerics;
 using GameServerCore.Domain;
 using GameServerCore.Enums;
-using LeagueSandbox.GameServer.Content;
 using LeagueSandbox.GameServer.Scripting.CSharp;
 using static LeagueSandbox.GameServer.API.ApiMapFunctionManager;
 
@@ -26,7 +24,7 @@ namespace MapScripts
             MinionSpawnType.MINION_TYPE_MELEE,
             MinionSpawnType.MINION_TYPE_CASTER,
             MinionSpawnType.MINION_TYPE_CASTER,
-            MinionSpawnType.MINION_TYPE_CASTER 
+            MinionSpawnType.MINION_TYPE_CASTER
         }}};
 
         //Minion models for this map

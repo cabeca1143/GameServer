@@ -109,9 +109,9 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             base.OnAdded();
             AddBuff(CloneBuff);
 
-            if(CloneInventory && ClonedUnit != null)
+            if (CloneInventory && ClonedUnit != null)
             {
-                foreach(var item in ClonedUnit.Inventory.GetAllItems())
+                foreach (var item in ClonedUnit.Inventory.GetAllItems())
                 {
                     Inventory.AddItem(item.ItemData, this);
                 }

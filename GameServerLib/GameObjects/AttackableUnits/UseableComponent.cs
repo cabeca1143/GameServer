@@ -30,8 +30,8 @@ internal class UseableComponent
     internal void InitFromFile(AttackableUnit unit, string skinName)
     {
         ContentFile? file = Cache.Instance.GetDataCharacterINI(skinName);
-        
-        if (file is null) 
+
+        if (file is null)
         {
             _logger.Warn($"No Character Data file found for {skinName}"!);
             return;

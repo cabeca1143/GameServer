@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using GameServerCore;
 using GameServerCore.Content;
 using GameServerCore.Enums;
@@ -137,7 +134,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
             Model = model;
             //CharacterRecord = _game.Config.ContentManager.GetCharData(Model);
             CharacterRecord = new();
-            
+
             if (stats == null)
             {
                 var charStats = new Stats();

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using GameServerCore.Enums;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
@@ -33,9 +30,9 @@ namespace LeagueSandbox.GameServer.GameObjects
         {
             get
             {
-                foreach(var kv in _visibleForPlayers)
+                foreach (var kv in _visibleForPlayers)
                 {
-                    if(kv.Value)
+                    if (kv.Value)
                     {
                         yield return kv.Key;
                     }
@@ -271,7 +268,7 @@ namespace LeagueSandbox.GameServer.GameObjects
             {
                 if (IsAffectedByFoW && (IsVisibleForPlayer(userId) != visible))
                 {
-                    if(visible)
+                    if (visible)
                     {
                         OnEnterVision(userId, team);
                     }
@@ -281,7 +278,7 @@ namespace LeagueSandbox.GameServer.GameObjects
                     }
                     SetVisibleForPlayer(userId, visible);
                 }
-                else if(visible)
+                else if (visible)
                 {
                     OnSync(userId, team);
                 }
@@ -300,7 +297,7 @@ namespace LeagueSandbox.GameServer.GameObjects
 
         public virtual void OnReconnect(int userId, TeamId team)
         {
-            if(IsSpawnedForPlayer(userId))
+            if (IsSpawnedForPlayer(userId))
             {
                 Sync(userId, team, IsVisibleForPlayer(userId), true);
             }
@@ -347,7 +344,7 @@ namespace LeagueSandbox.GameServer.GameObjects
         public List<TeamId> TeamsWithVision()
         {
             List<TeamId> toReturn = new List<TeamId>();
-            foreach(var team in _visibleByTeam.Keys)
+            foreach (var team in _visibleByTeam.Keys)
             {
                 if (_visibleByTeam[team])
                 {

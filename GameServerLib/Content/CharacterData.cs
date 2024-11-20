@@ -1,11 +1,9 @@
 ﻿using GameServerCore.Content;
-using GameServerCore.Enums;
 using GameServerLib.Content.GameVariables;
 using LeagueSandbox.GameServer.Content;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
 using System.Diagnostics;
-using System.Globalization;
 
 namespace GameServerLib.Content;
 

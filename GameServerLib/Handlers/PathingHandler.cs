@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Numerics;
-using GameServerCore;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
 
 namespace LeagueSandbox.GameServer.Handlers
@@ -80,7 +77,7 @@ namespace LeagueSandbox.GameServer.Handlers
 
             var newPath = new List<Vector2>();
             newPath.Add(obj.Position);
-            
+
             foreach (Vector2 waypoint in path)
             {
                 if (IsWalkable(waypoint, obj.PathfindingRadius))
@@ -102,7 +99,7 @@ namespace LeagueSandbox.GameServer.Handlers
         public bool IsWalkable(Vector2 pos, float radius = 0, bool checkObjects = false)
         {
             bool walkable = true;
-            
+
             if (!_map.NavigationGrid.IsWalkable(pos, radius))
             {
                 walkable = false;
