@@ -22,7 +22,7 @@ internal class CharacterData
     internal uint CharacterNameHash;
     internal int SkinID;
     //const Riot::PackageInterface* mPackage;
-    internal CharacterRecord CharRecord;
+    internal CharacterRecord CharRecord = new();
     internal string CharacterINIPath = string.Empty;
     internal string SkinINIPath = string.Empty;
     internal string SkinName = string.Empty;
@@ -169,6 +169,7 @@ internal class CharacterData
                 }
                 else
                 {
+                    _logger.Error("Global Character Data not loaded!");
                     CharRecord.AttackDelayCastOffsetPercent[0] = attackTotalTime / atkTotalTime - CharacterDataManager.GlobalCharacterData.Data.AttackDelayCastPercent;
                     CharRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[0] = 1.0f;
                 }
@@ -182,7 +183,6 @@ internal class CharacterData
         for (BasicAttackTypes slot = BasicAttackTypes.NORMAL_SLOT2; (int)slot - 63 < 18; slot++)
         {
             Helper_PopulateDefaultBasicAttackSpellName(ref defaultAttackName, slot);
-
         }
     }
 
