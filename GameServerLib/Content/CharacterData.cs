@@ -86,6 +86,21 @@ internal class CharacterData
         //Load some Fallback INI stuff
 
         LoadCharacterINI(characterININame);
+        LoadSpells(characterININame);
+        LoadSkinINI(characterININame);
+    
+        //Log this somewhere?
+        //~Riot::ProfileTimer::~ProfileTimer(&loadTimer);
+    }
+
+    void LoadSpells(string characterININame)
+    {
+        //TODO
+    }
+
+    void LoadSkinINI(string characterININame)
+    {
+        //TODO
     }
 
     void LoadCharacterINI(string path)
@@ -177,7 +192,6 @@ internal class CharacterData
         }
 
         string defaultAttackName = CharacterName + "BasicAttack";
-        string buffer = "_Probability";
         CharRecord.AttackNames[0] = defaultAttackName;
         CharRecord.AttackProbability[0] = LS.ReadCFG_F(characterINIPath, "Data", "BaseAttack_Probability", 1.0f);
 

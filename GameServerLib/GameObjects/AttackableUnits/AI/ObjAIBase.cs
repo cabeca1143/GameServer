@@ -365,7 +365,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
         public bool CanLevelUpSpell(Spell s)
         {
-            return CharacterRecord.SpellsUpLevelsOverride[s.CastInfo.SpellSlot, s.CastInfo.SpellLevel] <= Stats.Level;
+            return CharacterRecord.SpellsUpLevelsOverride[s.CastInfo.SpellSlot][s.CastInfo.SpellLevel] <= Stats.Level;
         }
 
         public virtual bool LevelUp(bool force = true)

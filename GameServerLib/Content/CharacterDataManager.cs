@@ -8,7 +8,7 @@ internal static class CharacterDataManager
     private static List<LoadingCharacterData> LoadingCharacterArray = [];
     internal static GlobalCharacterData GlobalCharacterData;
 
-    internal static CharacterData? LoadCharacterData(string? characterName, int skinID, bool suppressErrorForPreload = false)
+    internal static async Task<CharacterData?> LoadCharacterData(string? characterName, int skinID, bool suppressErrorForPreload = false)
     {
         if (string.IsNullOrEmpty(characterName))
         {
@@ -40,8 +40,25 @@ internal static class CharacterDataManager
             DataPtr = data
         };
 
-        LoadingCharacterArray.Add(loadingEntry);
-        data.Load(characterName, skinID);
+        lock (LoadingCharacterArray)
+        {
+            LoadingCharacterArray.Add(loadingEntry);
+        }
+
+        await Task.Run(() =>
+        {
+            data.Load(characterName, skinID);
+        });
+
+        lock (CharacterDataArray) 
+        {
+            CharacterDataArray.Add(data);
+        }
+
+        lock (LoadingCharacterArray) 
+        {
+            LoadingCharacterArray.Remove(loadingEntry);
+        }
 
         return data;
     }
