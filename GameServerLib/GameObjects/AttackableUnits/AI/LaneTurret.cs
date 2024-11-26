@@ -36,9 +36,9 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
         //TODO: Decide wether we want MapScrits to handle this with Events or leave this here
         public override void Die(DeathData data)
         {
-            float localGold = CharacterRecord.LocalGoldGivenOnDeath;
-            float globalGold = CharacterRecord.GlobalGoldGivenOnDeath;
-            float globalEXP = CharacterRecord.GlobalExpGivenOnDeath;
+            float localGold = CharacterData.CharRecord.LocalGoldGivenOnDeath;
+            float globalGold = CharacterData.CharRecord.GlobalGoldGivenOnDeath;
+            float globalEXP = CharacterData.CharRecord.GlobalExpGivenOnDeath;
 
             //TODO: change this to assists
             var championsInRange = _game.ObjectManager.GetChampionsInRange(Position, Stats.Range.Total * 1.5f, true);
@@ -52,7 +52,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
                         continue;
                     }
 
-                    float gold = CharacterRecord.LocalGoldGivenOnDeath / championsInRange.Count;
+                    float gold = CharacterData.CharRecord.LocalGoldGivenOnDeath / championsInRange.Count;
                     champion.AddGold(champion, gold);
                     champion.AddGold(this, globalGold);
                 }

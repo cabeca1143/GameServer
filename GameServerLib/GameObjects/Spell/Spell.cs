@@ -330,8 +330,8 @@ namespace LeagueSandbox.GameServer.GameObjects.SpellNS
             if (SpellData.ConsideredAsAutoAttack || SpellData.UseAutoattackCastTime || CastInfo.UseAttackCastDelay) // TODO: Verify
             {
                 CastInfo.IsAutoAttack = false;
-                CastInfo.DesignerCastTime = SpellData.GetCharacterAttackCastDelay(CastInfo.AttackSpeedModifier, CastInfo.Owner.CharacterRecord.AttackDelayOffsetPercent[0], CastInfo.Owner.CharacterRecord.AttackDelayCastOffsetPercent[0], CastInfo.Owner.CharacterRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[0]);
-                CastInfo.DesignerTotalTime = SpellData.GetCharacterAttackDelay(CastInfo.AttackSpeedModifier, CastInfo.Owner.CharacterRecord.AttackDelayOffsetPercent[0]);
+                CastInfo.DesignerCastTime = SpellData.GetCharacterAttackCastDelay(CastInfo.AttackSpeedModifier, CastInfo.Owner.CharacterData.CharRecord.AttackDelayOffsetPercent[0], CastInfo.Owner.CharacterData.CharRecord.AttackDelayCastOffsetPercent[0], CastInfo.Owner.CharacterData.CharRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[0]);
+                CastInfo.DesignerTotalTime = SpellData.GetCharacterAttackDelay(CastInfo.AttackSpeedModifier, CastInfo.Owner.CharacterData.CharRecord.AttackDelayOffsetPercent[0]);
                 CastInfo.UseAttackCastDelay = true;
             }
             else
@@ -503,8 +503,8 @@ namespace LeagueSandbox.GameServer.GameObjects.SpellNS
                     index = 0;
                 }
 
-                float autoAttackTotalTime = GlobalData.GlobalCharacterDataConstants.AttackDelay * (1.0f + CastInfo.Owner.CharacterRecord.AttackDelayOffsetPercent[0]);
-                CastInfo.DesignerCastTime = autoAttackTotalTime * (GlobalData.GlobalCharacterDataConstants.AttackDelayCastPercent + CastInfo.Owner.CharacterRecord.AttackDelayCastOffsetPercent[index]);
+                float autoAttackTotalTime = GlobalData.GlobalCharacterDataConstants.AttackDelay * (1.0f + CastInfo.Owner.CharacterData.CharRecord.AttackDelayOffsetPercent[0]);
+                CastInfo.DesignerCastTime = autoAttackTotalTime * (GlobalData.GlobalCharacterDataConstants.AttackDelayCastPercent + CastInfo.Owner.CharacterData.CharRecord.AttackDelayCastOffsetPercent[index]);
 
                 if (CastInfo.IsAutoAttack)
                 {
@@ -623,8 +623,8 @@ namespace LeagueSandbox.GameServer.GameObjects.SpellNS
             if (SpellData.ConsideredAsAutoAttack || SpellData.UseAutoattackCastTime || CastInfo.UseAttackCastDelay) // TODO: Verify
             {
                 CastInfo.IsAutoAttack = false;
-                CastInfo.DesignerCastTime = SpellData.GetCharacterAttackCastDelay(CastInfo.AttackSpeedModifier, CastInfo.Owner.CharacterRecord.AttackDelayOffsetPercent[0], CastInfo.Owner.CharacterRecord.AttackDelayCastOffsetPercent[0], CastInfo.Owner.CharacterRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[0]);
-                CastInfo.DesignerTotalTime = SpellData.GetCharacterAttackDelay(CastInfo.AttackSpeedModifier, CastInfo.Owner.CharacterRecord.AttackDelayOffsetPercent[0]);
+                CastInfo.DesignerCastTime = SpellData.GetCharacterAttackCastDelay(CastInfo.AttackSpeedModifier, CastInfo.Owner.CharacterData.CharRecord.AttackDelayOffsetPercent[0], CastInfo.Owner.CharacterData.CharRecord.AttackDelayCastOffsetPercent[0], CastInfo.Owner.CharacterData.CharRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[0]);
+                CastInfo.DesignerTotalTime = SpellData.GetCharacterAttackDelay(CastInfo.AttackSpeedModifier, CastInfo.Owner.CharacterData.CharRecord.AttackDelayOffsetPercent[0]);
                 CastInfo.UseAttackCastDelay = true;
             }
             else
@@ -723,8 +723,8 @@ namespace LeagueSandbox.GameServer.GameObjects.SpellNS
                     index = 0;
                 }
 
-                float autoAttackTotalTime = GlobalData.GlobalCharacterDataConstants.AttackDelay * (1.0f + CastInfo.Owner.CharacterRecord.AttackDelayOffsetPercent[0]);
-                CastInfo.DesignerCastTime = autoAttackTotalTime * (GlobalData.GlobalCharacterDataConstants.AttackDelayCastPercent + CastInfo.Owner.CharacterRecord.AttackDelayCastOffsetPercent[index]);
+                float autoAttackTotalTime = GlobalData.GlobalCharacterDataConstants.AttackDelay * (1.0f + CastInfo.Owner.CharacterData.CharRecord.AttackDelayOffsetPercent[0]);
+                CastInfo.DesignerCastTime = autoAttackTotalTime * (GlobalData.GlobalCharacterDataConstants.AttackDelayCastPercent + CastInfo.Owner.CharacterData.CharRecord.AttackDelayCastOffsetPercent[index]);
 
                 // TODO: Verify if this should be affected by cast variable.
                 if (CastInfo.IsAutoAttack)

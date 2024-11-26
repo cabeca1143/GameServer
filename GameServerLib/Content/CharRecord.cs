@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace LeagueSandbox.GameServer.Content;
 
-public class CharacterRecord
+public class CharRecord
 {
     private static ILog _logger = LoggerProvider.GetLogger();
     private static float[] PerLevelStatsFactor = new float[18];

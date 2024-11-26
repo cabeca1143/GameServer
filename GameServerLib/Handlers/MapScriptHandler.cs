@@ -74,7 +74,7 @@ namespace LeagueSandbox.GameServer.Handlers
 
             try
             {
-                //NavigationGrid = _game.Config.ContentManager.GetNavigationGrid(this);
+                NavigationGrid = _game.NavigationGrid;
             }
             catch (ContentNotFoundException exception)
             {

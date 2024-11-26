@@ -116,7 +116,7 @@ namespace LeagueSandbox.GameServer.GameObjects.StatsNS
             AcquisitionRange = new Stat();
         }
 
-        public void LoadStats(CharacterRecord characterRecord)
+        public void LoadStats(CharRecord characterRecord)
         {
             AcquisitionRange.BaseValue = characterRecord.AcquisitionRange;
             AttackDamagePerLevel.BaseValue = characterRecord.StatsPerLevel[PerLevelStatType.Damage];

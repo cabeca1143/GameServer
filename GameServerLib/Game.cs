@@ -17,6 +17,7 @@ using GameServerCore.Packets.PacketDefinitions;
 using GameServerCore.Packets.PacketDefinitions.Requests;
 using GameServerLib.Handlers;
 using GameServerLib.Scripting;
+using LeagueSandbox.GameServer.Content.Navigation;
 
 namespace LeagueSandbox.GameServer
 {
@@ -114,7 +115,7 @@ namespace LeagueSandbox.GameServer
         internal static CSharpScriptEngine ScriptEngine { get; private set; }
 
         internal FileSystemWatcher ScriptsHotReloadWatcher { get; private set; }
-
+        internal NavigationGrid NavigationGrid;
         /// <summary>
         /// Instantiates all game managers and handlers.
         /// </summary>
@@ -144,6 +145,7 @@ namespace LeagueSandbox.GameServer
 
             ChatCommandManager.LoadCommands();
 
+            NavigationGrid = new NavigationGrid("Levels/Map" + config.GameConfig.Map + "/AIPath.aimesh_ngrid");
             Map = new MapScriptHandler(this);
 
             // TODO: GameApp should send the Response/Request handlers

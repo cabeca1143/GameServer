@@ -176,6 +176,8 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
         {
             var teamSize = GetTeamSize();
 
+            return Vector2.Zero;
+
             if (_game.Map.PlayerSpawnPoints[Team].ContainsKey(teamSize))
             {
                 return _game.Map.PlayerSpawnPoints[Team][teamSize][index];

@@ -22,7 +22,7 @@ internal class CharacterData
     internal uint CharacterNameHash;
     internal int SkinID;
     //const Riot::PackageInterface* mPackage;
-    internal CharacterRecord CharRecord = new();
+    internal CharRecord CharRecord = new();
     internal string CharacterINIPath = string.Empty;
     internal string SkinINIPath = string.Empty;
     internal string SkinName = string.Empty;
@@ -82,7 +82,7 @@ internal class CharacterData
 
         string characterININame = characterName + ".ini";
         characterININame = $"DATA/Characters/{characterName}/{characterININame}"; //Hack
-
+        CharacterINIPath = characterININame;
         //Load some Fallback INI stuff
 
         LoadCharacterINI(characterININame);
@@ -127,8 +127,8 @@ internal class CharacterData
 
         CharRecord.StatsPerLevel[PerLevelStatType.HP] = LS.ReadCFG_F(characterINIPath, "Data", "HPPerLevel", 0f);
         CharRecord.StatsPerLevel[PerLevelStatType.PAR] = LS.ReadCFG_F(characterINIPath, "Data", "MPPerLevel", 0f);
-        CharRecord.StatsPerLevel[PerLevelStatType.PAR] = LS.ReadCFG_F(characterINIPath, "Data", "HPRegenPerLevel", 0f);
-        CharRecord.StatsPerLevel[PerLevelStatType.PAR] = LS.ReadCFG_F(characterINIPath, "Data", "MPRegenPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.HPRegen] = LS.ReadCFG_F(characterINIPath, "Data", "HPRegenPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.PARRegen] = LS.ReadCFG_F(characterINIPath, "Data", "MPRegenPerLevel", 0f);
 
         //ReadCFGOverridePrefix_F
         CharRecord.BaseStaticHPRegen = LS.ReadCFG_F(characterINIPath, "Data", "BaseStaticHPRegen", 1f);

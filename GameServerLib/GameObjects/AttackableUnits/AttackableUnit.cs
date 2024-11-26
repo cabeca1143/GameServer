@@ -35,7 +35,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
         /// <summary>
         /// Variable containing all data about the this unit's current character such as base health, base mana, whether or not they are melee, base movespeed, per level stats, etc.
         /// </summary>
-        public CharacterRecord CharacterRecord { get; }
+        internal CharacterData CharacterData { get; }
         /// <summary>
         /// Whether or not this Unit is dead. Refer to TakeDamage() and Die().
         /// </summary>
@@ -133,12 +133,16 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits
         {
             Model = model;
             //CharacterRecord = _game.Config.ContentManager.GetCharData(Model);
-            CharacterRecord = new();
+            CharacterData = new();
+            CharacterData.Load(model, 0);
+
+            UseableComponent = new();
+            UseableComponent.Initialize(this, model);
 
             if (stats == null)
             {
                 var charStats = new Stats();
-                charStats.LoadStats(CharacterRecord);
+                charStats.LoadStats(CharacterData.CharRecord);
                 Stats = charStats;
             }
             else

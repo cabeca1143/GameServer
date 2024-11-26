@@ -11,7 +11,7 @@
 
         public ItemData GetItemType(int itemId)
         {
-            return _itemTypes[itemId];
+            return new();// _itemTypes[itemId];
         }
 
         public ItemData SafeGetItemType(int itemId)

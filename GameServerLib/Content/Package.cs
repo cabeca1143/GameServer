@@ -15,7 +15,7 @@ namespace LeagueSandbox.GameServer.Content
         public string PackagePath { get; private set; }
         public string PackageName { get; private set; }
 
-        private readonly Dictionary<string, CharacterRecord> _charData = new Dictionary<string, CharacterRecord>();
+        private readonly Dictionary<string, CharRecord> _charData = new Dictionary<string, CharRecord>();
         private readonly Dictionary<string, SpellData> _spellData = new Dictionary<string, SpellData>();
         private readonly Dictionary<string, NavigationGrid> _navGrids = new Dictionary<string, NavigationGrid>();
         private readonly Dictionary<string, string> _mapData = new Dictionary<string, string>();
@@ -272,7 +272,7 @@ namespace LeagueSandbox.GameServer.Content
             }
         }
 
-        public CharacterRecord GetCharData(string characterName)
+        public CharRecord GetCharData(string characterName)
         {
             if (_charData.TryGetValue(characterName, out var charData))
             {
@@ -284,7 +284,7 @@ namespace LeagueSandbox.GameServer.Content
                 ContentFile contentFile = GetContentFileFromJson(path);
                 if (contentFile != null)
                 {
-                    CharacterRecord toReturn = new CharacterRecord();
+                    CharRecord toReturn = new CharRecord();
 
                     _charData.Add(characterName, toReturn);
                     return toReturn;
