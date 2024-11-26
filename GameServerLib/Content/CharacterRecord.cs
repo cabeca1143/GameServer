@@ -67,7 +67,7 @@ public class CharacterRecord
     internal float PathfindingCollisionRadius;
     internal float GameplayCollisionRadius;
     internal uint[] SpellMaxLevelsOverride = new uint[4];
-    internal uint[,] SpellsUpLevelsOverride = new uint[4, 6];
+    internal uint[][] SpellsUpLevelsOverride = new uint[4][];
     //internal string FriendlyTooltip;
     //internal string EnemyTooltip;
     internal string DisplayName = "";
@@ -129,17 +129,17 @@ public class CharacterRecord
 
 enum PerLevelStatType
 {
-    kHP = 0x0,
-    kPAR = 0x1,
-    kHPRegen = 0x2,
-    kPARRegen = 0x3,
-    kDamage = 0x4,
-    kArmor = 0x5,
-    kSpellBlock = 0x6,
-    kDodge = 0x7,
-    kCrit = 0x8,
-    kAttackSpeed = 0x9,
-    kAbilityPowerInc = 0xA,
+    HP = 0x0,
+    PAR = 0x1,
+    HPRegen = 0x2,
+    PARRegen = 0x3,
+    Damage = 0x4,
+    Armor = 0x5,
+    SpellBlock = 0x6,
+    Dodge = 0x7,
+    Crit = 0x8,
+    AttackSpeed = 0x9,
+    AbilityPowerInc = 0xA,
     COUNT = 0xB,
 };
 

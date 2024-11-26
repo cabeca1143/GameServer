@@ -110,10 +110,10 @@ internal class CharacterData
         //ReadCFGOverridePrefix_F
         CharRecord.BasePAR = LS.ReadCFG_F(characterINIPath, "Data", "BaseMP", 100.0f);
 
-        CharRecord.StatsPerLevel[PerLevelStatType.kHP] = LS.ReadCFG_F(characterINIPath, "Data", "HPPerLevel", 0f);
-        CharRecord.StatsPerLevel[PerLevelStatType.kPAR] = LS.ReadCFG_F(characterINIPath, "Data", "MPPerLevel", 0f);
-        CharRecord.StatsPerLevel[PerLevelStatType.kPAR] = LS.ReadCFG_F(characterINIPath, "Data", "HPRegenPerLevel", 0f);
-        CharRecord.StatsPerLevel[PerLevelStatType.kPAR] = LS.ReadCFG_F(characterINIPath, "Data", "MPRegenPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.HP] = LS.ReadCFG_F(characterINIPath, "Data", "HPPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.PAR] = LS.ReadCFG_F(characterINIPath, "Data", "MPPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.PAR] = LS.ReadCFG_F(characterINIPath, "Data", "HPRegenPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.PAR] = LS.ReadCFG_F(characterINIPath, "Data", "MPRegenPerLevel", 0f);
 
         //ReadCFGOverridePrefix_F
         CharRecord.BaseStaticHPRegen = LS.ReadCFG_F(characterINIPath, "Data", "BaseStaticHPRegen", 1f);
@@ -126,21 +126,21 @@ internal class CharacterData
 
         //ReadCFGOverridePrefix_F
         CharRecord.BasePhysicalDamage = LS.ReadCFG_F(characterINIPath, "Data", "BaseDamage", 10);
-        CharRecord.StatsPerLevel[PerLevelStatType.kDamage] = LS.ReadCFG_F(characterINIPath, "Data", "DamagePerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.Damage] = LS.ReadCFG_F(characterINIPath, "Data", "DamagePerLevel", 0f);
 
         CharRecord.BaseArmor = LS.ReadCFG_F(characterINIPath, "Data", "Armor", 1f);
-        CharRecord.StatsPerLevel[PerLevelStatType.kArmor] = LS.ReadCFG_F(characterINIPath, "Data", "ArmorPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.Armor] = LS.ReadCFG_F(characterINIPath, "Data", "ArmorPerLevel", 0f);
 
         CharRecord.BaseSpellBlock = LS.ReadCFG_F(characterINIPath, "Data", "SpellBlock", 0);
-        CharRecord.StatsPerLevel[PerLevelStatType.kSpellBlock] = LS.ReadCFG_F(characterINIPath, "Data", "SpellBlockPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.SpellBlock] = LS.ReadCFG_F(characterINIPath, "Data", "SpellBlockPerLevel", 0f);
 
         CharRecord.BaseDodge = LS.ReadCFG_F(characterINIPath, "Data", "BaseDodge", 0f);
-        CharRecord.StatsPerLevel[PerLevelStatType.kDodge] = LS.ReadCFG_F(characterINIPath, "Data", "DodgePerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.Dodge] = LS.ReadCFG_F(characterINIPath, "Data", "DodgePerLevel", 0f);
 
         CharRecord.BaseMissChance = LS.ReadCFG_F(characterINIPath, "Data", "BaseMissChance", 0f);
 
         CharRecord.BaseCrit = LS.ReadCFG_F(characterINIPath, "Data", "BaseCritChance", 0f);
-        CharRecord.StatsPerLevel[PerLevelStatType.kCrit] = LS.ReadCFG_F(characterINIPath, "Data", "CritPerLevel", 0f);
+        CharRecord.StatsPerLevel[PerLevelStatType.Crit] = LS.ReadCFG_F(characterINIPath, "Data", "CritPerLevel", 0f);
 
         CharRecord.CritDamageMultiplier = LS.ReadCFG_F(characterINIPath, "Data", "CritDamageBonus", 2f);
 
@@ -177,13 +177,99 @@ internal class CharacterData
         }
 
         string defaultAttackName = CharacterName + "BasicAttack";
+        string buffer = "_Probability";
         CharRecord.AttackNames[0] = defaultAttackName;
         CharRecord.AttackProbability[0] = LS.ReadCFG_F(characterINIPath, "Data", "BaseAttack_Probability", 1.0f);
 
         for (BasicAttackTypes slot = BasicAttackTypes.NORMAL_SLOT2; (int)slot - 63 < 18; slot++)
         {
             Helper_PopulateDefaultBasicAttackSpellName(ref defaultAttackName, slot);
+            string baseAttackName = "BaseAttack";
+            switch (slot)
+            {
+                case BasicAttackTypes.NORMAL_SLOT1:
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT2:
+                    baseAttackName = "ExtraAttack1";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT3:
+                    baseAttackName = "ExtraAttack2";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT4:
+                    baseAttackName = "ExtraAttack3";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT5:
+                    baseAttackName = "ExtraAttack4";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT6:
+                    baseAttackName = "ExtraAttack5";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT7:
+                    baseAttackName = "ExtraAttack6";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT8:
+                    baseAttackName = "ExtraAttack7";
+                    break;
+                case BasicAttackTypes.NORMAL_SLOT9:
+                    baseAttackName = "ExtraAttack8";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT1:
+                    baseAttackName = "CritAttack";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT2:
+                    baseAttackName = "ExtraCritAttack1";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT3:
+                    baseAttackName = "ExtraCritAttack2";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT4:
+                    baseAttackName = "ExtraCritAttack3";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT5:
+                    baseAttackName = "ExtraCritAttack4";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT6:
+                    baseAttackName = "ExtraCritAttack5";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT7:
+                    baseAttackName = "ExtraCritAttack6";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT8:
+                    baseAttackName = "ExtraCritAttack7";
+                    break;
+                case BasicAttackTypes.CRITICAL_SLOT9:
+                    baseAttackName = "ExtraCritAttack8";
+                    break;
+            }
+
+            int arraySlot = (int)slot - 63;
+
+            CharRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[arraySlot] = LS.ReadCFG_F(characterINIPath, "Data", baseAttackName + "_AttackDelayCastOffsetPercentAttackSpeedRatio", CharRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[0]);
+            CharRecord.AttackDelayCastOffsetPercent[arraySlot] = LS.ReadCFG_F(characterINIPath, "Data", baseAttackName + "_AttackDelayCastOffsetPercent", CharRecord.AttackDelayCastOffsetPercent[0]);
+            CharRecord.AttackDelayOffsetPercent[arraySlot] = LS.ReadCFG_F(characterINIPath, "Data", baseAttackName + "_AttackDelayOffsetPercent", CharRecord.AttackDelayOffsetPercent[0]);
+
+            atkTotalTime = LS.ReadCFG_F(characterINIPath, "Data", baseAttackName + "_AttackTotalTime", 0.0f);
+            attackCastTime = LS.ReadCFG_F(characterINIPath, "Data", baseAttackName + "_AttackTotalTime", 0.0f);
+
+            if (atkTotalTime > 0 && attackCastTime > 0)
+            {
+                if (CharacterDataManager.GlobalCharacterData.Loaded)
+                {
+                    CharRecord.AttackDelayOffsetPercent[arraySlot] = atkTotalTime / CharacterDataManager.GlobalCharacterData.Data.AttackDelay + -1;
+                }
+                else
+                {
+                    _logger.Error("Global Character Data not loaded!");
+                    CharRecord.AttackDelayCastOffsetPercent[arraySlot] = attackCastTime / atkTotalTime - CharacterDataManager.GlobalCharacterData.Data.AttackDelayCastPercent;
+                    CharRecord.AttackDelayCastOffsetPercentAttackSpeedRatio[arraySlot] = 1.0f;
+                }
+            }
+
+            CharRecord.AttackProbability[arraySlot] = LS.ReadCFG_F(characterINIPath, "Data", baseAttackName + "_Probability", 2.0f);
+            CharRecord.AttackNames[arraySlot] = LS.ReadCFG_S(characterINIPath, "Data", baseAttackName, defaultAttackName);
         }
+
+        LoadBasicAttackNames(characterINIPath);
     }
 
     private void LoadBasicAttackNames(string characterINIPath)
@@ -255,7 +341,125 @@ internal class CharacterData
                     break;
             }
             string cfg = LS.ReadCFG_S(characterINIPath, "Data", str, attackName);
-            CharRecord.AttackNames[(int)slot] = cfg;
+            CharRecord.AttackNames[(int)slot - 63] = cfg;
+
+            CharRecord.StatsPerLevel[PerLevelStatType.AttackSpeed] = LS.ReadCFG_F(characterINIPath, "Data", "AttackSpeedPerLevel", 0f);
+            CharRecord.ExpGivenOnDeath = LS.ReadCFG_F(characterINIPath, "Data", "ExpGivenOnDeath", 48.0f);
+            CharRecord.GoldGivenOnDeath = LS.ReadCFG_F(characterINIPath, "Data", "GoldGivenOnDeath", 25.0f);
+            CharRecord.GoldRadius = LS.ReadCFG_F(characterINIPath, "Data", "GoldRadius", 0);
+            CharRecord.ExperienceRadius = LS.ReadCFG_F(characterINIPath, "Data", "ExperienceRadius", 0);
+            CharRecord.DeathEventListeningRadius = LS.ReadCFG_F(characterINIPath, "Data", "DeathEventListeningRadius", 1000);
+            CharRecord.LocalGoldSplitWithLastHitter = LS.ReadCFG_B(characterINIPath, "Data", "LocalGoldSplitWithLastHitter", false);
+            CharRecord.LocalGoldGivenOnDeath = LS.ReadCFG_F(characterINIPath, "Data", "LocalGoldGivenOnDeath", 0);
+            CharRecord.LocalExpGivenOnDeath = LS.ReadCFG_F(characterINIPath, "Data", "LocalExpGivenOnDeath", 0);
+            CharRecord.GlobalGoldGivenOnDeath = LS.ReadCFG_F(characterINIPath, "Data", "GlobalGoldGivenOnDeath", 0);
+            CharRecord.GlobalExpGivenOnDeath = LS.ReadCFG_F(characterINIPath, "Data", "GlobalExpGivenOnDeath", 0);
+            CharRecord.Significance = LS.ReadCFG_F(characterINIPath, "Data", "LocalGoldSplitWithLastHitter", 0);
+            CharRecord.AbilityPower = LS.ReadCFG_F(characterINIPath, "Data", "BaseAbilityPower", 0);
+            CharRecord.StatsPerLevel[PerLevelStatType.AbilityPowerInc] = LS.ReadCFG_F(characterINIPath, "Data", "AbilityPowerIncPerLevel", 0);
+
+            float defaultValue = LS.ReadCFG_F("DATA/CFG/defaults/GamePermanent.cfg", "Vision", "PerceptionBubbleRadius", 1350);
+            CharRecord.PerceptionBubbleRadius = LS.ReadCFG_F("DATA/CFG/defaults/GamePermanent.cfg", "Data", "PerceptionBubbleRadius", defaultValue);
+
+            CharRecord.SpellNames[0] = LS.ReadCFG_S(characterINIPath, "Data", "Spell1", "BaseSpell");
+            CharRecord.SpellNames[1] = LS.ReadCFG_S(characterINIPath, "Data", "Spell2", "BaseSpell");
+            CharRecord.SpellNames[2] = LS.ReadCFG_S(characterINIPath, "Data", "Spell3", "BaseSpell");
+            CharRecord.SpellNames[3] = LS.ReadCFG_S(characterINIPath, "Data", "Spell4", "BaseSpell");
+
+            CharRecord.ExtraSpells[0] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell1", "BaseSpell");
+            CharRecord.ExtraSpells[1] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell2", "BaseSpell");
+            CharRecord.ExtraSpells[2] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell3", "BaseSpell");
+            CharRecord.ExtraSpells[3] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell4", "BaseSpell");
+            CharRecord.ExtraSpells[4] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell5", "BaseSpell");
+            CharRecord.ExtraSpells[5] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell6", "BaseSpell");
+            CharRecord.ExtraSpells[6] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell7", "BaseSpell");
+            CharRecord.ExtraSpells[7] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell8", "BaseSpell");
+            CharRecord.ExtraSpells[8] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell9", "BaseSpell");
+            CharRecord.ExtraSpells[9] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell10", "BaseSpell");
+            CharRecord.ExtraSpells[10] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell11", "BaseSpell");
+            CharRecord.ExtraSpells[11] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell12", "BaseSpell");
+            CharRecord.ExtraSpells[12] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell13", "BaseSpell");
+            CharRecord.ExtraSpells[13] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell14", "BaseSpell");
+            CharRecord.ExtraSpells[14] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell15", "BaseSpell");
+            CharRecord.ExtraSpells[15] = LS.ReadCFG_S(characterINIPath, "Data", "ExtraSpell16", "BaseSpell");
+
+            CharRecord.PassiveName = LS.ReadCFG_S(characterINIPath, "Data", "Passive1Name", "BadPassive");
+            CharRecord.PassiveLuaName = LS.ReadCFG_S(characterINIPath, "Data", "Passive1LuaName", "BadPassive");
+
+            //Necessary?
+            //CharRecord.PassiveDescription = LS.ReadCFG_S(characterINIPath, "Data", "Passive1Desc", "BadDesc");
+            //CharRecord.PassiveToolTip = LS.ReadCFG_S(characterINIPath, "Data", "PassLev1Desc1", "BadDesc");
+            //CharRecord.PassiveSpell = LS.ReadCFG_S(characterINIPath, "Data", "PassiveSpell", "BadDesc");
+
+            CharRecord.PassiveRange = LS.ReadCFG_F(characterINIPath, "Data", "Passive1Range", 0);
+            CharRecord.RecordAsWard = LS.ReadCFG_B(characterINIPath, "Data", "RecordAsWard", false);
+
+            //CharRecord.RecordAsWard = LS.ReadCFG_S(characterINIPath, "Data", "Passive1Icon", false);
+
+            //Load Passive Icon
+
+            //Load Lore
+
+            //Load Tips
+
+            //Load Friend and Enemy ToolTips
+
+            CharRecord.DisplayName = LS.ReadCFG_S(characterINIPath, "Data", "Name", "");
+
+            CharRecord.PARName = LS.ReadCFG_S(characterINIPath, "Data", "PARType", "MP");
+
+            CharRecord.PARName = LS.ReadCFG_S(characterINIPath, "Data", "PARNameString", "0");
+            CharRecord.PARIncrements = LS.ReadCFG_F(characterINIPath, "Data", "PARIncrements", 0);
+            CharRecord.MinimapOverride = LS.ReadCFG_S(characterINIPath, "Minimap", "MinimapIconOverride", "");
+
+            CharRecord.HitFxScale = LS.ReadCFG_F(characterINIPath, "Data", "HitFxScale", 1);
+            CharRecord.OverrideCollisionHeight = LS.ReadCFG_F(characterINIPath, "Data", "SelectionHeight", -1);
+            CharRecord.OverrideCollisionRadius = LS.ReadCFG_F(characterINIPath, "Data", "SelectionRadius", -1);
+            CharRecord.PathfindingCollisionRadius = LS.ReadCFG_F(characterINIPath, "Data", "PathfindingCollisionRadius", -1);
+
+            float defaultColisionRadius = LS.ReadCFG_F("Data/Characters/GeneralCharacterData.ini", "GeneralDataHero", "DefaultChampionCollisionRadius", 65);
+            CharRecord.GameplayCollisionRadius = LS.ReadCFG_F(characterINIPath, "Data", "GameplayCollisionRadius", 65);
+
+            CharRecord.SpellMaxLevelsOverride[0] = 5;
+            CharRecord.SpellsUpLevelsOverride[0] = new uint[6];
+            CharRecord.SpellsUpLevelsOverride[0][0] = 1;
+            CharRecord.SpellsUpLevelsOverride[0][1] = 3;
+            CharRecord.SpellsUpLevelsOverride[0][2] = 5;
+            CharRecord.SpellsUpLevelsOverride[0][3] = 7;
+            CharRecord.SpellsUpLevelsOverride[0][4] = 9;
+            CharRecord.SpellsUpLevelsOverride[0][5] = 99;
+            CharRecord.SpellMaxLevelsOverride[1] = 5;
+            CharRecord.SpellsUpLevelsOverride[1] = new uint[6];
+            CharRecord.SpellsUpLevelsOverride[1][0] = 1;
+            CharRecord.SpellsUpLevelsOverride[1][1] = 3;
+            CharRecord.SpellsUpLevelsOverride[1][2] = 5;
+            CharRecord.SpellsUpLevelsOverride[1][3] = 7;
+            CharRecord.SpellsUpLevelsOverride[1][4] = 9;
+            CharRecord.SpellsUpLevelsOverride[1][5] = 99;
+            CharRecord.SpellMaxLevelsOverride[2] = 5;
+            CharRecord.SpellsUpLevelsOverride[2] = new uint[6];
+            CharRecord.SpellsUpLevelsOverride[2][0] = 1;
+            CharRecord.SpellsUpLevelsOverride[2][1] = 3;
+            CharRecord.SpellsUpLevelsOverride[2][2] = 5;
+            CharRecord.SpellsUpLevelsOverride[2][3] = 7;
+            CharRecord.SpellsUpLevelsOverride[2][4] = 9;
+            CharRecord.SpellsUpLevelsOverride[2][5] = 99;
+            CharRecord.SpellMaxLevelsOverride[3] = 3;
+            CharRecord.SpellsUpLevelsOverride[3] = new uint[6];
+            CharRecord.SpellsUpLevelsOverride[3][0] = 6;
+            CharRecord.SpellsUpLevelsOverride[3][1] = 11;
+            CharRecord.SpellsUpLevelsOverride[3][2] = 16;
+            CharRecord.SpellsUpLevelsOverride[3][3] = 99;
+            CharRecord.SpellsUpLevelsOverride[3][4] = 99;
+            CharRecord.SpellsUpLevelsOverride[3][5] = 99;
+        }
+
+        if (LS.ReadCFG_4UI(characterINIPath, "Data", "MaxLevels", ref CharRecord.SpellMaxLevelsOverride))
+        {
+            LS.ReadCFG_6UI(characterINIPath, "Data", "SpellsUpLevels1", ref CharRecord.SpellsUpLevelsOverride[0]);
+            LS.ReadCFG_6UI(characterINIPath, "Data", "SpellsUpLevels2", ref CharRecord.SpellsUpLevelsOverride[1]);
+            LS.ReadCFG_6UI(characterINIPath, "Data", "SpellsUpLevels3", ref CharRecord.SpellsUpLevelsOverride[2]);
+            LS.ReadCFG_6UI(characterINIPath, "Data", "SpellsUpLevels4", ref CharRecord.SpellsUpLevelsOverride[3]);
         }
     }
 

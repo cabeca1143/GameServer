@@ -1,4 +1,5 @@
 ﻿using GameServerLib.Content;
+using Newtonsoft.Json.Linq;
 
 namespace GameServerLib;
 
@@ -28,5 +29,63 @@ internal static class LS
         string val = defaultValue;
         Cache.Instance.GetFile(fileName, skipCache)?.GetValue(group, name, out val, defaultValue);
         return val;
+    }
+    internal static bool ReadCFG_6UI(string fileName, string group, string name, ref uint[] values, bool skipCache = false)
+    {
+        string? val = "";
+
+        values ??= new uint[6];
+        if (values.Length != 6)
+        {
+            Array.Resize(ref values, 6);
+        }
+
+        Cache.Instance.GetFile(fileName, skipCache)?.GetValue(group, name, out val, null!);
+
+        if (val is null)
+        {
+            return false;
+        }
+
+        string[] split = val.Split(' ');
+        for (int i = 0; i < 6; i++)
+        {
+            if (i >= split.Length || !uint.TryParse(split[i], out uint num))
+            {
+                values[i] = 0;
+                continue;
+            }
+            values[i] = num;
+        }
+        return true;
+    }
+    internal static bool ReadCFG_4UI(string fileName, string group, string name, ref uint[] values, bool skipCache = false)
+    {
+        string? val = "";
+
+        values ??= new uint[4];
+        if (values.Length != 4)
+        {
+            Array.Resize(ref values, 4);
+        }
+
+        Cache.Instance.GetFile(fileName, skipCache)?.GetValue(group, name, out val, null!);
+
+        if (val is null)
+        {
+            return false;
+        }
+
+        string[] split = val.Split(' ');
+        for (int i = 0; i < 4; i++)
+        {
+            if (i >= split.Length || !uint.TryParse(split[i], out uint num))
+            {
+                values[i] = 0;
+                continue;
+            }
+            values[i] = num;
+        }
+        return true;
     }
 }

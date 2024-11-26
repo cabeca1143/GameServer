@@ -119,26 +119,26 @@ namespace LeagueSandbox.GameServer.GameObjects.StatsNS
         public void LoadStats(CharacterRecord characterRecord)
         {
             AcquisitionRange.BaseValue = characterRecord.AcquisitionRange;
-            AttackDamagePerLevel.BaseValue = characterRecord.StatsPerLevel[PerLevelStatType.kDamage];
+            AttackDamagePerLevel.BaseValue = characterRecord.StatsPerLevel[PerLevelStatType.Damage];
             Armor.BaseValue = characterRecord.BaseArmor;
-            ArmorPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.kArmor];
+            ArmorPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.Armor];
             AttackDamage.BaseValue = characterRecord.BasePhysicalDamage;
             // AttackSpeedFlat = GlobalAttackSpeed / CharAttackDelay
             AttackSpeedFlat = 1.0f / GlobalData.GlobalCharacterDataConstants.AttackDelay / (1.0f + characterRecord.AttackDelayOffsetPercent[0]);
             CriticalDamage.BaseValue = characterRecord.CritDamageMultiplier;
             ExpGivenOnDeath.BaseValue = characterRecord.ExpGivenOnDeath;
             GoldGivenOnDeath.BaseValue = characterRecord.GoldGivenOnDeath;
-            GrowthAttackSpeed = characterRecord.StatsPerLevel[PerLevelStatType.kAttackSpeed];
-            HealthPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.kHP];
+            GrowthAttackSpeed = characterRecord.StatsPerLevel[PerLevelStatType.AttackSpeed];
+            HealthPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.HP];
             HealthPoints.BaseValue = characterRecord.BaseHP;
             HealthRegeneration.BaseValue = characterRecord.BaseFactorHPRegen;
-            HealthRegenerationPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.kHPRegen];
+            HealthRegenerationPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.HPRegen];
             MagicResist.BaseValue = characterRecord.BaseSpellBlock;
-            MagicResistPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.kSpellBlock];
-            ManaPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.kPAR];
+            MagicResistPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.SpellBlock];
+            ManaPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.PAR];
             ManaPoints.BaseValue = characterRecord.BasePAR;
             ManaRegeneration.BaseValue = characterRecord.BaseFactorPARRegen;
-            ManaRegenerationPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.kPARRegen];
+            ManaRegenerationPerLevel = characterRecord.StatsPerLevel[PerLevelStatType.PARRegen];
             MoveSpeed.BaseValue = characterRecord.BaseMoveSpeed;
             ParType = (PrimaryAbilityResourceType)characterRecord.ParType;
             Range.BaseValue = characterRecord.AttackRange;

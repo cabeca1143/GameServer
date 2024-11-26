@@ -321,7 +321,7 @@ public class ContentFile
     internal void GetValue(out Vector4 returnValue, string section, string name, uint hashedSectionAndName, Vector4 defaultValue)
     {
         //TODO: Finish reverse engineering this
-        //if (!GetValueFromBinary(hashedSectionAndName, out returnValue))
+        if (!GetValueFromBinary(hashedSectionAndName, out returnValue))
         {
             returnValue = defaultValue;
         }
@@ -425,6 +425,27 @@ public class ContentFile
             }
         }
         returnValue = 0;
+        return false;
+    }
+    internal bool GetValueFromBinary(uint hash, out Vector4 returnValue)
+    {
+        if (LookupRawFloat4(hash, out returnValue))
+        {
+            return true;
+        }
+        if (LookupString(hash, out string strVal))
+        {
+            string[] split = strVal.Split(" ");
+            if (split.Length is 4)
+            {
+                if (float.TryParse(split[0], out float x) && float.TryParse(split[1], out float y) && float.TryParse(split[2], out float z) && float.TryParse(split[3], out float a))
+                {
+                    returnValue = new Vector4(x, y, z, a);
+                    return true;
+                }
+            }
+        }
+        returnValue = Vector4.Zero;
         return false;
     }
     internal bool GetValueFromBinary(uint hash, out Vector3 returnValue)
