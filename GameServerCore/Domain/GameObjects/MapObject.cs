@@ -172,11 +172,11 @@ namespace GameServerCore.Domain
 
             if (Name.Contains("T1") || Name.ToLower().Contains("order"))
             {
-                team = TeamId.TEAM_BLUE;
+                team = TeamId.TEAM_ORDER;
             }
             else if (Name.Contains("T2") || Name.ToLower().Contains("chaos"))
             {
-                team = TeamId.TEAM_PURPLE;
+                team = TeamId.TEAM_CHAOS;
             }
 
             return team;
@@ -188,11 +188,11 @@ namespace GameServerCore.Domain
 
             if (Name.Contains("T1") || Name.Contains("Order"))
             {
-                team = TeamId.TEAM_PURPLE;
+                team = TeamId.TEAM_CHAOS;
             }
             else if (Name.Contains("T2") || Name.Contains("Chaos"))
             {
-                team = TeamId.TEAM_BLUE;
+                team = TeamId.TEAM_ORDER;
             }
 
             return team;
@@ -201,7 +201,7 @@ namespace GameServerCore.Domain
         public string GetTeamName()
         {
             string teamName = "";
-            if (GetTeamID() == TeamId.TEAM_BLUE)
+            if (GetTeamID() == TeamId.TEAM_ORDER)
             {
                 teamName = "Order";
             }

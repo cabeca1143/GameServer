@@ -98,7 +98,7 @@ namespace LeagueSandbox.GameServer
                     {
                         if (_hasProtectionElements.Contains(element))
                         {
-                            element.SetIsTargetableToTeam(element.Team == TeamId.TEAM_BLUE ? TeamId.TEAM_PURPLE : TeamId.TEAM_BLUE, true);
+                            element.SetIsTargetableToTeam(element.Team == TeamId.TEAM_ORDER ? TeamId.TEAM_CHAOS : TeamId.TEAM_ORDER, true);
                             _hasProtectionElements.Remove(element);
                         }
                     }
@@ -106,7 +106,7 @@ namespace LeagueSandbox.GameServer
                     {
                         if (!_hasProtectionElements.Contains(element))
                         {
-                            element.SetIsTargetableToTeam(element.Team == TeamId.TEAM_BLUE ? TeamId.TEAM_PURPLE : TeamId.TEAM_BLUE, false);
+                            element.SetIsTargetableToTeam(element.Team == TeamId.TEAM_ORDER ? TeamId.TEAM_CHAOS : TeamId.TEAM_ORDER, false);
                             _hasProtectionElements.Add(element);
                         }
                     }

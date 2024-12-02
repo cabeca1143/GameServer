@@ -438,7 +438,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
                     return ClassifyUnit.TURRET;
                 case Champion _:
                     return ClassifyUnit.CHAMPION;
-                case Inhibitor _ when !target.IsDead:
+                case BarrackDampener _ when !target.IsDead:
                     return ClassifyUnit.INHIBITOR;
                 case Nexus _:
                     return ClassifyUnit.NEXUS;

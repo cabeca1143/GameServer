@@ -9,14 +9,14 @@ namespace GameServerLib.GameObjects
 {
     public class MonsterCamp : GameObject
     {
-        private TeamId[] _playerTeams = new TeamId[] { TeamId.TEAM_BLUE, TeamId.TEAM_PURPLE };
+        private TeamId[] _playerTeams = new TeamId[] { TeamId.TEAM_ORDER, TeamId.TEAM_CHAOS };
         private Dictionary<TeamId, bool> _teamSawLastDeath = new Dictionary<TeamId, bool>{
-            { TeamId.TEAM_BLUE, true },
-            { TeamId.TEAM_PURPLE, true },
+            { TeamId.TEAM_ORDER, true },
+            { TeamId.TEAM_CHAOS, true },
         };
         private Dictionary<TeamId, bool> _isAliveForTeam = new Dictionary<TeamId, bool>{
-            { TeamId.TEAM_BLUE, false },
-            { TeamId.TEAM_PURPLE, false },
+            { TeamId.TEAM_ORDER, false },
+            { TeamId.TEAM_CHAOS, false },
         };
         private Dictionary<int, bool> _isAliveForPlayer = new Dictionary<int, bool>();
 

@@ -1041,12 +1041,12 @@ namespace PacketDefinitions420
             _packetHandlerManager.SendPacket(userId, highlightPacket.GetBytes(), Channel.CHL_S2C);
         }
 
-        public void NotifyDampenerSwitchStates(Inhibitor inhibitor)
+        public void NotifyDampenerSwitchStates(BarrackDampener inhibitor)
         {
             var inhibState = new DampenerSwitchStates
             {
                 SenderNetID = inhibitor.NetId,
-                State = (byte)inhibitor.InhibitorState,
+                State = (byte)inhibitor.DampenerState,
                 Duration = (ushort)inhibitor.RespawnTime
             };
             _packetHandlerManager.BroadcastPacket(inhibState.GetBytes(), Channel.CHL_S2C);
@@ -1325,7 +1325,7 @@ namespace PacketDefinitions420
             };
 
             fxVisPacket.VisibilityTeam = 0;
-            if (team == TeamId.TEAM_PURPLE || team == TeamId.TEAM_NEUTRAL)
+            if (team == TeamId.TEAM_CHAOS || team == TeamId.TEAM_NEUTRAL)
             {
                 fxVisPacket.VisibilityTeam = 1;
             }
@@ -1378,7 +1378,7 @@ namespace PacketDefinitions420
             };
 
             fxVisPacket.VisibilityTeam = 0;
-            if (team == TeamId.TEAM_PURPLE || team == TeamId.TEAM_NEUTRAL)
+            if (team == TeamId.TEAM_CHAOS || team == TeamId.TEAM_NEUTRAL)
             {
                 fxVisPacket.VisibilityTeam = 1;
             }
@@ -1419,9 +1419,9 @@ namespace PacketDefinitions420
         /// <param name="inhibitor">Inhibitor to check.</param>
         /// <param name="killer">Killer of the inhibitor (if applicable).</param>
         /// <param name="assists">Assists of the killer (if applicable).</param>
-        public void NotifyInhibitorState(Inhibitor inhibitor, GameServerLib.GameObjects.AttackableUnits.DeathData deathData = null, List<Champion> assists = null)
+        public void NotifyInhibitorState(BarrackDampener inhibitor, GameServerLib.GameObjects.AttackableUnits.DeathData deathData = null, List<Champion> assists = null)
         {
-            switch (inhibitor.InhibitorState)
+            switch (inhibitor.DampenerState)
             {
                 case DampenerState.RegenerationState:
                     var annoucementDeath = new OnDampenerDie
@@ -1567,7 +1567,7 @@ namespace PacketDefinitions420
 
             foreach (var player in players)
             {
-                if (player.Team == TeamId.TEAM_BLUE)
+                if (player.Team == TeamId.TEAM_ORDER)
                 {
                     teamRoster.OrderMembers[orderSizeCurrent] = player.PlayerId;
                     orderSizeCurrent++;
@@ -2623,7 +2623,7 @@ namespace PacketDefinitions420
                 Skin = champion.Model,
                 DeathDurationRemaining = champion.RespawnTimer,
                 // TimeSinceDeath
-                TeamIsOrder = champion.Team == TeamId.TEAM_BLUE,
+                TeamIsOrder = champion.Team == TeamId.TEAM_ORDER,
             };
             if (doVision)
             {
@@ -2704,7 +2704,7 @@ namespace PacketDefinitions420
         {
             var gameEndPacket = new S2C_EndGame
             {
-                IsTeamOrderWin = losingTeam != TeamId.TEAM_BLUE
+                IsTeamOrderWin = losingTeam != TeamId.TEAM_ORDER
             };
             _packetHandlerManager.BroadcastPacket(gameEndPacket.GetBytes(), Channel.CHL_S2C);
         }
@@ -2917,7 +2917,7 @@ namespace PacketDefinitions420
             };
 
             enterTeamVis.VisibilityTeam = 0;
-            if (team == TeamId.TEAM_PURPLE || team == TeamId.TEAM_NEUTRAL)
+            if (team == TeamId.TEAM_CHAOS || team == TeamId.TEAM_NEUTRAL)
             {
                 enterTeamVis.VisibilityTeam = 1;
             }
@@ -3002,7 +3002,7 @@ namespace PacketDefinitions420
             };
 
             leaveTeamVis.VisibilityTeam = 0;
-            if (team == TeamId.TEAM_PURPLE || team == TeamId.TEAM_NEUTRAL)
+            if (team == TeamId.TEAM_CHAOS || team == TeamId.TEAM_NEUTRAL)
             {
                 leaveTeamVis.VisibilityTeam = 1;
             }

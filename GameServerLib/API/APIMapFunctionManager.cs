@@ -80,9 +80,9 @@ namespace LeagueSandbox.GameServer.API
         /// <param name="inhibRadius"></param>
         /// <param name="sightRange"></param>
         /// <returns></returns>
-        public static Inhibitor CreateInhibitor(string name, string model, Vector2 position, TeamId team, Lane lane, int inhibRadius, int sightRange, Stats stats = null)
+        public static BarrackDampener CreateInhibitor(string name, string model, Vector2 position, TeamId team, Lane lane, int inhibRadius, int sightRange, Stats stats = null)
         {
-            return new Inhibitor(_game, model, lane, team, inhibRadius, position, sightRange, stats, Crc32Algorithm.Compute(Encoding.UTF8.GetBytes(name)) | 0xFF000000);
+            return new BarrackDampener(_game, model, lane, team, inhibRadius, position, sightRange, stats, Crc32Algorithm.Compute(Encoding.UTF8.GetBytes(name)) | 0xFF000000);
         }
 
         public static MapObject CreateLaneMinionSpawnPos(string name, Vector3 position)
@@ -288,8 +288,8 @@ namespace LeagueSandbox.GameServer.API
         /// <param name="length"></param>
         public static void AddSurrender(float time, float restTime, float length)
         {
-            _map.Surrenders.Add(TeamId.TEAM_BLUE, new SurrenderHandler(_game, TeamId.TEAM_BLUE, time, restTime, length));
-            _map.Surrenders.Add(TeamId.TEAM_PURPLE, new SurrenderHandler(_game, TeamId.TEAM_PURPLE, time, restTime, length));
+            _map.Surrenders.Add(TeamId.TEAM_ORDER, new SurrenderHandler(_game, TeamId.TEAM_ORDER, time, restTime, length));
+            _map.Surrenders.Add(TeamId.TEAM_CHAOS, new SurrenderHandler(_game, TeamId.TEAM_CHAOS, time, restTime, length));
         }
 
         public static void HandleSurrender(int userId, Champion who, bool vote)
@@ -385,8 +385,8 @@ namespace LeagueSandbox.GameServer.API
         public static void NotifySpawnBroadcast(GameObject obj)
         {
             //Just a workaround for our current vision problem.
-            _game.PacketNotifier.NotifySpawn(obj, TeamId.TEAM_PURPLE, -1, _game.GameTime, true);
-            _game.PacketNotifier.NotifySpawn(obj, TeamId.TEAM_BLUE, -1, _game.GameTime, true);
+            _game.PacketNotifier.NotifySpawn(obj, TeamId.TEAM_CHAOS, -1, _game.GameTime, true);
+            _game.PacketNotifier.NotifySpawn(obj, TeamId.TEAM_ORDER, -1, _game.GameTime, true);
         }
 
         public static void AddObject(GameObject obj)

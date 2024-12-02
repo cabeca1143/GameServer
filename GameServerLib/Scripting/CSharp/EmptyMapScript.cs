@@ -30,11 +30,11 @@ namespace MapScripts
         //Minion models for this map
         public Dictionary<TeamId, Dictionary<MinionSpawnType, string>> MinionModels { get; set; } = new Dictionary<TeamId, Dictionary<MinionSpawnType, string>>
         {
-            {TeamId.TEAM_BLUE, new Dictionary<MinionSpawnType, string>{
+            {TeamId.TEAM_ORDER, new Dictionary<MinionSpawnType, string>{
                 {MinionSpawnType.MINION_TYPE_MELEE, "Blue_Minion_Basic"},
                 {MinionSpawnType.MINION_TYPE_CASTER, "Blue_Minion_Wizard"},
             }},
-            {TeamId.TEAM_PURPLE, new Dictionary<MinionSpawnType, string>{
+            {TeamId.TEAM_CHAOS, new Dictionary<MinionSpawnType, string>{
                 {MinionSpawnType.MINION_TYPE_MELEE, "Red_Minion_Basic"},
                 {MinionSpawnType.MINION_TYPE_CASTER, "Red_Minion_Wizard"},
             }}

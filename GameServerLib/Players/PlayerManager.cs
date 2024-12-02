@@ -13,8 +13,8 @@ namespace LeagueSandbox.GameServer.Players
         private List<ClientInfo> _players = new List<ClientInfo>();
         private Dictionary<TeamId, int> _userIdsPerTeam = new Dictionary<TeamId, int>
         {
-            { TeamId.TEAM_BLUE, 0 },
-            { TeamId.TEAM_PURPLE, 0 }
+            { TeamId.TEAM_ORDER, 0 },
+            { TeamId.TEAM_CHAOS, 0 }
         };
 
         public PlayerManager(Game game)
@@ -99,6 +99,12 @@ namespace LeagueSandbox.GameServer.Players
             }
 
             return _players;
+        }
+
+        public int GetPlayerCountOnTeam(TeamId team)
+        {
+            _userIdsPerTeam.TryGetValue(team, out int count);
+            return count;
         }
     }
 }

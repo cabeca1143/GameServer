@@ -393,10 +393,10 @@ namespace GameServerCore
         {
             var dic = new Dictionary<int, TeamId>
             {
-                { 0, TeamId.TEAM_BLUE },
-                { (int)TeamId.TEAM_BLUE, TeamId.TEAM_BLUE },
-                { 1, TeamId.TEAM_PURPLE },
-                { (int)TeamId.TEAM_PURPLE, TeamId.TEAM_PURPLE }
+                { 0, TeamId.TEAM_ORDER },
+                { (int)TeamId.TEAM_ORDER, TeamId.TEAM_ORDER },
+                { 1, TeamId.TEAM_CHAOS },
+                { (int)TeamId.TEAM_CHAOS, TeamId.TEAM_CHAOS }
             };
 
             if (!dic.ContainsKey(i))
@@ -416,8 +416,8 @@ namespace GameServerCore
         {
             var dic = new Dictionary<TeamId, int>
             {
-                { TeamId.TEAM_BLUE, 0 },
-                { TeamId.TEAM_PURPLE, 1 }
+                { TeamId.TEAM_ORDER, 0 },
+                { TeamId.TEAM_CHAOS, 1 }
             };
 
             if (!dic.ContainsKey(team))
@@ -437,8 +437,8 @@ namespace GameServerCore
         {
             var dic = new Dictionary<TeamId, TeamId>
             {
-                { TeamId.TEAM_BLUE, TeamId.TEAM_PURPLE },
-                { TeamId.TEAM_PURPLE, TeamId.TEAM_BLUE }
+                { TeamId.TEAM_ORDER, TeamId.TEAM_CHAOS },
+                { TeamId.TEAM_CHAOS, TeamId.TEAM_ORDER }
             };
 
             if (!dic.ContainsKey(team))

@@ -226,10 +226,10 @@ public class PlayerConfig
         Name = (string)playerData.SelectToken("name");
         Champion = (string)playerData.SelectToken("champion");
 
-        Team = TeamId.TEAM_PURPLE;
+        Team = TeamId.TEAM_CHAOS;
         if (((string)playerData.SelectToken("team")).ToLower().Equals("blue"))
         {
-            Team = TeamId.TEAM_BLUE;
+            Team = TeamId.TEAM_ORDER;
         }
 
         Skin = (short)playerData.SelectToken("skin");

@@ -40,7 +40,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             string name,
             string model,
             Vector2 position,
-            TeamId team = TeamId.TEAM_BLUE,
+            TeamId team = TeamId.TEAM_ORDER,
             uint netId = 0,
             Lane lane = Lane.LANE_Unknown,
             MapObject mapObject = default,

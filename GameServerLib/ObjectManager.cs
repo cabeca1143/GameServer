@@ -26,7 +26,7 @@ namespace LeagueSandbox.GameServer
         // For the initial spawning (networking) of newly added objects.
         private Dictionary<uint, Champion> _champions;
         private Dictionary<uint, BaseTurret> _turrets;
-        private Dictionary<uint, Inhibitor> _inhibitors;
+        private Dictionary<uint, BarrackDampener> _inhibitors;
         private Dictionary<TeamId, List<GameObject>> _visionProviders;
 
         private bool _currentlyInUpdate = false;
@@ -54,7 +54,7 @@ namespace LeagueSandbox.GameServer
             _game = game;
             _objects = new Dictionary<uint, GameObject>();
             _turrets = new Dictionary<uint, BaseTurret>();
-            _inhibitors = new Dictionary<uint, Inhibitor>();
+            _inhibitors = new Dictionary<uint, BarrackDampener>();
             _champions = new Dictionary<uint, Champion>();
             _visionProviders = new Dictionary<TeamId, List<GameObject>>();
             foreach (var team in Teams)
@@ -498,7 +498,7 @@ namespace LeagueSandbox.GameServer
         /// Adds a GameObject of type Inhibitor to the list of Inhibitors in ObjectManager.
         /// </summary>
         /// <param name="inhib">Inhibitor to add.</param>
-        public void AddInhibitor(Inhibitor inhib)
+        public void AddInhibitor(BarrackDampener inhib)
         {
             _inhibitors.Add(inhib.NetId, inhib);
         }
@@ -508,7 +508,7 @@ namespace LeagueSandbox.GameServer
         /// </summary>
         /// <param name="netId"></param>
         /// <returns>Inhibitor instance identified by the specified NetID.</returns>
-        public Inhibitor GetInhibitorById(uint id)
+        public BarrackDampener GetInhibitorById(uint id)
         {
             if (!_inhibitors.ContainsKey(id))
             {
@@ -522,7 +522,7 @@ namespace LeagueSandbox.GameServer
         /// Removes a GameObject of type Inhibitor from the list of Inhibitors in ObjectManager.
         /// </summary>
         /// <param name="inhib">Inhibitor to remove.</param>
-        public void RemoveInhibitor(Inhibitor inhib)
+        public void RemoveInhibitor(BarrackDampener inhib)
         {
             _inhibitors.Remove(inhib.NetId);
         }
@@ -536,7 +536,7 @@ namespace LeagueSandbox.GameServer
         {
             foreach (var inhibitor in _inhibitors.Values)
             {
-                if (inhibitor.Team == team && inhibitor.InhibitorState == DampenerState.RespawningState)
+                if (inhibitor.Team == team && inhibitor.DampenerState == DampenerState.RespawningState)
                 {
                     return false;
                 }

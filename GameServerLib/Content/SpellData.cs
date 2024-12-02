@@ -262,7 +262,7 @@ namespace LeagueSandbox.GameServer.Content
                         case BaseTurret _ when useFlags.HasFlag(SpellDataFlags.AffectTurrets):
                             valid = true;
                             break;
-                        case Inhibitor _ when useFlags.HasFlag(SpellDataFlags.AffectBuildings):
+                        case BarrackDampener _ when useFlags.HasFlag(SpellDataFlags.AffectBuildings):
                             valid = true;
                             break;
                         case Nexus _ when useFlags.HasFlag(SpellDataFlags.AffectBuildings):

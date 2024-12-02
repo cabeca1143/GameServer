@@ -1,5 +1,6 @@
 ﻿using GameServerLib.Content;
 using Newtonsoft.Json.Linq;
+using System.Numerics;
 
 namespace GameServerLib;
 
@@ -87,5 +88,11 @@ internal static class LS
             values[i] = num;
         }
         return true;
+    }
+    internal static Vector3 ReadCFG_V(string fileName, string group, string name, Vector3 defaultValue = default, bool skipCache = false)
+    {
+        Vector3 val = defaultValue;
+        Cache.Instance.GetFile(fileName, skipCache)?.GetValue(group, name, out val, defaultValue);
+        return val;
     }
 }

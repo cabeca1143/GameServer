@@ -26,7 +26,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
             List<Vector2> mainWaypoints,
             string model,
             uint netId = 0,
-            TeamId team = TeamId.TEAM_BLUE,
+            TeamId team = TeamId.TEAM_ORDER,
             Stats stats = null,
             string AIScript = ""
         ) : base(game, null, new Vector2(), model, model, netId, team, stats: stats, AIScript: AIScript)

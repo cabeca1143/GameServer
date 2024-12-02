@@ -11,5 +11,6 @@
         SPAWN_DAMPENER_LANE_C = 0x6,
         SPAWN_DAMPENER_LANE_L = 0x7,
         SPAWN_SHOP = 0x8,
+        SPAWN_Numof = 0x9,
     }
 }

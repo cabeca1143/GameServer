@@ -104,7 +104,7 @@ namespace LeagueSandbox.GameServer
         /// <summary>
         /// Interface of functions used to identify players or their properties (such as their champion).
         /// </summary>
-        public PlayerManager PlayerManager { get; private set; }
+        public static PlayerManager PlayerManager { get; private set; }
         /// <summary>
         /// Manager for all unique identifiers used by GameObjects.
         /// </summary>
