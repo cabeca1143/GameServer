@@ -2,9 +2,6 @@
 using LeagueSandbox.GameServer.Content.Navigation;
 using LeagueSandbox.GameServer.GameObjects;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
 namespace PacketDefinitions420
@@ -162,7 +159,7 @@ namespace PacketDefinitions420
             {
                 return CreateMovementDataStop(unit);
             }
-            else if(unit.MovementParameters == null)
+            else if (unit.MovementParameters == null)
             {
                 return CreateMovementDataNormal(unit, grid, useTeleportID);
             }

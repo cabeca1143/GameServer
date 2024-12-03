@@ -2,7 +2,6 @@
 using GameServerCore.Packets.Handlers;
 using LeaguePackets.Game.Events;
 using GameServerCore.NetInfo;
-using System.Linq;
 using LeagueSandbox.GameServer.Players;
 
 namespace LeagueSandbox.GameServer.Packets.PacketHandlers
@@ -30,7 +29,7 @@ namespace LeagueSandbox.GameServer.Packets.PacketHandlers
                 return true;
             }
             else
-            {    
+            {
                 TryStart();
             }
             return true;
@@ -47,7 +46,7 @@ namespace LeagueSandbox.GameServer.Packets.PacketHandlers
             var players = _playerManager.GetPlayers(false);
 
             bool isPossibleToStart;
-            if(_shouldStartAsSoonAsPossible)
+            if (_shouldStartAsSoonAsPossible)
             {
                 isPossibleToStart = players.Any(p => !p.IsDisconnected);
             }
@@ -56,14 +55,14 @@ namespace LeagueSandbox.GameServer.Packets.PacketHandlers
                 isPossibleToStart = players.All(p => !p.IsDisconnected);
             }
 
-            if(!isPossibleToStart)
+            if (!isPossibleToStart)
             {
                 return;
             }
 
             foreach (var player in players)
             {
-                if(!player.IsDisconnected)
+                if (!player.IsDisconnected)
                 {
                     StartFor(player);
                 }
@@ -77,7 +76,7 @@ namespace LeagueSandbox.GameServer.Packets.PacketHandlers
             {
                 _game.PacketNotifier.NotifyPausePacket(player, (int)_game.PauseTimeLeft, true);
             }
-            
+
             _game.PacketNotifier.NotifyGameStart(player.ClientId);
 
             if (_game.IsRunning)

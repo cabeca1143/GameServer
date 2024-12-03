@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GameServerCore.Enums;
+﻿using GameServerCore.Enums;
 using GameServerCore.Scripting.CSharp;
 using LeagueSandbox.GameServer.Scripting.CSharp;
 using LeagueSandbox.GameServer.Logging;
@@ -85,7 +82,7 @@ namespace LeagueSandbox.GameServer.Inventory
                 {
                     ItemScripts[item.ItemId].OnActivate(owner);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     _logger.Error(null, e);
                 }
@@ -168,7 +165,7 @@ namespace LeagueSandbox.GameServer.Inventory
                         {
                             ItemScripts[itemID].OnDeactivate(owner);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             _logger.Error(null, e);
                         }
@@ -249,7 +246,7 @@ namespace LeagueSandbox.GameServer.Inventory
                     {
                         ItemScripts[item.ItemId].OnActivate(owner);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         _logger.Error(null, e);
                     }

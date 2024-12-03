@@ -1,7 +1,4 @@
-﻿using System;
-using System.Numerics;
-
-namespace LeagueSandbox.GameServer.GameObjects.Other
+﻿namespace LeagueSandbox.GameServer.GameObjects.Other
 {
     public class Stackable
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace LeagueSandbox.GameServer.GameObjects.StatsNS
 {
@@ -92,124 +91,204 @@ namespace LeagueSandbox.GameServer.GameObjects.StatsNS
         // sort of length (when above 0 sends malformed buffer error)
         public short Padding;
 
-        public int Assists { get => _Assists;
+        public int Assists
+        {
+            get => _Assists;
             set => _Assists = value;
         }
-        public int Kills { get => _Kills;
+        public int Kills
+        {
+            get => _Kills;
             set => _Kills = value;
         }
-        public int DoubleKills { get => _DoubleKills;
+        public int DoubleKills
+        {
+            get => _DoubleKills;
             set => _DoubleKills = value;
         }
-        public int UnrealKills { get => _UnrealKills;
+        public int UnrealKills
+        {
+            get => _UnrealKills;
             set => _UnrealKills = value;
         }
-        public float GoldEarned { get => _GoldEarned;
+        public float GoldEarned
+        {
+            get => _GoldEarned;
             set => _GoldEarned = value;
         }
-        public float GoldSpent { get => _GoldSpent;
+        public float GoldSpent
+        {
+            get => _GoldSpent;
             set => _GoldSpent = value;
         }
-        public int CurrentKillingSpree { get => _CurrentKillingSpree;
+        public int CurrentKillingSpree
+        {
+            get => _CurrentKillingSpree;
             set => _CurrentKillingSpree = value;
         }
-        public float LargestCriticalStrike { get => _LargestCriticalStrike;
+        public float LargestCriticalStrike
+        {
+            get => _LargestCriticalStrike;
             set => _LargestCriticalStrike = value;
         }
-        public int LargestKillingSpree { get => _LargestKillingSpree;
+        public int LargestKillingSpree
+        {
+            get => _LargestKillingSpree;
             set => _LargestKillingSpree = value;
         }
-        public int LargestMultiKill { get => _LargestMultiKill;
+        public int LargestMultiKill
+        {
+            get => _LargestMultiKill;
             set => _LargestMultiKill = value;
         }
-        public float LongestTimeSpentLiving { get => _LongestTimeSpentLiving;
+        public float LongestTimeSpentLiving
+        {
+            get => _LongestTimeSpentLiving;
             set => _LongestTimeSpentLiving = value;
         }
-        public float MagicDamageDealt { get => _MagicDamageDealt;
+        public float MagicDamageDealt
+        {
+            get => _MagicDamageDealt;
             set => _MagicDamageDealt = value;
         }
-        public float MagicDamageDealtToChampions { get => _MagicDamageDealtToChampions;
+        public float MagicDamageDealtToChampions
+        {
+            get => _MagicDamageDealtToChampions;
             set => _MagicDamageDealtToChampions = value;
         }
-        public float MagicDamageTaken { get => _MagicDamageTaken;
+        public float MagicDamageTaken
+        {
+            get => _MagicDamageTaken;
             set => _MagicDamageTaken = value;
         }
-        public int MinionsKilled { get => _MinionsKilled;
+        public int MinionsKilled
+        {
+            get => _MinionsKilled;
             set => _MinionsKilled = value;
         }
-        public int NeutralMinionsKilled { get => _NeutralMinionsKilled;
+        public int NeutralMinionsKilled
+        {
+            get => _NeutralMinionsKilled;
             set => _NeutralMinionsKilled = value;
         }
-        public int NeutralMinionsKilledInEnemyJungle { get => _NeutralMinionsKilledInEnemyJungle;
+        public int NeutralMinionsKilledInEnemyJungle
+        {
+            get => _NeutralMinionsKilledInEnemyJungle;
             set => _NeutralMinionsKilledInEnemyJungle = value;
         }
-        public int NeutralMinionsKilledInTeamJungle { get => _NeutralMinionsKilledInTeamJungle;
+        public int NeutralMinionsKilledInTeamJungle
+        {
+            get => _NeutralMinionsKilledInTeamJungle;
             set => _NeutralMinionsKilledInTeamJungle = value;
         }
-        public int Deaths { get => _Deaths;
+        public int Deaths
+        {
+            get => _Deaths;
             set => _Deaths = value;
         }
-        public int PentaKills { get => _PentaKills;
+        public int PentaKills
+        {
+            get => _PentaKills;
             set => _PentaKills = value;
         }
-        public float PhysicalDamageDealt { get => _PhysicalDamageDealt;
+        public float PhysicalDamageDealt
+        {
+            get => _PhysicalDamageDealt;
             set => _PhysicalDamageDealt = value;
         }
-        public float PhysicalDamageDealtToChampions { get => _PhysicalDamageDealtToChampions;
+        public float PhysicalDamageDealtToChampions
+        {
+            get => _PhysicalDamageDealtToChampions;
             set => _PhysicalDamageDealtToChampions = value;
         }
-        public float PhysicalDamageTaken { get => _PhysicalDamageTaken;
+        public float PhysicalDamageTaken
+        {
+            get => _PhysicalDamageTaken;
             set => _PhysicalDamageTaken = value;
         }
-        public int QuadraKills { get => _QuadraKills;
+        public int QuadraKills
+        {
+            get => _QuadraKills;
             set => _QuadraKills = value;
         }
-        public int TeamId { get => _TeamId;
+        public int TeamId
+        {
+            get => _TeamId;
             set => _TeamId = value;
         }
-        public float TotalDamageDealt { get => _TotalDamageDealt;
+        public float TotalDamageDealt
+        {
+            get => _TotalDamageDealt;
             set => _TotalDamageDealt = value;
         }
-        public float TotalDamageDealtToChampions { get => _TotalDamageDealtToChampions;
+        public float TotalDamageDealtToChampions
+        {
+            get => _TotalDamageDealtToChampions;
             set => _TotalDamageDealtToChampions = value;
         }
-        public float TotalDamageTaken { get => _TotalDamageTaken;
+        public float TotalDamageTaken
+        {
+            get => _TotalDamageTaken;
             set => _TotalDamageTaken = value;
         }
-        public int TotalHeal { get => _TotalHeal;
+        public int TotalHeal
+        {
+            get => _TotalHeal;
             set => _TotalHeal = value;
         }
-        public float TotalTimeCrowdControlDealt { get => _TotalTimeCrowdControlDealt;
+        public float TotalTimeCrowdControlDealt
+        {
+            get => _TotalTimeCrowdControlDealt;
             set => _TotalTimeCrowdControlDealt = value;
         }
-        public float TotalTimeSpentDead { get => _TotalTimeSpentDead;
+        public float TotalTimeSpentDead
+        {
+            get => _TotalTimeSpentDead;
             set => _TotalTimeSpentDead = value;
         }
-        public int TotalUnitsHealed { get => _TotalUnitsHealed;
+        public int TotalUnitsHealed
+        {
+            get => _TotalUnitsHealed;
             set => _TotalUnitsHealed = value;
         }
-        public int TripleKills { get => _TripleKills;
+        public int TripleKills
+        {
+            get => _TripleKills;
             set => _TripleKills = value;
         }
-        public float TrueDamageDealt { get => _TrueDamageDealt;
+        public float TrueDamageDealt
+        {
+            get => _TrueDamageDealt;
             set => _TrueDamageDealt = value;
         }
-        public float TrueDamageDealtToChampions { get => _TrueDamageDealtToChampions;
+        public float TrueDamageDealtToChampions
+        {
+            get => _TrueDamageDealtToChampions;
             set => _TrueDamageDealtToChampions = value;
         }
-        public float TrueDamageTaken { get => _TrueDamageTaken;
+        public float TrueDamageTaken
+        {
+            get => _TrueDamageTaken;
             set => _TrueDamageTaken = value;
         }
-        public int TurretsKilled { get => _TurretsKilled;
+        public int TurretsKilled
+        {
+            get => _TurretsKilled;
             set => _TurretsKilled = value;
         }
-        public int BarracksKilled { get => _BarracksKilled;
+        public int BarracksKilled
+        {
+            get => _BarracksKilled;
             set => _BarracksKilled = value;
         }
-        public int WardsKilled { get => _WardsKilled;
+        public int WardsKilled
+        {
+            get => _WardsKilled;
             set => _WardsKilled = value;
         }
-        public int WardsPlaced { get => _WardsPlaced;
+        public int WardsPlaced
+        {
+            get => _WardsPlaced;
             set => _WardsPlaced = value;
         }
 

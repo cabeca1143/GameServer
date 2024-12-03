@@ -44,7 +44,7 @@ namespace GameServerCore.Scripting.CSharp
         }
 
         void OnUpdate(float diff)
-        {            
+        {
         }
     }
 }

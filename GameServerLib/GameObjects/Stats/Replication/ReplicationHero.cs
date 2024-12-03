@@ -21,7 +21,7 @@ namespace LeagueSandbox.GameServer.GameObjects.StatsNS
             {
                 UpdateFloat(Stats.ManaCost[i], 0, 8 + i); //ManaCost_{i}
             }
-            for(var i = 0; i < 16; i++)
+            for (var i = 0; i < 16; i++)
             {
                 UpdateFloat(Stats.ManaCost[45 + i], 0, 12 + i); //ManaCost_Ex{i}
             }

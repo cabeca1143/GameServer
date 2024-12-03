@@ -1,4 +1,3 @@
-using System;
 using GameServerCore;
 
 namespace LeagueSandbox.GameServer.GameObjects.StatsNS

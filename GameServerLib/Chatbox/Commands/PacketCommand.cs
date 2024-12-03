@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using LeagueSandbox.GameServer.Players;
+﻿using LeagueSandbox.GameServer.Players;
 
 namespace LeagueSandbox.GameServer.Chatbox.Commands
 {

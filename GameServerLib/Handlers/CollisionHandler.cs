@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Activities.Presentation.View;
+﻿using System.Activities.Presentation.View;
 using LeagueSandbox.GameServer.GameObjects;
 using LeagueSandbox.GameServer.GameObjects.SpellNS.Missile;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.Buildings;
@@ -26,7 +24,7 @@ namespace LeagueSandbox.GameServer.Handlers
             _quadDynamic = new QuadTree<GameObject>(
                 _map.NavigationGrid.MinGridPosition.X, // MIN
                 _map.NavigationGrid.MaxGridPosition.Z, // yep, MAX
-                _map.NavigationGrid.MaxGridPosition.X -_map.NavigationGrid.MinGridPosition.X,
+                _map.NavigationGrid.MaxGridPosition.X - _map.NavigationGrid.MinGridPosition.X,
                 _map.NavigationGrid.MaxGridPosition.Z - _map.NavigationGrid.MinGridPosition.Z
             );
         }

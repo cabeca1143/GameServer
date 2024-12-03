@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 
 namespace LeagueSandbox.GameServer.Chatbox
@@ -69,12 +66,12 @@ namespace LeagueSandbox.GameServer.Chatbox
         internal SortedDictionary<string, IChatCommand> GetAllChatCommandHandlers(Assembly[] loadFromArray, Game game)
         {
             var commands = new List<IChatCommand>();
-            var args = new object[] {this, game};
+            var args = new object[] { this, game };
             foreach (var loadFrom in loadFromArray)
             {
                 commands.AddRange(loadFrom.GetTypes()
                     .Where(t => t.BaseType == typeof(ChatCommandBase))
-                    .Select(t => (IChatCommand) Activator.CreateInstance(t, args)));
+                    .Select(t => (IChatCommand)Activator.CreateInstance(t, args)));
             }
             var commandsOutput = new SortedDictionary<string, IChatCommand>();
 

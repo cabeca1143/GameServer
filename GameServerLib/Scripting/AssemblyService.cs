@@ -1,10 +1,7 @@
 ﻿using LeagueSandbox.GameServer.Logging;
 using LeagueSandbox.GameServer;
 using log4net;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.IO;
 
 namespace GameServerLib.Scripting;
 

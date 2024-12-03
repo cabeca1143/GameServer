@@ -1,7 +1,4 @@
-﻿using System;
-using GameServerCore.Scripting.CSharp;
-using LeagueSandbox.GameServer.Scripting.CSharp;
-using static LeagueSandbox.GameServer.Content.TalentContentCollection;
+﻿using GameServerCore.Scripting.CSharp;
 using static GameServerCore.Content.HashFunctions;
 
 namespace LeagueSandbox.GameServer.GameObjects
@@ -17,7 +14,7 @@ namespace LeagueSandbox.GameServer.GameObjects
         public Talent(string name, byte level)
         {
             Name = name;
-            Rank = Math.Min(level, GetTalentMaxRank(name));
+            Rank = Math.Min(level, (byte)3);
             Script = Game.ScriptEngine.CreateObject<ITalentScript>("Talents", $"Talent_{name}") ?? new EmptyTalentScript();
             ScriptNameHash = HashString(name);
         }

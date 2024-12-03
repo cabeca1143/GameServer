@@ -1,7 +1,4 @@
-﻿using LeagueSandbox.GameServer.GameObjects;
-using LeagueSandbox.GameServer.GameObjects.SpellNS;
-
-namespace LeagueSandbox.GameServer.Chatbox.Commands
+﻿namespace LeagueSandbox.GameServer.Chatbox.Commands
 {
     public class HotReloadCommand : ChatCommandBase
     {

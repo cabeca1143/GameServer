@@ -352,7 +352,7 @@ namespace LeagueSandbox.GameServer.Content
             {
                 float time = file.GetFloat("SpellData", $"AmmoRechargeTime{i}", 0);
 
-                if(time > 0)
+                if (time > 0)
                 {
                     AmmoRechargeTime[i - 1] = time;
                     lastValidTime = time;
@@ -513,7 +513,7 @@ namespace LeagueSandbox.GameServer.Content
             UseChargeTargeting = file.GetBool("SpellData", "UseChargeTargeting", UseChargeTargeting);
             UseGlobalLineIndicator = file.GetBool("SpellData", "UseGlobalLineIndicator", UseGlobalLineIndicator);
             UseMinimapTargeting = file.GetBool("SpellData", "UseMinimapTargeting", UseMinimapTargeting);
-        
+
             return this;
         }
     }

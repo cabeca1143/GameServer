@@ -1,7 +1,6 @@
 ﻿using LENet;
 using GameServerCore.Packets.Handlers;
 using GameServerCore.Packets.PacketDefinitions;
-using System;
 using Channel = GameServerCore.Packets.Enums.Channel;
 using Version = LENet.Version;
 using LeagueSandbox.GameServer;
@@ -41,12 +40,12 @@ namespace PacketDefinitions420
             _server = new Host(Version.Patch420, new Address(_serverHost, port), 32, 32, 0, 0);
 
             BlowFish[] blowfishes = new BlowFish[blowfishKeys.Length];
-            for(int i = 0; i < blowfishKeys.Length; i++)
+            for (int i = 0; i < blowfishKeys.Length; i++)
             {
                 var key = Convert.FromBase64String(blowfishKeys[i]);
                 if (key.Length <= 0)
                 {
-                    throw new Exception($"Invalid blowfish key supplied({ key })");
+                    throw new Exception($"Invalid blowfish key supplied({key})");
                 }
                 blowfishes[i] = new BlowFish(key);
             }

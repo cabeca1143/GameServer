@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using GameServerCore;
 using LeagueSandbox.GameServer.Scripting.CSharp;
 

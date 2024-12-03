@@ -2,8 +2,6 @@
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
-using System.Collections.Generic;
-using static LeagueSandbox.GameServer.Content.TalentContentCollection;
 
 namespace LeagueSandbox.GameServer.Inventory
 {
@@ -14,10 +12,7 @@ namespace LeagueSandbox.GameServer.Inventory
 
         public void Add(string talentId, byte level)
         {
-            if (TalentIsValid(talentId))
-            {
-                Talents.TryAdd(talentId, new Talent(talentId, level));
-            }
+            if (Talents.TryAdd(talentId, new Talent(talentId, level))) { }
             else
             {
                 _logger.Warn($"No Talent with ID {talentId} found! Skipping...");
@@ -28,7 +23,7 @@ namespace LeagueSandbox.GameServer.Inventory
         {
             foreach (var talent in Talents.Values)
             {
-                if(talent.Rank > 0)
+                if (talent.Rank > 0)
                 {
                     talent.Script.OnActivate(owner, talent.Rank);
                 }

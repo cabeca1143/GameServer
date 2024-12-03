@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.GameObjects.SpellNS.Missile;
@@ -228,7 +225,7 @@ namespace LeagueSandbox.GameServer.GameObjects.SpellNS.Sector
             if (_unitsToHit.Count > 0)
             {
                 _unitsToHit = _unitsToHit.OrderByDescending(unit => Vector2.DistanceSquared(this.Position, unit.Position)).ToList();
-                
+
                 for (int i = _unitsToHit.Count - 1; i >= 0; i--)
                 {
                     var unit = _unitsToHit[i];

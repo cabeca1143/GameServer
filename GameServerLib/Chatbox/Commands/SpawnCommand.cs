@@ -4,7 +4,6 @@ using LeagueSandbox.GameServer.Content;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.Inventory;
 using LeagueSandbox.GameServer.Players;
-using System;
 using System.Numerics;
 
 namespace LeagueSandbox.GameServer.Chatbox.Commands

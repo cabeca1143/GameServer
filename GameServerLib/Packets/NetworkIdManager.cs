@@ -1,5 +1,4 @@
-﻿using GameServerCore;
-namespace LeagueSandbox.GameServer.Packets
+﻿namespace LeagueSandbox.GameServer.Packets
 {
     public class NetworkIdManager
     {

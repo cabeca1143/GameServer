@@ -1,5 +1,3 @@
-using System;
-
 namespace LeagueSandbox.GameServer.Chatbox.Commands
 {
     public class HelpCommand : ChatCommandBase
@@ -35,7 +33,7 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
 
             foreach (var command in commands)
             {
-                if(isNewMessage)
+                if (isNewMessage)
                 {
                     commandsString = new String(lastCommandString);
                     isNewMessage = false;
@@ -45,7 +43,7 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
                 $"{ChatCommandManager.CommandStarterCharacter}{command}" +
                 $"{COMMAND_SUFFIX}";
 
-                if(commandsString.Length + lastCommandString.Length >= MESSAGE_MAX_SIZE)
+                if (commandsString.Length + lastCommandString.Length >= MESSAGE_MAX_SIZE)
                 {
                     ChatCommandManager.SendDebugMsgFormatted(DebugMsgType.NORMAL, commandsString);
                     commandsString = "";
