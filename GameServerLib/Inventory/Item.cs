@@ -1,6 +1,4 @@
-using GameServerCore.Scripting.CSharp;
 using LeagueSandbox.GameServer.GameObjects.Other;
-using static GameServerCore.Content.HashFunctions;
 
 namespace LeagueSandbox.GameServer.Inventory
 {

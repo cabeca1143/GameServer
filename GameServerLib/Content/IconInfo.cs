@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using LeagueSandbox.GameServer;
+﻿using LeagueSandbox.GameServer;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
 
 namespace GameServerLib.Content
@@ -22,7 +21,7 @@ namespace GameServerLib.Content
             _game = game;
             _owner = owner;
         }
-        
+
         public void ChangeIcon(string iconCategory)
         {
             IconCategory = iconCategory;
@@ -51,11 +50,11 @@ namespace GameServerLib.Content
 
         public void Sync(int userId, bool visible, bool force = false)
         {
-            if(visible)
+            if (visible)
             {
                 bool changeIcon;
                 bool changeBorder;
-                if(force)
+                if (force)
                 {
                     changeIcon = _iconState != 0;
                     changeBorder = _borderState != 0;
@@ -66,13 +65,13 @@ namespace GameServerLib.Content
                     changeIcon = lastSeenState.Icon != _iconState;
                     changeBorder = lastSeenState.Border != _borderState;
                 }
-                if(changeIcon || changeBorder)
+                if (changeIcon || changeBorder)
                 {
                     _game.PacketNotifier.NotifyS2C_UnitSetMinimapIcon(userId, _owner, changeIcon, changeBorder);
                     _lastStateSeenByPlayer[userId] = (_iconState, _borderState);
                 }
             }
-            else if(force)
+            else if (force)
             {
                 _lastStateSeenByPlayer[userId] = (0, 0);
             }

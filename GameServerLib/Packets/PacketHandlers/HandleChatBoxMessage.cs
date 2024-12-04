@@ -54,7 +54,7 @@ namespace LeagueSandbox.GameServer.Packets.PacketHandlers
                     {
                         command.Execute(userId, true, msg);
                     }
-                    catch(System.Exception e)
+                    catch (System.Exception e)
                     {
                         _logger.Warn($"{command} sent an exception:\n{e}");
                         _game.PacketNotifier.NotifyS2C_SystemMessage(userId, "Something went wrong... Did you wrote the command well?");

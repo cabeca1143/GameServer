@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GameServerCore.Enums;
+﻿using GameServerCore.Enums;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.GameObjects.StatsNS;
@@ -32,7 +31,7 @@ namespace LeagueSandbox.GameServer
             _dependOnSingle.Add(element, dependOnSingle);
             _protectedElements.Add(element);
         }
-        
+
         public void AddProtection(AttackableUnit element, bool dependAll,
             params AttackableUnit[] dependOn)
         {

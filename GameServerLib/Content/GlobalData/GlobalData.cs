@@ -1,5 +1,4 @@
 ﻿using GameServerCore.Enums;
-using System.Collections.Generic;
 
 namespace LeagueSandbox.GameServer.Content
 {

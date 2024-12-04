@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using GameServerCore;
 using GameServerCore.Enums;
 using GameServerCore.NetInfo;
@@ -110,7 +107,7 @@ namespace LeagueSandbox.GameServer
             foreach (GameObject obj in _objects.Values)
             {
                 UpdateTeamsVision(obj);
-                if(i++ < oldObjectsCount)
+                if (i++ < oldObjectsCount)
                 {
                     obj.LateUpdate(diff);
                 }
@@ -202,7 +199,7 @@ namespace LeagueSandbox.GameServer
             {
                 _objectsToRemove.Remove(o);
 
-                if(_currentlyInUpdate)
+                if (_currentlyInUpdate)
                 {
                     _objectsToAdd.Add(o);
                 }
@@ -231,7 +228,7 @@ namespace LeagueSandbox.GameServer
             {
                 _objectsToAdd.Remove(o);
 
-                if(_currentlyInUpdate)
+                if (_currentlyInUpdate)
                 {
                     _objectsToRemove.Add(o);
                 }
@@ -285,7 +282,7 @@ namespace LeagueSandbox.GameServer
         {
             if (o != null)
             {
-                if(!o.IsAffectedByFoW)
+                if (!o.IsAffectedByFoW)
                 {
                     return true;
                 }
@@ -303,49 +300,51 @@ namespace LeagueSandbox.GameServer
 
         bool UnitHasVisionOn(GameObject observer, GameObject tested)
         {
-            if(!tested.IsAffectedByFoW)
+            if (!tested.IsAffectedByFoW)
             {
                 return true;
             }
 
-            if(observer is Region region)
+            if (observer is Region region)
             {
-                if(region.VisionTarget != null && region.VisionTarget != tested)
+                if (region.VisionTarget != null && region.VisionTarget != tested)
                 {
                     return false;
                 }
             }
-            else if(tested is Particle particle)
+            else if (tested is Particle particle)
             {
                 // Default behaviour
-                if(particle.SpecificTeam == TeamId.TEAM_NEUTRAL)
+                if (particle.SpecificTeam == TeamId.TEAM_NEUTRAL)
                 {
-                    if(
+                    if (
                         // Globally visible to all teams
                         particle.Team == TeamId.TEAM_NEUTRAL
                         // Globally visible to team of creator
                         || tested.Team == observer.Team
-                    ){
+                    )
+                    {
                         return true;
                     }
                     // Can become visible for other teams
                 }
                 // Only visible to specific team
-                else if(particle.SpecificTeam != observer.Team)
+                else if (particle.SpecificTeam != observer.Team)
                 {
                     return false;
                 }
             }
-            else if(tested.Team == observer.Team)
+            else if (tested.Team == observer.Team)
             {
                 return true;
             }
 
-            if(
+            if (
                 !(observer is AttackableUnit u && u.IsDead)
                 && Vector2.DistanceSquared(observer.Position, tested.Position) < observer.VisionRadius * observer.VisionRadius
                 && !_game.Map.NavigationGrid.IsAnythingBetween(observer, tested, true)
-            ){
+            )
+            {
                 return true;
             }
 

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using LeagueSandbox.GameServer.Content;
-
-namespace LeagueSandbox.GameServer.Inventory
+﻿namespace LeagueSandbox.GameServer.Inventory
 {
     public class ItemManager
     {
@@ -14,7 +11,7 @@ namespace LeagueSandbox.GameServer.Inventory
 
         public ItemData GetItemType(int itemId)
         {
-            return _itemTypes[itemId];
+            return new();//_itemTypes[itemId];
         }
 
         public ItemData SafeGetItemType(int itemId)
@@ -31,16 +28,6 @@ namespace LeagueSandbox.GameServer.Inventory
         {
             _itemTypes.Add(itemType.ItemId, itemType);
             itemType.CreateRecipe(this);
-        }
-
-        public void AddItems(ItemContentCollection contentCollection)
-        {
-            foreach (var entry in contentCollection)
-            {
-                var itemType = (new ItemData()).Load(entry.Value);
-                _itemTypes.Add(entry.Key, itemType);
-                itemType.CreateRecipe(this);
-            }
         }
     }
 }

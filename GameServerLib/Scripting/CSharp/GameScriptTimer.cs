@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LeagueSandbox.GameServer.Scripting.CSharp
+﻿namespace LeagueSandbox.GameServer.Scripting.CSharp
 {
     //Timer class for GameScripts to be able to trigger events after a duration
     public class GameScriptTimer

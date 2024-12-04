@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using GameServerCore.NetInfo;
 using GameServerCore.Enums;
 using LeagueSandbox.GameServer.GameObjects.StatsNS;
@@ -7,13 +6,11 @@ using LeagueSandbox.GameServer.GameObjects.SpellNS;
 using LeagueSandbox.GameServer.Inventory;
 using LeagueSandbox.GameServer.API;
 using LeaguePackets.Game.Events;
-using System;
 using GameServerLib.GameObjects.AttackableUnits;
 using GameServerCore.Scripting.CSharp;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
 using LeagueSandbox.GameServer.Content;
-using System.Linq;
 using GameServerLib.Handlers;
 
 namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI

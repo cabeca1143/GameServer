@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
@@ -192,7 +189,7 @@ namespace LeagueSandbox.GameServer.Inventory
                 {
                     item.Value.OnUpdate(diff);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     _logger.Error(null, e);
                 }

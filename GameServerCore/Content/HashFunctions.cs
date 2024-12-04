@@ -5,11 +5,11 @@ namespace GameServerCore.Content
 {
     public class HashFunctions
     {
-        public static uint HashString(string path)
+        public static uint HashString(string? path)
         {
             uint hash = 0;
             var mask = 0xF0000000;
-            for (var i = 0; i < path.Length; i++)
+            for (var i = 0; i < path?.Length; i++)
             {
                 hash = char.ToLower(path[i]) + 0x10 * hash;
                 if ((hash & mask) > 0)

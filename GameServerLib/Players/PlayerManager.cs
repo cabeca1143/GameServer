@@ -2,7 +2,6 @@
 using GameServerCore.Enums;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.Packets;
-using System.Collections.Generic;
 
 namespace LeagueSandbox.GameServer.Players
 {
@@ -42,7 +41,7 @@ namespace LeagueSandbox.GameServer.Players
                 summonerSkills,
                 config.PlayerID
             );
-            
+
             info.ClientId = _players.Count;
             _userIdsPerTeam[teamId]++;
 

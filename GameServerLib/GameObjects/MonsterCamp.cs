@@ -3,7 +3,6 @@ using GameServerLib.GameObjects.AttackableUnits;
 using LeagueSandbox.GameServer;
 using LeagueSandbox.GameServer.API;
 using LeagueSandbox.GameServer.GameObjects;
-using System.Collections.Generic;
 using System.Numerics;
 
 namespace GameServerLib.GameObjects
@@ -40,7 +39,7 @@ namespace GameServerLib.GameObjects
             Game game, Vector3 position, byte groupNumber, TeamId teamSideOfTheMap,
             string campTypeIcon, float respawnTimer, bool doPlayVO = true, byte revealEvent = 74,
             float spawnDuration = 0
-        ): base(
+        ) : base(
             game, new Vector2(position.X, position.Z), 0, 0, 0, team: TeamId.TEAM_NEUTRAL
         )
         {
@@ -55,9 +54,9 @@ namespace GameServerLib.GameObjects
 
         public override void LateUpdate(float diff)
         {
-            foreach(TeamId team in _playerTeams)
+            foreach (TeamId team in _playerTeams)
             {
-                if(IsVisibleByTeam(team))
+                if (IsVisibleByTeam(team))
                 {
                     _isAliveForTeam[team] = IsAlive;
                 }
@@ -78,7 +77,7 @@ namespace GameServerLib.GameObjects
                     && !_game.PlayerManager.GetPeerInfo(userId).Champion.Status.HasFlag(StatusFlags.NearSighted))
             )
             {
-                if(_isAliveForPlayer[userId] = isAliveForTeam)
+                if (_isAliveForPlayer[userId] = isAliveForTeam)
                 {
                     _game.PacketNotifier.NotifyS2C_ActivateMinionCamp(this, userId);
                 }
@@ -113,7 +112,7 @@ namespace GameServerLib.GameObjects
                 monster.SpawnAnimation, monster.IsTargetable, monster.IgnoresCollision, null, aiscript,
                 monster.DamageBonus, monster.HealthBonus, monster.InitialLevel
             );
-            while(campMonster.Stats.Level < monster.InitialLevel)
+            while (campMonster.Stats.Level < monster.InitialLevel)
             {
                 campMonster.Stats.LevelUp();
             }
@@ -122,9 +121,9 @@ namespace GameServerLib.GameObjects
             _game.ObjectManager.AddObject(campMonster);
 
             IsAlive = true;
-            foreach(TeamId team in _playerTeams)
+            foreach (TeamId team in _playerTeams)
             {
-                if(_teamSawLastDeath[team])
+                if (_teamSawLastDeath[team])
                 {
                     _teamSawLastDeath[team] = false;
                     _isAliveForTeam[team] = true;
@@ -141,7 +140,7 @@ namespace GameServerLib.GameObjects
             if (Monsters.Count == 0)
             {
                 IsAlive = false;
-                foreach(TeamId team in _playerTeams)
+                foreach (TeamId team in _playerTeams)
                 {
                     _teamSawLastDeath[team] = monster.IsVisibleByTeam(team) || IsVisibleByTeam(team);
                     if (_teamSawLastDeath[team])

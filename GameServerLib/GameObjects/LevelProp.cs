@@ -31,7 +31,7 @@ namespace LeagueSandbox.GameServer.GameObjects
             uint netId = 64
 
 
-        ) : base(game, new Vector2(position.X, position.Z),0, 0, 0, netId)
+        ) : base(game, new Vector2(position.X, position.Z), 0, 0, 0, netId)
         {
             NetNodeID = netNodeId;
             SkinID = skinId;

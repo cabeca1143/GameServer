@@ -1,5 +1,4 @@
-﻿using GameServerCore.Enums;
-using GameServerCore.Packets.Handlers;
+﻿using GameServerCore.Packets.Handlers;
 using LeagueSandbox.GameServer.API;
 using LeagueSandbox.GameServer.Chatbox;
 using LeagueSandbox.GameServer.Logging;
@@ -9,18 +8,13 @@ using LeagueSandbox.GameServer.Scripting.CSharp;
 using log4net;
 using LeagueSandbox.GameServer.Inventory;
 using PacketDefinitions420;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using Timer = System.Timers.Timer;
 using LeagueSandbox.GameServer.Packets.PacketHandlers;
 using LeagueSandbox.GameServer.Handlers;
 using GameServerCore.Packets.PacketDefinitions;
 using GameServerCore.Packets.PacketDefinitions.Requests;
-using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using GameServerLib.Handlers;
 using GameServerLib.Scripting;
 
@@ -226,39 +220,6 @@ namespace LeagueSandbox.GameServer
             RequestHandler.Register<UnpauseRequest>(new HandleUnpauseReq(this).HandlePacket);
             RequestHandler.Register<UseObjectRequest>(new HandleUseObject(this).HandlePacket);
             RequestHandler.Register<ViewRequest>(new HandleView(this).HandlePacket);
-        }
-
-        /// <summary>
-        /// Enables or disables the hot reloading of scripts. Used only for development.
-        /// </summary>
-        public void EnableHotReload(bool status)
-        {
-            string scriptsPath = Config.ContentManager.ContentPath;
-
-            void ScriptsChanged(object _, FileSystemEventArgs ea)
-            {
-                // Disable raising events to avoid triggering LoadScripts() many times in a row after the first event
-                ScriptsHotReloadWatcher.EnableRaisingEvents = false;
-                ScriptsHotReloadWatcher.EnableRaisingEvents = true;
-            }
-
-            if (status && ScriptsHotReloadWatcher == null)
-            {
-                ScriptsHotReloadWatcher = new FileSystemWatcher
-                {
-                    Path = scriptsPath,
-                    IncludeSubdirectories = true,
-                    EnableRaisingEvents = true,
-                    NotifyFilter = NotifyFilters.LastWrite,
-                    Filter = "*.*",
-                };
-                ScriptsHotReloadWatcher.Changed += ScriptsChanged;
-            }
-            else
-            {
-                ScriptsHotReloadWatcher.Changed -= ScriptsChanged;
-                ScriptsHotReloadWatcher = null;
-            }
         }
 
         public bool CheckIfAllPlayersLeft()

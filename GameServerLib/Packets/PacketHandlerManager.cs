@@ -4,10 +4,7 @@ using GameServerCore.Packets.Handlers;
 using GameServerCore.Packets.PacketDefinitions;
 using LeaguePackets;
 using LeaguePackets.Game.Events;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using Channel = GameServerCore.Packets.Enums.Channel;
 using LeagueSandbox.GameServer.GameObjects;
 using LeagueSandbox.GameServer.Players;
@@ -50,7 +47,7 @@ namespace PacketDefinitions420
 
         internal void InitializePacketConvertors()
         {
-            foreach(var m in typeof(PacketReader).GetMethods())
+            foreach (var m in typeof(PacketReader).GetMethods())
             {
                 foreach (Attribute attr in m.GetCustomAttributes(true))
                 {
@@ -172,9 +169,9 @@ namespace PacketDefinitions420
             {
                 // send packet to all peers and save failed ones
                 int failedPeers = 0;
-                for(int i = 0; i < _peers.Length; i++)
+                for (int i = 0; i < _peers.Length; i++)
                 {
-                    if(_peers[i] != null && _peers[i].Send((byte)channelNo, new LENet.Packet(_blowfishes[i].Encrypt(data), flag)) < 0)
+                    if (_peers[i] != null && _peers[i].Send((byte)channelNo, new LENet.Packet(_blowfishes[i].Encrypt(data), flag)) < 0)
                     {
                         failedPeers++;
                     }
@@ -248,22 +245,22 @@ namespace PacketDefinitions420
                 return true;
             }
 
-            #if DEBUG
+#if DEBUG
             PrintPacket(data, "Error: ");
-            #endif
+#endif
 
             return false;
         }
 
         public bool HandleDisconnect(Peer peer)
         {
-            if(peer == null)
+            if (peer == null)
             {
                 return true;
             }
 
             int clientId = ((int)peer.UserData) - 1;
-            if(clientId < 0)
+            if (clientId < 0)
             {
                 // Didn't receive an ID by initiating a handshake.
                 return true;
@@ -281,7 +278,7 @@ namespace PacketDefinitions420
             }
 
             Debug.WriteLine($"Player {peerInfo.PlayerId} disconnected!");
-            
+
             var annoucement = new OnLeave { OtherNetID = peerInfo.Champion.NetId };
             _game.PacketNotifier.NotifyS2C_OnEventWorld(annoucement, peerInfo.Champion);
             peerInfo.IsDisconnected = true;
@@ -296,7 +293,7 @@ namespace PacketDefinitions420
             var data = packet.Data;
 
             // if channel id is HANDSHAKE we should initialize blowfish key and return
-            if(channelId == Channel.CHL_HANDSHAKE)
+            if (channelId == Channel.CHL_HANDSHAKE)
             {
                 return HandleHandshake(peer, data);
             }
@@ -323,14 +320,14 @@ namespace PacketDefinitions420
                 return false;
             }
 
-            if(_peers[peerInfo.ClientId] != null && !peerInfo.IsDisconnected)
+            if (_peers[peerInfo.ClientId] != null && !peerInfo.IsDisconnected)
             {
                 Debug.WriteLine($"Player {request.PlayerID} is already connected. Request from {peer.Address.IPEndPoint.Address.ToString()}.");
                 return false;
             }
 
             long playerID = _blowfishes[peerInfo.ClientId].Decrypt(request.CheckSum);
-            if(request.PlayerID != playerID)
+            if (request.PlayerID != playerID)
             {
                 Debug.WriteLine($"Blowfish key is wrong!");
                 return false;
@@ -338,7 +335,7 @@ namespace PacketDefinitions420
 
             peerInfo.IsStartedClient = true;
 
-            Debug.WriteLine("Connected client No " + peerInfo.ClientId);      
+            Debug.WriteLine("Connected client No " + peerInfo.ClientId);
 
             peer.UserData = (int)peerInfo.ClientId + 1;
             _peers[peerInfo.ClientId] = peer;

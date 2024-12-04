@@ -1,5 +1,5 @@
 ﻿using LeagueSandbox.GameServer.GameObjects;
-using            GameServerLib.GameObjects.AttackableUnits;
+using GameServerLib.GameObjects.AttackableUnits;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
 using LeagueSandbox.GameServer.GameObjects.SpellNS;
@@ -8,8 +8,6 @@ using LeagueSandbox.GameServer.GameObjects.SpellNS.Missile;
 using GameServerCore.Enums;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
-using System;
-using System.Collections.Generic;
 
 /*
  * Possible Events:
@@ -205,13 +203,13 @@ namespace LeagueSandbox.GameServer.API
             }
             protected readonly List<Listener> _listeners = new List<Listener>();
             // Storage for Publish functions counters.
-            protected List<int> _stack = new List<int>{ -1, -1, -1, -1, -1, -1, -1, -1 };
+            protected List<int> _stack = new List<int> { -1, -1, -1, -1, -1, -1, -1, -1 };
             // The index of the last Publish function currently executing.
             protected int _nestingLevel = -1;
             protected void IncrementNestingLevel()
             {
                 _nestingLevel++;
-                if(_nestingLevel >= _stack.Count)
+                if (_nestingLevel >= _stack.Count)
                 {
                     _stack.Add(-1);
                 }
@@ -220,7 +218,7 @@ namespace LeagueSandbox.GameServer.API
             protected void CarefulRemoval(int index)
             {
                 _listeners.RemoveAt(index);
-                for(int l = 0; l < _nestingLevel + 1; l++)
+                for (int l = 0; l < _nestingLevel + 1; l++)
                 {
                     if (index < _stack[l])
                     {

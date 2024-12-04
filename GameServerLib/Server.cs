@@ -1,12 +1,6 @@
-﻿using GameServerCore.Packets.Handlers;
-using GameServerCore.Packets.PacketDefinitions;
-using LeagueSandbox.GameServer.Logging;
+﻿using LeagueSandbox.GameServer.Logging;
 using log4net;
 using PacketDefinitions420;
-using System;
-using System.Collections.Generic;
-using System.Runtime.ExceptionServices;
-using GameServerLib.Scripting;
 
 namespace LeagueSandbox.GameServer
 {
@@ -31,7 +25,7 @@ namespace LeagueSandbox.GameServer
             _game = game;
             _serverPort = port;
             _blowfishKeys = new string[_config.Players.Count];
-            for(int i = 0; i < _config.Players.Count; i++)
+            for (int i = 0; i < _config.Players.Count; i++)
             {
                 _blowfishKeys[i] = _config.Players[i].BlowfishKey;
             }
