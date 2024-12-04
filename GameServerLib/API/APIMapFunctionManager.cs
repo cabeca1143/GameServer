@@ -15,6 +15,7 @@ using log4net;
 using System.Numerics;
 using System.Text;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace LeagueSandbox.GameServer.API
 {

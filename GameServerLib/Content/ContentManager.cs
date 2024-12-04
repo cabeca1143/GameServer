@@ -1,4 +1,5 @@
-﻿using LeagueSandbox.GameServer.Content.Navigation;
+﻿using GameServerLib.Content;
+using LeagueSandbox.GameServer.Content.Navigation;
 using LeagueSandbox.GameServer.Handlers;
 using LeagueSandbox.GameServer.Logging;
 using log4net;
@@ -12,109 +13,94 @@ namespace LeagueSandbox.GameServer.Content
         private static ILog _logger = LoggerProvider.GetLogger();
         private readonly Game _game;
 
-        public string ContentPath { get; }
+        private Dictionary<string, ContentFile> DataCache = [];
+        private ContentFile LastAccessedFile = null!;
+        private string LastAccessedFileName = "";
+        private List<string> DataFiles;
 
-        private ContentManager(Game game, string dataPackageName, string contentPath)
+        internal ContentManager(Game game)
         {
             _game = game;
 
-            ContentPath = contentPath;
+            //Hack
+            DataFiles = Directory.GetFiles("Data", "*.inibin", SearchOption.AllDirectories).ToList();
+            Mesh test = new(
+                "C:\\Users\\rbeli\\Desktop\\League of Legends_UNPACKED\\League-of-Legends-4-20\\RADS\\solutions\\lol_game_client_sln\\releases\\0.0.1.68\\deploy\\LEVELS\\Map1\\Scene\\__Spawn_T1.SCB");
+        }
+        
+        internal ContentFile? GetContentFile(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return null;
+            }
+
+            if (str == LastAccessedFileName)
+            {
+                return LastAccessedFile;
+            }
+
+            if (DataCache.TryGetValue(str, out ContentFile data))
+            {
+                return data;
+            }
+
+            ContentFile cf = new(str);
+            if (cf.binaryCached || cf.m_TextFileExists)
+            {
+                return cf;
+            }
+
+            //Hack for spells whose data files are kinda all over the place
+            string? path = DataFiles.Find(x => Path.GetFileNameWithoutExtension(x) == Path.GetFileNameWithoutExtension(x));
+            if (!string.IsNullOrEmpty(path))
+            {
+                return new(path);
+            }
+
+            return null;
         }
 
         public MapData GetMapData(int mapId)
         {
-            foreach (var dataPackage in _loadedPackages)
-            {
-                var toReturnMapData = dataPackage.GetMapData(mapId);
-
-                if (toReturnMapData == null)
-                {
-                    continue;
-                }
-
-                return toReturnMapData;
-            }
-
-            throw new ContentNotFoundException($"No map data found for map with id: {mapId}");
+            return new(mapId);
         }
 
         public Dictionary<string, JArray> GetMapSpawns(int mapId)
         {
-            foreach (var dataPackage in _loadedPackages)
-            {
-                var toReturnMapSpawns = dataPackage.GetMapSpawns(mapId);
-
-                if (toReturnMapSpawns == null)
-                {
-                    continue;
-                }
-
-                return toReturnMapSpawns;
-            }
-
-            throw new ContentNotFoundException($"No map spawns found for map with id: {mapId}");
+            return [];
         }
 
         public NavigationGrid GetNavigationGrid(MapScriptHandler map)
         {
-            foreach (var dataPackage in _loadedPackages)
-            {
-                NavigationGrid toReturnNavgrid = dataPackage.GetNavigationGrid(map);
-
-                if (toReturnNavgrid != null)
-                {
-                    return toReturnNavgrid;
-                }
-            }
-
-            throw new ContentNotFoundException($"No NavGrid for map with id {map.Id} found in packages, skipping map load...");
+            return new ($"Levels/Map{_game.Map.Id}/AIPath.aimesh_ngrid");
         }
 
         public SpellData GetSpellData(string spellName)
         {
-            foreach (var dataPackage in _loadedPackages)
-            {
-                SpellData toReturnSpellData = dataPackage.GetSpellData(spellName);
+            ContentFile? file = GetContentFile(spellName);
 
-                if (toReturnSpellData != null)
-                {
-                    return toReturnSpellData;
-                }
+            if (file is not null)
+            {
+                SpellData sd = new();
+                sd.Load(file);
+                return sd;
             }
 
-            throw new ContentNotFoundException($"No Spell Data found with name: {spellName}");
+            return new();
         }
 
         public CharData GetCharData(string characterName)
         {
-            foreach (var dataPackage in _loadedPackages)
+            ContentFile? file = GetContentFile($"Data/Characters/{characterName}");
+            if (file is not null)
             {
-                CharData toReturnCharData = dataPackage.GetCharData(characterName);
-
-                if (toReturnCharData != null)
-                {
-                    return toReturnCharData;
-                }
+                CharData cd = new();
+                cd.Load(file);
+                return cd;
             }
 
-            throw new ContentNotFoundException($"No Character found with name: {characterName}");
+            return new();
         }
-
-        private void GetDependenciesRecursively(List<string> resultList, string packageName, string contentPath)
-        {
-            foreach (var dependency in GetDependenciesFromPackage(packageName, contentPath))
-            {
-                if (!resultList.Contains(dependency))
-                {
-                    resultList.Add(dependency);
-
-                    GetDependenciesRecursively(resultList, dependency, contentPath);
-                }
-            }
-        }
-
-
-
-
     }
 }

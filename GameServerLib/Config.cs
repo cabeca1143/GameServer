@@ -94,7 +94,7 @@ namespace LeagueSandbox.GameServer
         public void LoadContent(Game game)
         {
             // Load data package
-            ContentManager = ContentManager.LoadDataPackage(game, GameConfig.DataPackage, ContentPath);
+            ContentManager = new (game);
             foreach (var player in Players)
             {
                 player.LoadTalentsAndRunes();

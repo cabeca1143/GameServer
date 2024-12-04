@@ -3,6 +3,7 @@ using GameServerCore.Packets.Handlers;
 using System.Timers;
 using LeagueSandbox.GameServer.Players;
 using LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI;
+using Timer = System.Timers.Timer;
 
 namespace LeagueSandbox.GameServer.Packets.PacketHandlers
 {
