@@ -24,8 +24,6 @@ namespace LeagueSandbox.GameServer.Content
 
             //Hack
             DataFiles = Directory.GetFiles("Data", "*.inibin", SearchOption.AllDirectories).ToList();
-            Mesh test = new(
-                "C:\\Users\\rbeli\\Desktop\\League of Legends_UNPACKED\\League-of-Legends-4-20\\RADS\\solutions\\lol_game_client_sln\\releases\\0.0.1.68\\deploy\\LEVELS\\Map1\\Scene\\__Spawn_T1.SCB");
         }
         
         internal ContentFile? GetContentFile(string str)
@@ -40,14 +38,19 @@ namespace LeagueSandbox.GameServer.Content
                 return LastAccessedFile;
             }
 
+            LastAccessedFileName = str;
+
             if (DataCache.TryGetValue(str, out ContentFile data))
             {
+                LastAccessedFile = data;
                 return data;
             }
 
             ContentFile cf = new(str);
             if (cf.binaryCached || cf.m_TextFileExists)
             {
+                LastAccessedFile = cf;
+                DataCache[str] = cf;
                 return cf;
             }
 
@@ -55,9 +58,13 @@ namespace LeagueSandbox.GameServer.Content
             string? path = DataFiles.Find(x => Path.GetFileNameWithoutExtension(x) == Path.GetFileNameWithoutExtension(x));
             if (!string.IsNullOrEmpty(path))
             {
-                return new(path);
+                cf = new(path);
+                LastAccessedFile = cf;
+                DataCache[str] = cf;
+                return cf;
             }
 
+            _logger.Warn($"No data file '{str}' found!");
             return null;
         }
 
@@ -73,7 +80,7 @@ namespace LeagueSandbox.GameServer.Content
 
         public NavigationGrid GetNavigationGrid(MapScriptHandler map)
         {
-            return new ($"Levels/Map{_game.Map.Id}/AIPath.aimesh_ngrid");
+            return new ($"Levels/Map{map.Id}/AIPath.aimesh_ngrid");
         }
 
         public SpellData GetSpellData(string spellName)
@@ -92,7 +99,7 @@ namespace LeagueSandbox.GameServer.Content
 
         public CharData GetCharData(string characterName)
         {
-            ContentFile? file = GetContentFile($"Data/Characters/{characterName}");
+            ContentFile? file = GetContentFile($"Data/Characters/{characterName}/{characterName}.ini");
             if (file is not null)
             {
                 CharData cd = new();
