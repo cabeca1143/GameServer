@@ -22,8 +22,11 @@ namespace LeagueSandbox.GameServer.Content
         {
             _game = game;
 
+            Mesh test = new("LEVELS/Map1/Scene/__Spawn_T1.SCB");
+
             //Hack
-            DataFiles = Directory.GetFiles("Data", "*.inibin", SearchOption.AllDirectories).ToList();
+            DataFiles = [.. Directory.GetFiles("Data", "*.ini", SearchOption.AllDirectories)];
+            DataFiles = [.. Directory.GetFiles("Data", "*.inibin", SearchOption.AllDirectories)];
         }
         
         internal ContentFile? GetContentFile(string str)
